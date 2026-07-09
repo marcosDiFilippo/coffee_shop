@@ -1,25 +1,29 @@
 CREATE DATABASE coffee_shop;
 USE coffee_shop;
 
--- Users
 CREATE TABLE users (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    role_id BIGINT NOT NULL,
 
     first_name VARCHAR(100) NOT NULL,
     last_name VARCHAR(100) NOT NULL,
-
-    username VARCHAR(50) NOT NULL UNIQUE,
-    password_hash VARCHAR(255) NOT NULL,
 
     email VARCHAR(150) UNIQUE,
     phone VARCHAR(30),
 
     active BOOLEAN NOT NULL DEFAULT TRUE,
 
-	rol ENUM('CUSTOMER', 'EMPLOYEE', 'MANAGER', 'ADMIN') NOT NULL,
+    rol ENUM('CUSTOMER', 'EMPLOYEE', 'MANAGER', 'ADMIN') NOT NULL,
 
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE user_credentials (
+    user_id BIGINT PRIMARY KEY,
+    
+    username VARCHAR(50) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+
+    FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
 -- Drink sizes
