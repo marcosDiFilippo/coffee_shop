@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -70,6 +72,16 @@ public class Home extends JFrame {
 		btnLogin.setFocusPainted(false);
 		btnLogin.setBorder(new LineBorder(warmCapp, 2, true));
 		headerPanel.add(btnLogin);
+
+
+		btnLogin.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				Login login = new Login();
+				login.setVisible(true);
+				dispose();
+			}
+		});
 		
 		JLabel lblMainTitle = new JLabel("DISFRUTA EL CAFÉ PERFECTO");
 		lblMainTitle.setHorizontalAlignment(SwingConstants.CENTER);

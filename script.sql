@@ -173,3 +173,6 @@ CREATE TABLE stock_movements (
 
     FOREIGN KEY(ingredient_id) REFERENCES ingredients(id)
 );
+
+INSERT INTO users (first_name, last_name, email, phone, active, rol) VALUES ('Admin', 'User', 'admin@coffeeshop.com', '123456789', TRUE, 'MANAGER');
+INSERT INTO user_credentials (user_id, username, password) VALUES (LAST_INSERT_ID(), 'admin', '1111');
