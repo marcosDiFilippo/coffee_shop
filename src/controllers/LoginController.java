@@ -21,7 +21,8 @@ public class LoginController {
         User user = authService.login(loginDTO);
 
         if (user != null) {
-            System.out.println("Login exitoso. Bienvenido " + user.getFirstName() + " " + user.getLastName() + " (Rol: " + user.getRol() + ")");
+            views.Dashboard dashboard = new views.Dashboard(user);
+            dashboard.setVisible(true);
             loginView.dispose();
         } else {
             JOptionPane.showMessageDialog(loginView, "Credenciales incorrectas o usuario inactivo.", "Error", JOptionPane.ERROR_MESSAGE);
