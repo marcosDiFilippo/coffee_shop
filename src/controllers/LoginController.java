@@ -4,6 +4,7 @@ import dtos.LoginDTO;
 import models.User;
 import services.AuthService;
 import views.Login;
+import views.Dashboard;
 
 import javax.swing.JOptionPane;
 
@@ -21,7 +22,8 @@ public class LoginController {
         User user = authService.login(loginDTO);
 
         if (user != null) {
-            views.Dashboard dashboard = new views.Dashboard(user);
+            Dashboard dashboard = new Dashboard(user);
+            new DashboardController(dashboard, user);
             dashboard.setVisible(true);
             loginView.dispose();
         } else {

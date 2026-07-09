@@ -15,6 +15,7 @@ public class Dashboard extends JFrame {
 
     private static final long serialVersionUID = 1L;
     private JPanel contentPane;
+    private JButton btnLogout;
 
     public Dashboard(User currentUser) {
         setTitle("Sistema de Gestión de Cafetería - Dashboard");
@@ -116,7 +117,7 @@ public class Dashboard extends JFrame {
             sidebarPanel.add(btnUsers);
         }
         
-        JButton btnLogout = new JButton("Cerrar Sesión");
+        btnLogout = new JButton("Cerrar Sesión");
         btnLogout.setBackground(Colors.MOCHA_BEAN.getColor());
         btnLogout.setForeground(Colors.CREAMY_LATTE.getColor());
         btnLogout.setFont(new Font("Segoe UI", Font.BOLD, 14));
@@ -159,5 +160,7 @@ public class Dashboard extends JFrame {
         mainContentPanel.add(lblWelcomeMsg);
     }
 
-    
+    public JButton getBtnLogout() {
+        return btnLogout;
+    }
 }
