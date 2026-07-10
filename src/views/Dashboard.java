@@ -1,6 +1,7 @@
 package views;
 
 import constants.Colors;
+import controllers.CategoryController;
 import models.User;
 
 import javax.swing.JButton;
@@ -9,13 +10,30 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
+import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class Dashboard extends JFrame {
 
     private static final long serialVersionUID = 1L;
     private JPanel contentPane;
+    private JPanel mainContentPanel;
     private JButton btnLogout;
+
+    public static void main(String[] args) {
+        EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                try {
+                    Dashboard frame = new Dashboard(null);
+                    frame.setVisible(true);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
 
     public Dashboard(User currentUser) {
         setTitle("Sistema de Gestión de Cafetería - Dashboard");
@@ -78,6 +96,20 @@ public class Dashboard extends JFrame {
         btnCategories.setFocusPainted(false);
         btnCategories.setBorder(null);
         sidebarPanel.add(btnCategories);
+
+        btnCategories.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (mainContentPanel != null) {
+                    mainContentPanel.removeAll();
+                    CategoriesPanel categoriesPanel = new CategoriesPanel();
+                    new CategoryController(categoriesPanel);
+                    mainContentPanel.add(categoriesPanel);
+                    mainContentPanel.revalidate();
+                    mainContentPanel.repaint();
+                }
+            }
+        });
         
         JButton btnSizes = new JButton("Tamaños de Bebidas");
         btnSizes.setBackground(Colors.WARM_CAPP.getColor());
@@ -146,7 +178,7 @@ public class Dashboard extends JFrame {
         lblUserInfo.setBounds(600, 15, 390, 30);
         headerPanel.add(lblUserInfo);
         
-        JPanel mainContentPanel = new JPanel();
+        mainContentPanel = new JPanel();
         mainContentPanel.setBackground(Colors.CREAMY_LATTE.getColor());
         mainContentPanel.setBounds(250, 60, 1030, 660);
         mainContentPanel.setLayout(null);

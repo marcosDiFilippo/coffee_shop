@@ -37,7 +37,8 @@ CREATE TABLE sizes (
 CREATE TABLE categories (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL UNIQUE,
-    description VARCHAR(255)
+    description VARCHAR(255),
+    active BOOLEAN NOT NULL DEFAULT TRUE
 );
 
 -- Productos

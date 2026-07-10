@@ -1,6 +1,5 @@
 package controllers;
 
-import models.User;
 import views.Dashboard;
 import views.Login;
 
@@ -11,11 +10,9 @@ import java.awt.event.ActionListener;
 public class DashboardController implements ActionListener {
 
     private Dashboard dashboardView;
-    private User currentUser;
 
-    public DashboardController(Dashboard dashboardView, User currentUser) {
+    public DashboardController(Dashboard dashboardView) {
         this.dashboardView = dashboardView;
-        this.currentUser = currentUser;
         this.dashboardView.getBtnLogout().addActionListener(this);
     }
 

@@ -23,7 +23,7 @@ public class LoginController {
 
         if (user != null) {
             Dashboard dashboard = new Dashboard(user);
-            new DashboardController(dashboard, user);
+            new DashboardController(dashboard);
             dashboard.setVisible(true);
             loginView.dispose();
         } else {
