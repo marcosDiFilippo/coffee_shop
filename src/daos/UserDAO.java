@@ -30,7 +30,12 @@ public class UserDAO {
                     user.setPhone(rs.getString("phone"));
                     user.setActive(rs.getBoolean("active"));
                     user.setRol(rs.getString("rol"));
-                    user.setCreatedAt(rs.getTimestamp("created_at"));
+                    if (rs.getTimestamp("created_at") != null) {
+                        user.setCreatedAt(rs.getTimestamp("created_at").toLocalDateTime());
+                    }
+                    if (rs.getTimestamp("updated_at") != null) {
+                        user.setUpdatedAt(rs.getTimestamp("updated_at").toLocalDateTime());
+                    }
                 }
             }
         } catch (SQLException e) {

@@ -1,6 +1,8 @@
 package views;
 
 import constants.Colors;
+import controllers.CategoryController;
+import dtos.CategoryDTO;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -13,6 +15,8 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import java.awt.Font;
 import java.awt.Frame;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class CategoryFormDialog extends JDialog {
 
@@ -23,7 +27,7 @@ public class CategoryFormDialog extends JDialog {
     private JButton btnSave;
     private JButton btnCancel;
 
-    public CategoryFormDialog(Frame parent) {
+    public CategoryFormDialog(Frame parent, CategoryController controller, CategoryDTO dto) {
         super(parent, true);
         setTitle("Formulario de Categoría");
         setBounds(100, 100, 450, 350);
@@ -68,6 +72,11 @@ public class CategoryFormDialog extends JDialog {
         JScrollPane scrollPane = new JScrollPane(txtDescription);
         scrollPane.setBounds(30, 160, 374, 70);
         contentPane.add(scrollPane);
+        
+        if (dto != null) {
+            txtName.setText(dto.getName());
+            txtDescription.setText(dto.getDescription());
+        }
 
         btnSave = new JButton("Guardar");
         btnSave.setBackground(Colors.WARM_CAPP.getColor());
@@ -76,6 +85,15 @@ public class CategoryFormDialog extends JDialog {
         btnSave.setFocusPainted(false);
         btnSave.setBounds(30, 250, 120, 40);
         btnSave.setBorder(null);
+        btnSave.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                String name = txtName.getText();
+                String description = txtDescription.getText();
+                CategoryDTO newDto = new CategoryDTO(dto != null ? dto.getId() : null, name, description, true);
+                controller.saveCategory(newDto, CategoryFormDialog.this);
+            }
+        });
         contentPane.add(btnSave);
 
         btnCancel = new JButton("Cancelar");
@@ -85,22 +103,12 @@ public class CategoryFormDialog extends JDialog {
         btnCancel.setFocusPainted(false);
         btnCancel.setBounds(284, 250, 120, 40);
         btnCancel.setBorder(null);
+        btnCancel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                dispose();
+            }
+        });
         contentPane.add(btnCancel);
-    }
-
-    public JTextField getTxtName() {
-        return txtName;
-    }
-
-    public JTextArea getTxtDescription() {
-        return txtDescription;
-    }
-
-    public JButton getBtnSave() {
-        return btnSave;
-    }
-
-    public JButton getBtnCancel() {
-        return btnCancel;
     }
 }

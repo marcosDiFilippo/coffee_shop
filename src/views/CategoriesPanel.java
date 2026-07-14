@@ -1,6 +1,8 @@
 package views;
 
 import constants.Colors;
+import controllers.CategoryController;
+import dtos.CategoryDTO;
 
 import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
@@ -8,13 +10,17 @@ import javax.swing.JCheckBox;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class CategoriesPanel extends JPanel {
 
@@ -22,8 +28,7 @@ public class CategoriesPanel extends JPanel {
     private JButton btnAddCategory;
     private JTable tableCategories;
     private DefaultTableModel tableModel;
-    private JButton btnTableEdit;
-    private JButton btnTableToggle;
+    private CategoryController categoryController;
 
     public CategoriesPanel() {
         setBackground(Colors.CREAMY_LATTE.getColor());
@@ -37,6 +42,14 @@ public class CategoriesPanel extends JPanel {
         btnAddCategory.setFocusPainted(false);
         btnAddCategory.setBounds(30, 30, 180, 40);
         btnAddCategory.setBorder(null);
+        btnAddCategory.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                Dashboard dashboard = (Dashboard) SwingUtilities.getWindowAncestor(CategoriesPanel.this);
+                CategoryFormDialog formDialog = new CategoryFormDialog(dashboard, categoryController, null);
+                formDialog.setVisible(true);
+            }
+        });
         add(btnAddCategory);
 
         JScrollPane scrollPane = new JScrollPane();
@@ -115,15 +128,50 @@ public class CategoriesPanel extends JPanel {
         actionPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 0));
         actionPanel.setBackground(Colors.CREAMY_LATTE.getColor());
         
-        btnTableEdit = new JButton("Editar");
+        JButton btnTableEdit = new JButton("Editar");
         btnTableEdit.setBackground(Colors.CARAMEL_ROAST.getColor());
         btnTableEdit.setForeground(Colors.CREAMY_LATTE.getColor());
         btnTableEdit.setFocusPainted(false);
+        btnTableEdit.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                int row = tableCategories.getEditingRow();
+                if (row != -1) {
+                    Long id = (Long) tableModel.getValueAt(row, 0);
+                    String name = (String) tableModel.getValueAt(row, 1);
+                    String desc = (String) tableModel.getValueAt(row, 2);
+                    boolean active = tableModel.getValueAt(row, 3).equals("Activa");
+                    
+                    TableCellEditor editor = tableCategories.getCellEditor();
+                    if (editor != null) editor.stopCellEditing();
+                    
+                    CategoryDTO dto = new CategoryDTO(id, name, desc, active);
+                    Dashboard dashboard = (Dashboard) SwingUtilities.getWindowAncestor(CategoriesPanel.this);
+                    CategoryFormDialog formDialog = new CategoryFormDialog(dashboard, categoryController, dto);
+                    formDialog.setVisible(true);
+                }
+            }
+        });
         
-        btnTableToggle = new JButton("Deshabilitar");
+        JButton btnTableToggle = new JButton("Deshabilitar");
         btnTableToggle.setBackground(Colors.MOCHA_BEAN.getColor());
         btnTableToggle.setForeground(Colors.CREAMY_LATTE.getColor());
         btnTableToggle.setFocusPainted(false);
+        btnTableToggle.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                int row = tableCategories.getEditingRow();
+                if (row != -1) {
+                    Long id = (Long) tableModel.getValueAt(row, 0);
+                    boolean active = tableModel.getValueAt(row, 3).equals("Activa");
+                    
+                    TableCellEditor editor = tableCategories.getCellEditor();
+                    if (editor != null) editor.stopCellEditing();
+                    
+                    categoryController.toggleCategory(id, active);
+                }
+            }
+        });
         
         actionPanel.add(btnTableEdit);
         actionPanel.add(btnTableToggle);
@@ -150,10 +198,8 @@ public class CategoriesPanel extends JPanel {
         });
 
         scrollPane.setViewportView(tableCategories);
-    }
-
-    public JButton getBtnAddCategory() {
-        return btnAddCategory;
+        
+        categoryController = new CategoryController(this);
     }
 
     public JTable getTableCategories() {
@@ -162,13 +208,5 @@ public class CategoriesPanel extends JPanel {
 
     public DefaultTableModel getTableModel() {
         return tableModel;
-    }
-
-    public JButton getBtnTableEdit() {
-        return btnTableEdit;
-    }
-
-    public JButton getBtnTableToggle() {
-        return btnTableToggle;
     }
 }

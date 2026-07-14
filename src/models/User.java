@@ -1,26 +1,14 @@
 package models;
 
-import java.sql.Timestamp;
-
-public class User {
-    private Long id;
+public class User extends BaseModel {
     private String firstName;
     private String lastName;
     private String email;
     private String phone;
     private boolean active;
     private String rol;
-    private Timestamp createdAt;
 
     public User() {}
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getFirstName() {
         return firstName;
@@ -68,13 +56,5 @@ public class User {
 
     public void setRol(String rol) {
         this.rol = rol;
-    }
-
-    public Timestamp getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Timestamp createdAt) {
-        this.createdAt = createdAt;
     }
 }

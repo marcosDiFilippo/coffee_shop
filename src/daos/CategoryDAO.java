@@ -27,6 +27,12 @@ public class CategoryDAO {
                 category.setName(rs.getString("name"));
                 category.setDescription(rs.getString("description"));
                 category.setActive(rs.getBoolean("active"));
+                if (rs.getTimestamp("created_at") != null) {
+                    category.setCreatedAt(rs.getTimestamp("created_at").toLocalDateTime());
+                }
+                if (rs.getTimestamp("updated_at") != null) {
+                    category.setUpdatedAt(rs.getTimestamp("updated_at").toLocalDateTime());
+                }
                 categories.add(category);
             }
         } catch (SQLException e) {

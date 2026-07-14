@@ -1,7 +1,6 @@
 package views;
 
 import constants.Colors;
-import controllers.CategoryController;
 import models.User;
 
 import javax.swing.JButton;
@@ -103,7 +102,6 @@ public class Dashboard extends JFrame {
                 if (mainContentPanel != null) {
                     mainContentPanel.removeAll();
                     CategoriesPanel categoriesPanel = new CategoriesPanel();
-                    new CategoryController(categoriesPanel);
                     mainContentPanel.add(categoriesPanel);
                     mainContentPanel.revalidate();
                     mainContentPanel.repaint();

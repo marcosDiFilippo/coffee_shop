@@ -14,7 +14,8 @@ CREATE TABLE users (
 
     rol ENUM('CUSTOMER', 'EMPLOYEE', 'MANAGER', 'ADMIN') NOT NULL,
 
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
 CREATE TABLE user_credentials (
@@ -30,7 +31,9 @@ CREATE TABLE user_credentials (
 CREATE TABLE sizes (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(20) NOT NULL UNIQUE,
-    price_multiplier DECIMAL(4,2) NOT NULL
+    price_multiplier DECIMAL(4,2) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
 -- Categorias
@@ -38,7 +41,9 @@ CREATE TABLE categories (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL UNIQUE,
     description VARCHAR(255),
-    active BOOLEAN NOT NULL DEFAULT TRUE
+    active BOOLEAN NOT NULL DEFAULT TRUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
 -- Productos
@@ -54,7 +59,9 @@ CREATE TABLE products (
 
     available BOOLEAN NOT NULL DEFAULT TRUE,
 
-    FOREIGN KEY (category_id) REFERENCES categories(id)
+    FOREIGN KEY (category_id) REFERENCES categories(id),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
 -- Ingredientes
@@ -69,7 +76,9 @@ CREATE TABLE ingredients (
 
     minimum_stock DECIMAL(10,2) NOT NULL,
 
-    active BOOLEAN NOT NULL DEFAULT TRUE
+    active BOOLEAN NOT NULL DEFAULT TRUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
 -- Product recipes
@@ -103,7 +112,8 @@ CREATE TABLE orders (
 
     total DECIMAL(10,2) NOT NULL,
 
-    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 
     FOREIGN KEY(customer_id) REFERENCES users(id),
     FOREIGN KEY(employee_id) REFERENCES users(id)
@@ -129,14 +139,18 @@ CREATE TABLE order_items (
 
     FOREIGN KEY(product_id) REFERENCES products(id),
 
-    FOREIGN KEY(size_id) REFERENCES sizes(id)
+    FOREIGN KEY(size_id) REFERENCES sizes(id),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
 -- Metodos de pago
 CREATE TABLE payment_methods (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
 
-    payment_method_name VARCHAR(50) NOT NULL UNIQUE
+    payment_method_name VARCHAR(50) NOT NULL UNIQUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
 -- Pagos
@@ -153,7 +167,9 @@ CREATE TABLE payments (
 
     FOREIGN KEY(order_id) REFERENCES orders(id),
 
-    FOREIGN KEY(payment_method_id) REFERENCES payment_methods(id)
+    FOREIGN KEY(payment_method_id) REFERENCES payment_methods(id),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
 -- Stock movements
@@ -172,7 +188,9 @@ CREATE TABLE stock_movements (
 
     movement_date DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
-    FOREIGN KEY(ingredient_id) REFERENCES ingredients(id)
+    FOREIGN KEY(ingredient_id) REFERENCES ingredients(id),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
 INSERT INTO users (first_name, last_name, email, phone, active, rol) VALUES ('Admin', 'User', 'admin@coffeeshop.com', '123456789', TRUE, 'MANAGER');
