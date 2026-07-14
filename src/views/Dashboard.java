@@ -86,6 +86,19 @@ public class Dashboard extends JFrame {
         btnProducts.setFocusPainted(false);
         btnProducts.setBorder(null);
         sidebarPanel.add(btnProducts);
+
+        btnProducts.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (mainContentPanel != null) {
+                    mainContentPanel.removeAll();
+                    ProductsPanel productsPanel = new ProductsPanel();
+                    mainContentPanel.add(productsPanel);
+                    mainContentPanel.revalidate();
+                    mainContentPanel.repaint();
+                }
+            }
+        });
         
         JButton btnCategories = new JButton("Categorías");
         btnCategories.setBackground(Colors.WARM_CAPP.getColor());
