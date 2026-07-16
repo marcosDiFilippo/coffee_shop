@@ -68,6 +68,16 @@ public class Dashboard extends JFrame {
         btnNewOrder.setFocusPainted(false);
         btnNewOrder.setBorder(null);
         sidebarPanel.add(btnNewOrder);
+
+        btnNewOrder.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (mainContentPanel != null) {
+                    controllers.OrderController orderController = new controllers.OrderController(Dashboard.this, mainContentPanel);
+                    orderController.startNewOrder();
+                }
+            }
+        });
         
         JButton btnOrderHistory = new JButton("Historial de Pedidos");
         btnOrderHistory.setBackground(Colors.WARM_CAPP.getColor());
