@@ -59,8 +59,6 @@ CREATE TABLE products (
 
     available BOOLEAN NOT NULL DEFAULT TRUE,
 
-    image_path VARCHAR(255) DEFAULT '/coffee_shop/storage/products/default.png',
-
     FOREIGN KEY (category_id) REFERENCES categories(id),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP

@@ -9,7 +9,6 @@ public class Product extends BaseModel {
     private String description;
     private BigDecimal basePrice;
     private boolean available;
-    private String imagePath;
 
     public Product() {}
 
@@ -59,13 +58,5 @@ public class Product extends BaseModel {
 
     public void setAvailable(boolean available) {
         this.available = available;
-    }
-
-    public String getImagePath() {
-        return imagePath;
-    }
-
-    public void setImagePath(String imagePath) {
-        this.imagePath = imagePath;
     }
 }

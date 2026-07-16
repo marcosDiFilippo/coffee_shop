@@ -9,7 +9,6 @@ import services.CategoryService;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
-import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -21,7 +20,6 @@ import java.awt.Font;
 import java.awt.Frame;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.File;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -33,17 +31,13 @@ public class ProductFormDialog extends JDialog {
     private JTextArea txtDescription;
     private JTextField txtBasePrice;
     private JComboBox<CategoryItem> cbCategories;
-    private JButton btnSelectImage;
-    private JLabel lblImagePath;
     private JButton btnSave;
     private JButton btnCancel;
-    
-    private File selectedImageFile;
 
     public ProductFormDialog(Frame parent, ProductController controller, ProductDTO dto) {
         super(parent, true);
         setTitle("Formulario de Producto");
-        setBounds(100, 100, 480, 520);
+        setBounds(100, 100, 480, 420);
         setLocationRelativeTo(parent);
         setResizable(false);
 
@@ -116,44 +110,10 @@ public class ProductFormDialog extends JDialog {
             }
         }
         
-        JLabel lblImage = new JLabel("Imagen:");
-        lblImage.setForeground(Colors.MOCHA_BEAN.getColor());
-        lblImage.setFont(new Font("Segoe UI", Font.BOLD, 14));
-        lblImage.setBounds(30, 285, 404, 20);
-        contentPane.add(lblImage);
-        
-        btnSelectImage = new JButton("Seleccionar Imagen");
-        btnSelectImage.setBackground(Colors.CARAMEL_ROAST.getColor());
-        btnSelectImage.setForeground(Colors.CREAMY_LATTE.getColor());
-        btnSelectImage.setFont(new Font("Segoe UI", Font.BOLD, 12));
-        btnSelectImage.setFocusPainted(false);
-        btnSelectImage.setBounds(30, 310, 150, 30);
-        btnSelectImage.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                JFileChooser fileChooser = new JFileChooser();
-                int result = fileChooser.showOpenDialog(ProductFormDialog.this);
-                if (result == JFileChooser.APPROVE_OPTION) {
-                    selectedImageFile = fileChooser.getSelectedFile();
-                    lblImagePath.setText(selectedImageFile.getName());
-                }
-            }
-        });
-        contentPane.add(btnSelectImage);
-        
-        lblImagePath = new JLabel("Ninguna imagen seleccionada");
-        lblImagePath.setForeground(Colors.MOCHA_BEAN.getColor());
-        lblImagePath.setFont(new Font("Segoe UI", Font.ITALIC, 12));
-        lblImagePath.setBounds(190, 310, 244, 30);
-        contentPane.add(lblImagePath);
-        
-        String currentImagePath = null;
-
         if (dto != null) {
             txtName.setText(dto.getName());
             txtDescription.setText(dto.getDescription());
             txtBasePrice.setText(dto.getBasePrice().toString());
-            currentImagePath = dto.getImagePath();
             
             for (int i = 0; i < cbCategories.getItemCount(); i++) {
                 CategoryItem item = cbCategories.getItemAt(i);
@@ -164,14 +124,12 @@ public class ProductFormDialog extends JDialog {
             }
         }
         
-        final String savedImagePath = currentImagePath;
-
         btnSave = new JButton("Guardar");
         btnSave.setBackground(Colors.WARM_CAPP.getColor());
         btnSave.setForeground(Colors.CREAMY_LATTE.getColor());
         btnSave.setFont(new Font("Segoe UI", Font.BOLD, 14));
         btnSave.setFocusPainted(false);
-        btnSave.setBounds(30, 380, 120, 40);
+        btnSave.setBounds(30, 310, 120, 40);
         btnSave.setBorder(null);
         btnSave.addMouseListener(new MouseAdapter() {
             @Override
@@ -189,8 +147,8 @@ public class ProductFormDialog extends JDialog {
                 CategoryItem selectedCat = (CategoryItem) cbCategories.getSelectedItem();
                 Long catId = selectedCat != null ? selectedCat.getId() : null;
                 
-                ProductDTO newDto = new ProductDTO(dto != null ? dto.getId() : null, catId, name, description, price, dto != null ? dto.isAvailable() : true, savedImagePath);
-                controller.saveProduct(newDto, selectedImageFile, ProductFormDialog.this);
+                ProductDTO newDto = new ProductDTO(dto != null ? dto.getId() : null, catId, name, description, price, dto != null ? dto.isAvailable() : true);
+                controller.saveProduct(newDto, ProductFormDialog.this);
             }
         });
         contentPane.add(btnSave);
@@ -200,7 +158,7 @@ public class ProductFormDialog extends JDialog {
         btnCancel.setForeground(Colors.CREAMY_LATTE.getColor());
         btnCancel.setFont(new Font("Segoe UI", Font.BOLD, 14));
         btnCancel.setFocusPainted(false);
-        btnCancel.setBounds(314, 380, 120, 40);
+        btnCancel.setBounds(314, 310, 120, 40);
         btnCancel.setBorder(null);
         btnCancel.addMouseListener(new MouseAdapter() {
             @Override

@@ -31,7 +31,6 @@ public class ProductDAO {
                 product.setDescription(rs.getString("description"));
                 product.setBasePrice(rs.getBigDecimal("base_price"));
                 product.setAvailable(rs.getBoolean("available"));
-                product.setImagePath(rs.getString("image_path"));
                 
                 if (rs.getTimestamp("created_at") != null) {
                     product.setCreatedAt(rs.getTimestamp("created_at").toLocalDateTime());
@@ -57,7 +56,7 @@ public class ProductDAO {
     }
 
     public Product insert(Product product) {
-        String query = "INSERT INTO products (category_id, name, description, base_price, available, image_path) VALUES (?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO products (category_id, name, description, base_price, available) VALUES (?, ?, ?, ?, ?)";
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
@@ -67,7 +66,6 @@ public class ProductDAO {
             stmt.setString(3, product.getDescription());
             stmt.setBigDecimal(4, product.getBasePrice());
             stmt.setBoolean(5, product.isAvailable());
-            stmt.setString(6, product.getImagePath());
 
             int affectedRows = stmt.executeUpdate();
 
@@ -86,7 +84,7 @@ public class ProductDAO {
     }
 
     public boolean update(Product product) {
-        String query = "UPDATE products SET category_id = ?, name = ?, description = ?, base_price = ?, available = ?, image_path = ? WHERE id = ?";
+        String query = "UPDATE products SET category_id = ?, name = ?, description = ?, base_price = ?, available = ? WHERE id = ?";
         boolean updated = false;
 
         try (Connection conn = DatabaseConnection.getConnection();
@@ -97,8 +95,7 @@ public class ProductDAO {
             stmt.setString(3, product.getDescription());
             stmt.setBigDecimal(4, product.getBasePrice());
             stmt.setBoolean(5, product.isAvailable());
-            stmt.setString(6, product.getImagePath());
-            stmt.setLong(7, product.getId());
+            stmt.setLong(6, product.getId());
 
             updated = stmt.executeUpdate() > 0;
         } catch (SQLException e) {

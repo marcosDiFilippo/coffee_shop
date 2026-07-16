@@ -8,8 +8,6 @@ import views.ProductFormDialog;
 
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import java.io.File;
-import java.math.BigDecimal;
 import java.util.List;
 
 public class ProductController {
@@ -32,7 +30,6 @@ public class ProductController {
             String status = prod.isAvailable() ? "Disponible" : "No Disponible";
             String catName = prod.getCategory() != null ? prod.getCategory().getName() : "";
             model.addRow(new Object[]{
-                prod.getImagePath(),
                 prod.getId(),
                 prod.getName(),
                 prod.getBasePrice(),
@@ -45,8 +42,8 @@ public class ProductController {
         }
     }
 
-    public void saveProduct(ProductDTO dto, File imageFile, ProductFormDialog formDialog) {
-        ProductDTO saved = service.saveProduct(dto, imageFile);
+    public void saveProduct(ProductDTO dto, ProductFormDialog formDialog) {
+        ProductDTO saved = service.saveProduct(dto);
         if (saved != null) {
             formDialog.dispose();
             loadProducts();

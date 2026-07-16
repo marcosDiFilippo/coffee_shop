@@ -9,16 +9,14 @@ public class ProductDTO {
     private String description;
     private BigDecimal basePrice;
     private boolean available;
-    private String imagePath;
 
-    public ProductDTO(Long id, Long categoryId, String name, String description, BigDecimal basePrice, boolean available, String imagePath) {
+    public ProductDTO(Long id, Long categoryId, String name, String description, BigDecimal basePrice, boolean available) {
         this.id = id;
         this.categoryId = categoryId;
         this.name = name;
         this.description = description;
         this.basePrice = basePrice;
         this.available = available;
-        this.imagePath = imagePath;
     }
 
     public Long getId() {
@@ -67,13 +65,5 @@ public class ProductDTO {
 
     public void setAvailable(boolean available) {
         this.available = available;
-    }
-
-    public String getImagePath() {
-        return imagePath;
-    }
-
-    public void setImagePath(String imagePath) {
-        this.imagePath = imagePath;
     }
 }
