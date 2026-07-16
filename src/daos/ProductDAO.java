@@ -16,7 +16,7 @@ public class ProductDAO {
 
     public List<Product> getAll() {
         List<Product> products = new ArrayList<>();
-        String query = "SELECT p.*, c.name as category_name, c.description as category_desc, c.active as category_active " +
+        String query = "SELECT p.*, c.name as category_name, c.description as category_desc, c.active as category_active, c.requires_size as category_requires_size " +
                        "FROM products p INNER JOIN categories c ON p.category_id = c.id";
 
         try (Connection conn = DatabaseConnection.getConnection();
@@ -44,6 +44,7 @@ public class ProductDAO {
                 cat.setName(rs.getString("category_name"));
                 cat.setDescription(rs.getString("category_desc"));
                 cat.setActive(rs.getBoolean("category_active"));
+                cat.setRequiresSize(rs.getBoolean("category_requires_size"));
                 product.setCategory(cat);
 
                 products.add(product);

@@ -56,21 +56,25 @@ public class OrderPanel extends JPanel {
         BigDecimal total = BigDecimal.ZERO;
 
         for (OrderItemDTO item : cartItems) {
-            BigDecimal itemTotal = item.getProduct().getBasePrice().multiply(new BigDecimal(item.getQuantity()));
-            total = total.add(itemTotal);
+            total = total.add(item.getSubtotal());
 
             JPanel itemPanel = new JPanel();
             itemPanel.setBackground(Color.WHITE);
             itemPanel.setLayout(null);
             itemPanel.setBounds(0, y, 950, 80);
             
-            JLabel lblName = new JLabel(item.getProduct().getName());
+            String displayName = item.getProduct().getName();
+            if (item.getSize() != null) {
+                displayName += " (" + item.getSize().getName() + ")";
+            }
+
+            JLabel lblName = new JLabel(displayName);
             lblName.setFont(new Font("Segoe UI", Font.BOLD, 16));
             lblName.setForeground(Colors.MOCHA_BEAN.getColor());
             lblName.setBounds(20, 25, 400, 30);
             itemPanel.add(lblName);
             
-            JLabel lblPrice = new JLabel("$ " + itemTotal.toString());
+            JLabel lblPrice = new JLabel("$ " + item.getSubtotal().setScale(2, java.math.RoundingMode.HALF_UP).toString());
             lblPrice.setFont(new Font("Segoe UI", Font.BOLD, 16));
             lblPrice.setForeground(Colors.WARM_CAPP.getColor());
             lblPrice.setBounds(450, 25, 100, 30);
@@ -138,7 +142,7 @@ public class OrderPanel extends JPanel {
         scrollPane.setBorder(null);
         add(scrollPane);
 
-        JLabel lblTotal = new JLabel("TOTAL: $ " + total.toString());
+        JLabel lblTotal = new JLabel("TOTAL: $ " + total.setScale(2, java.math.RoundingMode.HALF_UP).toString());
         lblTotal.setForeground(Colors.MOCHA_BEAN.getColor());
         lblTotal.setFont(new Font("Segoe UI", Font.BOLD, 28));
         lblTotal.setHorizontalAlignment(SwingConstants.RIGHT);

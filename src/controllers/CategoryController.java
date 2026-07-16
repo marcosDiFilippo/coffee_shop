@@ -28,7 +28,8 @@ public class CategoryController {
         List<Category> categories = service.getAllCategories();
         for (Category cat : categories) {
             String status = cat.isActive() ? "Activa" : "Inactiva";
-            model.addRow(new Object[]{cat.getId(), cat.getName(), cat.getDescription(), status, ""});
+            String reqSize = cat.isRequiresSize() ? "Sí" : "No";
+            model.addRow(new Object[]{cat.getId(), cat.getName(), cat.getDescription(), status, reqSize, ""});
         }
     }
 

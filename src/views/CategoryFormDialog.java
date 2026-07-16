@@ -5,6 +5,7 @@ import controllers.CategoryController;
 import dtos.CategoryDTO;
 
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -24,13 +25,14 @@ public class CategoryFormDialog extends JDialog {
     private JPanel contentPane;
     private JTextField txtName;
     private JTextArea txtDescription;
+    private JCheckBox chkRequiresSize;
     private JButton btnSave;
     private JButton btnCancel;
 
     public CategoryFormDialog(Frame parent, CategoryController controller, CategoryDTO dto) {
         super(parent, true);
         setTitle("Formulario de Categoría");
-        setBounds(100, 100, 450, 350);
+        setBounds(100, 100, 450, 400);
         setLocationRelativeTo(parent);
         setResizable(false);
 
@@ -78,19 +80,36 @@ public class CategoryFormDialog extends JDialog {
             txtDescription.setText(dto.getDescription());
         }
 
+        chkRequiresSize = new JCheckBox("¿Tienen distintos tamaños los productos de esta categoría?");
+        chkRequiresSize.setBackground(Colors.CREAMY_LATTE.getColor());
+        chkRequiresSize.setForeground(Colors.MOCHA_BEAN.getColor());
+        chkRequiresSize.setFont(new Font("Segoe UI", Font.BOLD, 12));
+        chkRequiresSize.setBounds(30, 240, 384, 20);
+        if (dto != null) {
+            chkRequiresSize.setSelected(dto.isRequiresSize());
+        }
+        contentPane.add(chkRequiresSize);
+
+        JLabel lblSizeDesc = new JLabel("Activa esto para Bebidas. El sistema pedirá elegir tamaño al vender.");
+        lblSizeDesc.setForeground(Colors.WARM_CAPP.getColor());
+        lblSizeDesc.setFont(new Font("Segoe UI", Font.PLAIN, 11));
+        lblSizeDesc.setBounds(30, 260, 384, 20);
+        contentPane.add(lblSizeDesc);
+
         btnSave = new JButton("Guardar");
         btnSave.setBackground(Colors.WARM_CAPP.getColor());
         btnSave.setForeground(Colors.CREAMY_LATTE.getColor());
         btnSave.setFont(new Font("Segoe UI", Font.BOLD, 14));
         btnSave.setFocusPainted(false);
-        btnSave.setBounds(30, 250, 120, 40);
+        btnSave.setBounds(30, 300, 120, 40);
         btnSave.setBorder(null);
         btnSave.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 String name = txtName.getText();
                 String description = txtDescription.getText();
-                CategoryDTO newDto = new CategoryDTO(dto != null ? dto.getId() : null, name, description, true);
+                boolean requiresSize = chkRequiresSize.isSelected();
+                CategoryDTO newDto = new CategoryDTO(dto != null ? dto.getId() : null, name, description, true, requiresSize);
                 controller.saveCategory(newDto, CategoryFormDialog.this);
             }
         });
@@ -101,7 +120,7 @@ public class CategoryFormDialog extends JDialog {
         btnCancel.setForeground(Colors.CREAMY_LATTE.getColor());
         btnCancel.setFont(new Font("Segoe UI", Font.BOLD, 14));
         btnCancel.setFocusPainted(false);
-        btnCancel.setBounds(284, 250, 120, 40);
+        btnCancel.setBounds(284, 300, 120, 40);
         btnCancel.setBorder(null);
         btnCancel.addMouseListener(new MouseAdapter() {
             @Override

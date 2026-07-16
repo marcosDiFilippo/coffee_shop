@@ -27,6 +27,7 @@ public class CategoryDAO {
                 category.setName(rs.getString("name"));
                 category.setDescription(rs.getString("description"));
                 category.setActive(rs.getBoolean("active"));
+                category.setRequiresSize(rs.getBoolean("requires_size"));
                 if (rs.getTimestamp("created_at") != null) {
                     category.setCreatedAt(rs.getTimestamp("created_at").toLocalDateTime());
                 }
@@ -43,14 +44,15 @@ public class CategoryDAO {
     }
 
     public Category insert(Category category) {
-        String query = "INSERT INTO categories (name, description, active) VALUES (?, ?, ?)";
+        String query = "INSERT INTO categories (name, description, requires_size, active) VALUES (?, ?, ?, ?)";
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
 
             stmt.setString(1, category.getName());
             stmt.setString(2, category.getDescription());
-            stmt.setBoolean(3, category.isActive());
+            stmt.setBoolean(3, category.isRequiresSize());
+            stmt.setBoolean(4, category.isActive());
 
             int affectedRows = stmt.executeUpdate();
 
@@ -69,7 +71,7 @@ public class CategoryDAO {
     }
 
     public boolean update(Category category) {
-        String query = "UPDATE categories SET name = ?, description = ? WHERE id = ?";
+        String query = "UPDATE categories SET name = ?, description = ?, requires_size = ? WHERE id = ?";
         boolean updated = false;
 
         try (Connection conn = DatabaseConnection.getConnection();
@@ -77,7 +79,8 @@ public class CategoryDAO {
 
             stmt.setString(1, category.getName());
             stmt.setString(2, category.getDescription());
-            stmt.setLong(3, category.getId());
+            stmt.setBoolean(3, category.isRequiresSize());
+            stmt.setLong(4, category.getId());
 
             updated = stmt.executeUpdate() > 0;
         } catch (SQLException e) {

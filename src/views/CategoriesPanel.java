@@ -56,12 +56,12 @@ public class CategoriesPanel extends JPanel {
         scrollPane.setBounds(30, 90, 970, 530);
         add(scrollPane);
 
-        String[] columnNames = {"ID", "Nombre", "Descripción", "Estado", "Acciones"};
+        String[] columnNames = {"ID", "Nombre", "Descripción", "Estado", "Usa Tamaño", "Acciones"};
         tableModel = new DefaultTableModel(columnNames, 0) {
             private static final long serialVersionUID = 1L;
             @Override
             public boolean isCellEditable(int row, int column) {
-                return column == 4;
+                return column == 5;
             }
         };
 
@@ -76,7 +76,8 @@ public class CategoriesPanel extends JPanel {
         tableCategories.getColumnModel().getColumn(0).setPreferredWidth(50);
         tableCategories.getColumnModel().getColumn(0).setMaxWidth(50);
         tableCategories.getColumnModel().getColumn(3).setPreferredWidth(100);
-        tableCategories.getColumnModel().getColumn(4).setPreferredWidth(200);
+        tableCategories.getColumnModel().getColumn(4).setPreferredWidth(100);
+        tableCategories.getColumnModel().getColumn(5).setPreferredWidth(200);
 
         tableCategories.getColumnModel().getColumn(3).setCellRenderer(new DefaultTableCellRenderer() {
             private static final long serialVersionUID = 1L;
@@ -94,7 +95,7 @@ public class CategoriesPanel extends JPanel {
             }
         });
 
-        tableCategories.getColumnModel().getColumn(4).setCellRenderer(new TableCellRenderer() {
+        tableCategories.getColumnModel().getColumn(5).setCellRenderer(new TableCellRenderer() {
             private JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 0));
             private JButton bEdit = new JButton("Editar");
             private JButton bToggle = new JButton("Deshabilitar");
@@ -141,11 +142,11 @@ public class CategoriesPanel extends JPanel {
                     String name = (String) tableModel.getValueAt(row, 1);
                     String desc = (String) tableModel.getValueAt(row, 2);
                     boolean active = tableModel.getValueAt(row, 3).equals("Activa");
-                    
+                    boolean requiresSize = tableModel.getValueAt(row, 4).equals("Sí");
                     TableCellEditor editor = tableCategories.getCellEditor();
                     if (editor != null) editor.stopCellEditing();
                     
-                    CategoryDTO dto = new CategoryDTO(id, name, desc, active);
+                    CategoryDTO dto = new CategoryDTO(id, name, desc, active, requiresSize);
                     Dashboard dashboard = (Dashboard) SwingUtilities.getWindowAncestor(CategoriesPanel.this);
                     CategoryFormDialog formDialog = new CategoryFormDialog(dashboard, categoryController, dto);
                     formDialog.setVisible(true);
@@ -176,7 +177,7 @@ public class CategoriesPanel extends JPanel {
         actionPanel.add(btnTableEdit);
         actionPanel.add(btnTableToggle);
 
-        tableCategories.getColumnModel().getColumn(4).setCellEditor(new DefaultCellEditor(new JCheckBox()) {
+        tableCategories.getColumnModel().getColumn(5).setCellEditor(new DefaultCellEditor(new JCheckBox()) {
             private static final long serialVersionUID = 1L;
             @Override
             public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {

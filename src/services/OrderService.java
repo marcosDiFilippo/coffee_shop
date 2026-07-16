@@ -62,9 +62,14 @@ public class OrderService {
                 OrderItem item = new OrderItem();
                 item.setOrderId(orderId);
                 item.setProductId(dto.getProduct().getId());
+                if (dto.getSize() != null) {
+                    item.setSizeId(dto.getSize().getId());
+                }
                 item.setQuantity(dto.getQuantity());
-                item.setUnitPrice(dto.getProduct().getBasePrice());
-                item.setSubtotal(dto.getProduct().getBasePrice().multiply(new BigDecimal(dto.getQuantity())));
+                
+                BigDecimal multiplier = (dto.getSize() != null) ? dto.getSize().getPriceMultiplier() : BigDecimal.ONE;
+                item.setUnitPrice(dto.getProduct().getBasePrice().multiply(multiplier));
+                item.setSubtotal(dto.getSubtotal());
                 
                 orderItemDAO.insertWithConnection(conn, item);
             }

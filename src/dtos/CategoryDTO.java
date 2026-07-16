@@ -5,15 +5,17 @@ public class CategoryDTO {
     private String name;
     private String description;
     private boolean active;
+    private boolean requiresSize;
 
     public CategoryDTO() {
     }
 
-    public CategoryDTO(Long id, String name, String description, boolean active) {
+    public CategoryDTO(Long id, String name, String description, boolean active, boolean requiresSize) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.active = active;
+        this.requiresSize = requiresSize;
     }
 
     public Long getId() {
@@ -46,5 +48,13 @@ public class CategoryDTO {
 
     public void setActive(boolean active) {
         this.active = active;
+    }
+
+    public boolean isRequiresSize() {
+        return requiresSize;
+    }
+
+    public void setRequiresSize(boolean requiresSize) {
+        this.requiresSize = requiresSize;
     }
 }

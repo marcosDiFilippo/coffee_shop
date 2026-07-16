@@ -23,7 +23,7 @@ public class CategoryService {
             return null;
         }
 
-        Category category = new Category(dto.getId(), dto.getName(), dto.getDescription(), dto.isActive());
+        Category category = new Category(dto.getId(), dto.getName(), dto.getDescription(), dto.isActive(), dto.isRequiresSize());
 
         if (category.getId() == null) {
             category.setActive(true);

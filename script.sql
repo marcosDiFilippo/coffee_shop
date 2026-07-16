@@ -41,6 +41,7 @@ CREATE TABLE categories (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL UNIQUE,
     description VARCHAR(255),
+    requires_size BOOLEAN NOT NULL DEFAULT FALSE,
     active BOOLEAN NOT NULL DEFAULT TRUE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
@@ -147,11 +148,16 @@ CREATE TABLE payments (
 INSERT INTO users (first_name, last_name, email, phone, active, rol) VALUES ('Admin', 'User', 'admin@coffeeshop.com', '123456789', TRUE, 'MANAGER');
 INSERT INTO user_credentials (user_id, username, password) VALUES (LAST_INSERT_ID(), 'admin', '1111');
 
-INSERT INTO categories (name, description) VALUES
-('Bebidas Calientes', 'Café y bebidas calientes clásicas.'),
-('Bebidas Frías', 'Bebidas refrescantes y heladas.'),
-('Pastelería', 'Acompañamientos dulces y horneados.'),
-('Comidas/Sándwiches', 'Opciones saladas y sándwiches.');
+INSERT INTO sizes (name, price_multiplier) VALUES
+('Chico', 1.00),
+('Mediano', 1.25),
+('Grande', 1.50);
+
+INSERT INTO categories (name, description, requires_size) VALUES
+('Bebidas Calientes', 'Café y bebidas calientes clásicas.', TRUE),
+('Bebidas Frías', 'Bebidas refrescantes y heladas.', TRUE),
+('Pastelería', 'Acompañamientos dulces y horneados.', FALSE),
+('Comidas/Sándwiches', 'Opciones saladas y sándwiches.', FALSE);
 
 INSERT INTO products (category_id, name, description, base_price, available) VALUES
 (1, 'Espresso', 'Café concentrado puro.', 1500.00, TRUE),
