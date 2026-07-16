@@ -26,14 +26,14 @@ public class OrderPanel extends JPanel {
         setLayout(null);
         setBounds(0, 0, 1030, 660);
 
-        JLabel lblTitle = new JLabel("CARRITO DE COMPRAS");
+        JLabel lblTitle = new JLabel("ORDEN");
         lblTitle.setForeground(Colors.MOCHA_BEAN.getColor());
         lblTitle.setFont(new Font("Segoe UI", Font.BOLD, 24));
         lblTitle.setHorizontalAlignment(SwingConstants.CENTER);
         lblTitle.setBounds(0, 30, 1030, 40);
         add(lblTitle);
 
-        JButton btnBack = new JButton("Seguir Comprando");
+        JButton btnBack = new JButton("Seguir Agregando");
         btnBack.setBackground(Colors.MOCHA_BEAN.getColor());
         btnBack.setForeground(Colors.CREAMY_LATTE.getColor());
         btnBack.setFont(new Font("Segoe UI", Font.BOLD, 14));
@@ -142,7 +142,28 @@ public class OrderPanel extends JPanel {
         lblTotal.setForeground(Colors.MOCHA_BEAN.getColor());
         lblTotal.setFont(new Font("Segoe UI", Font.BOLD, 28));
         lblTotal.setHorizontalAlignment(SwingConstants.RIGHT);
-        lblTotal.setBounds(500, 560, 500, 50);
+        lblTotal.setBounds(500, 560, 280, 50);
         add(lblTotal);
+
+        JButton btnConfirm = new JButton("Confirmar Orden");
+        btnConfirm.setBackground(Colors.WARM_CAPP.getColor());
+        btnConfirm.setForeground(Colors.CREAMY_LATTE.getColor());
+        btnConfirm.setFont(new Font("Segoe UI", Font.BOLD, 18));
+        btnConfirm.setFocusPainted(false);
+        btnConfirm.setBounds(800, 560, 200, 50);
+        btnConfirm.setBorder(null);
+        if (cartItems.isEmpty()) {
+            btnConfirm.setEnabled(false);
+        }
+        btnConfirm.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (!cartItems.isEmpty()) {
+                    views.CustomerDialog dialog = new views.CustomerDialog((javax.swing.JFrame) javax.swing.SwingUtilities.getWindowAncestor(OrderPanel.this), controller);
+                    dialog.setVisible(true);
+                }
+            }
+        });
+        add(btnConfirm);
     }
 }

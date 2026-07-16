@@ -20,6 +20,7 @@ public class Dashboard extends JFrame {
     private JPanel contentPane;
     private JPanel mainContentPanel;
     private JButton btnLogout;
+    private User currentUser;
 
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
@@ -35,6 +36,7 @@ public class Dashboard extends JFrame {
     }
 
     public Dashboard(User currentUser) {
+        this.currentUser = currentUser;
         setTitle("Sistema de Gestión de Cafetería - Dashboard");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, 1280, 720);
@@ -60,7 +62,7 @@ public class Dashboard extends JFrame {
         lblMenuTitle.setBounds(0, 20, 250, 30);
         sidebarPanel.add(lblMenuTitle);
         
-        JButton btnNewOrder = new JButton("Nueva Orden (POS)");
+        JButton btnNewOrder = new JButton("Nueva Orden");
         btnNewOrder.setBackground(Colors.WARM_CAPP.getColor());
         btnNewOrder.setForeground(Colors.CREAMY_LATTE.getColor());
         btnNewOrder.setFont(new Font("Segoe UI", Font.BOLD, 14));
@@ -215,5 +217,9 @@ public class Dashboard extends JFrame {
 
     public JButton getBtnLogout() {
         return btnLogout;
+    }
+
+    public User getCurrentUser() {
+        return currentUser;
     }
 }

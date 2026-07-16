@@ -83,4 +83,29 @@ public class OrderController {
         cartItems.remove(item);
         showCart(); 
     }
+
+    public List<OrderItemDTO> getCartItems() {
+        return cartItems;
+    }
+
+    public void processCheckout(dtos.UserDTO customerDTO, views.CustomerDialog dialog) {
+        java.math.BigDecimal total = java.math.BigDecimal.ZERO;
+        for (OrderItemDTO item : cartItems) {
+            java.math.BigDecimal itemTotal = item.getProduct().getBasePrice().multiply(new java.math.BigDecimal(item.getQuantity()));
+            total = total.add(itemTotal);
+        }
+        
+        Long employeeId = dashboard.getCurrentUser().getId();
+        services.OrderService orderService = new services.OrderService();
+        boolean success = orderService.confirmOrder(customerDTO, cartItems, employeeId, total);
+        
+        if (success) {
+            javax.swing.JOptionPane.showMessageDialog(dialog, "Orden registrada con éxito", "Éxito", javax.swing.JOptionPane.INFORMATION_MESSAGE);
+            dialog.dispose();
+            cartItems.clear();
+            showCategories();
+        } else {
+            javax.swing.JOptionPane.showMessageDialog(dialog, "Error al registrar la orden. Intente nuevamente.", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+        }
+    }
 }

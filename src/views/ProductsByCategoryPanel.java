@@ -49,7 +49,7 @@ public class ProductsByCategoryPanel extends JPanel {
         });
         add(btnBack);
         
-        JButton btnGoCart = new JButton("Ver Carrito");
+        JButton btnGoCart = new JButton("Ver Orden (" + controller.getCartItems().size() + ")");
         btnGoCart.setBackground(Colors.CARAMEL_ROAST.getColor());
         btnGoCart.setForeground(Colors.CREAMY_LATTE.getColor());
         btnGoCart.setFont(new Font("Segoe UI", Font.BOLD, 14));
@@ -102,6 +102,7 @@ public class ProductsByCategoryPanel extends JPanel {
                     @Override
                     public void mouseClicked(MouseEvent e) {
                         controller.addToCart(prod);
+                        btnGoCart.setText("Ver Orden (" + controller.getCartItems().size() + ")");
                     }
                 });
                 itemPanel.add(btnAdd);

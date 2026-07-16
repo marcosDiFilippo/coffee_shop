@@ -8,6 +8,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 public class UserDAO {
     public User authenticate(LoginDTO loginDTO) {
@@ -43,5 +44,26 @@ public class UserDAO {
         }
         
         return user;
+    }
+
+    public Long insertCustomer(Connection conn, User user) throws SQLException {
+        String query = "INSERT INTO users (first_name, last_name, email, phone, active, rol) VALUES (?, ?, ?, ?, ?, ?)";
+        try (PreparedStatement stmt = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+            stmt.setString(1, user.getFirstName());
+            stmt.setString(2, user.getLastName());
+            stmt.setString(3, user.getEmail());
+            stmt.setString(4, user.getPhone());
+            stmt.setBoolean(5, user.isActive());
+            stmt.setString(6, user.getRol());
+
+            stmt.executeUpdate();
+
+            try (ResultSet rs = stmt.getGeneratedKeys()) {
+                if (rs.next()) {
+                    return rs.getLong(1);
+                }
+            }
+        }
+        return null;
     }
 }

@@ -30,7 +30,7 @@ public class SelectCategoryPanel extends JPanel {
         lblTitle.setBounds(0, 30, 1030, 40);
         add(lblTitle);
         
-        JButton btnGoCart = new JButton("Ver Carrito");
+        JButton btnGoCart = new JButton("Ver Orden (" + controller.getCartItems().size() + ")");
         btnGoCart.setBackground(Colors.CARAMEL_ROAST.getColor());
         btnGoCart.setForeground(Colors.CREAMY_LATTE.getColor());
         btnGoCart.setFont(new Font("Segoe UI", Font.BOLD, 16));
