@@ -99,12 +99,29 @@ public class CustomerDialog extends JDialog {
         btnSave.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                UserDTO dto = new UserDTO(
-                    txtFirstName.getText(),
-                    txtLastName.getText(),
-                    txtEmail.getText(),
-                    txtPhone.getText()
-                );
+                String fname = txtFirstName.getText().trim();
+                String lname = txtLastName.getText().trim();
+                String email = txtEmail.getText().trim();
+                String phone = txtPhone.getText().trim();
+
+                if (fname.isEmpty()) {
+                    javax.swing.JOptionPane.showMessageDialog(CustomerDialog.this, "El Nombre es obligatorio.", "Error de Validación", javax.swing.JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                if (lname.isEmpty()) {
+                    javax.swing.JOptionPane.showMessageDialog(CustomerDialog.this, "El Apellido es obligatorio.", "Error de Validación", javax.swing.JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                if (email.isEmpty() || !email.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
+                    javax.swing.JOptionPane.showMessageDialog(CustomerDialog.this, "El Email es obligatorio y debe tener un formato válido.", "Error de Validación", javax.swing.JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                if (phone.isEmpty()) {
+                    javax.swing.JOptionPane.showMessageDialog(CustomerDialog.this, "El Teléfono es obligatorio.", "Error de Validación", javax.swing.JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                UserDTO dto = new UserDTO(fname, lname, email, phone);
                 controller.processCheckout(dto, CustomerDialog.this);
             }
         });

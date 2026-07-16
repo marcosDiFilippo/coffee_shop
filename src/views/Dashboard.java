@@ -143,30 +143,13 @@ public class Dashboard extends JFrame {
         btnSizes.setBorder(null);
         sidebarPanel.add(btnSizes);
         
-        JButton btnIngredients = new JButton("Ingredientes (Inventario)");
-        btnIngredients.setBackground(Colors.WARM_CAPP.getColor());
-        btnIngredients.setForeground(Colors.CREAMY_LATTE.getColor());
-        btnIngredients.setFont(new Font("Segoe UI", Font.BOLD, 14));
-        btnIngredients.setBounds(0, 305, 250, 45);
-        btnIngredients.setFocusPainted(false);
-        btnIngredients.setBorder(null);
-        sidebarPanel.add(btnIngredients);
-        
-        JButton btnStockMovements = new JButton("Movimientos de Stock");
-        btnStockMovements.setBackground(Colors.WARM_CAPP.getColor());
-        btnStockMovements.setForeground(Colors.CREAMY_LATTE.getColor());
-        btnStockMovements.setFont(new Font("Segoe UI", Font.BOLD, 14));
-        btnStockMovements.setBounds(0, 350, 250, 45);
-        btnStockMovements.setFocusPainted(false);
-        btnStockMovements.setBorder(null);
-        sidebarPanel.add(btnStockMovements);
         
         if (currentUser.getRol().equals("MANAGER") || currentUser.getRol().equals("ADMIN")) {
-            JButton btnUsers = new JButton("Usuarios / Staff");
+            JButton btnUsers = new JButton("Usuarios");
             btnUsers.setBackground(Colors.WARM_CAPP.getColor());
             btnUsers.setForeground(Colors.CREAMY_LATTE.getColor());
             btnUsers.setFont(new Font("Segoe UI", Font.BOLD, 14));
-            btnUsers.setBounds(0, 395, 250, 45);
+            btnUsers.setBounds(0, 305, 250, 45);
             btnUsers.setFocusPainted(false);
             btnUsers.setBorder(null);
             sidebarPanel.add(btnUsers);

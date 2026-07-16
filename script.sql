@@ -7,8 +7,8 @@ CREATE TABLE users (
     first_name VARCHAR(100) NOT NULL,
     last_name VARCHAR(100) NOT NULL,
 
-    email VARCHAR(150) UNIQUE,
-    phone VARCHAR(30),
+    email VARCHAR(150) NOT NULL UNIQUE,
+    phone VARCHAR(30) NOT NULL UNIQUE,
 
     active BOOLEAN NOT NULL DEFAULT TRUE,
 
@@ -64,35 +64,6 @@ CREATE TABLE products (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
--- Ingredientes
-CREATE TABLE ingredients (
-    id BIGINT AUTO_INCREMENT PRIMARY KEY,
-
-    name VARCHAR(120) NOT NULL UNIQUE,
-
-    stock_quantity DECIMAL(10,2) NOT NULL,
-
-    unit VARCHAR(20) NOT NULL,
-
-    minimum_stock DECIMAL(10,2) NOT NULL,
-
-    active BOOLEAN NOT NULL DEFAULT TRUE,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-);
-
--- Product recipes
-CREATE TABLE product_ingredients (
-    product_id BIGINT NOT NULL,
-    ingredient_id BIGINT NOT NULL,
-
-    quantity DECIMAL(10,2) NOT NULL,
-
-    PRIMARY KEY(product_id, ingredient_id),
-
-    FOREIGN KEY(product_id) REFERENCES products(id),
-    FOREIGN KEY(ingredient_id) REFERENCES ingredients(id)
-);
 
 -- Ordenes
 CREATE TABLE orders (
@@ -172,26 +143,6 @@ CREATE TABLE payments (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
--- Stock movements
-CREATE TABLE stock_movements (
-    id BIGINT AUTO_INCREMENT PRIMARY KEY,
-
-    ingredient_id BIGINT NOT NULL,
-
-    movement_type ENUM(
-        'PURCHASE',
-        'SALE',
-        'ADJUSTMENT'
-    ) NOT NULL,
-
-    quantity DECIMAL(10,2) NOT NULL,
-
-    movement_date DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-
-    FOREIGN KEY(ingredient_id) REFERENCES ingredients(id),
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-);
 
 INSERT INTO users (first_name, last_name, email, phone, active, rol) VALUES ('Admin', 'User', 'admin@coffeeshop.com', '123456789', TRUE, 'MANAGER');
 INSERT INTO user_credentials (user_id, username, password) VALUES (LAST_INSERT_ID(), 'admin', '1111');
