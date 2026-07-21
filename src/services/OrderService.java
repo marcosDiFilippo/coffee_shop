@@ -9,6 +9,8 @@ import dtos.UserDTO;
 import models.Order;
 import models.OrderItem;
 import models.User;
+import enums.OrderStatus;
+import enums.UserRole;
 
 import java.math.BigDecimal;
 import java.sql.Connection;
@@ -38,7 +40,7 @@ public class OrderService {
             customer.setEmail(customerDTO.getEmail());
             customer.setPhone(customerDTO.getPhone());
             customer.setActive(true);
-            customer.setRol("CUSTOMER");
+            customer.setRol(UserRole.CUSTOMER);
 
             Long customerId = userDAO.insertCustomer(conn, customer);
             if (customerId == null) {
@@ -49,7 +51,7 @@ public class OrderService {
             Order order = new Order();
             order.setCustomerId(customerId);
             order.setEmployeeId(employeeId);
-            order.setStatus("PENDING");
+            order.setStatus(OrderStatus.PENDING);
             order.setTotal(total);
 
             Long orderId = orderDAO.insertWithConnection(conn, order);
@@ -106,36 +108,24 @@ public class OrderService {
         return orderItemDAO.findByOrderId(orderId);
     }
 
-    public boolean updateOrderStatus(Long orderId, String newStatus) {
+    public boolean updateOrderStatus(Long orderId, OrderStatus newStatus) {
         Order currentOrder = orderDAO.findById(orderId);
         if (currentOrder == null) {
             throw new IllegalArgumentException("La orden especificada no existe.");
         }
         
-        String currentStatus = currentOrder.getStatus();
+        OrderStatus currentStatus = currentOrder.getStatus();
         
-        if (newStatus.equals("CANCELLED")) {
-            if (currentStatus.equals("DELIVERED") || currentStatus.equals("CANCELLED")) {
+        if (newStatus == OrderStatus.CANCELLED) {
+            if (currentStatus == OrderStatus.DELIVERED || currentStatus == OrderStatus.CANCELLED) {
                 throw new IllegalArgumentException("No se puede cancelar un pedido que ya ha sido entregado o cancelado.");
             }
         } else {
-            int currentIndex = getStatusIndex(currentStatus);
-            int newIndex = getStatusIndex(newStatus);
-            if (newIndex <= currentIndex) {
+            if (newStatus.ordinal() <= currentStatus.ordinal()) {
                 throw new IllegalArgumentException("El nuevo estado debe representar un avance en el proceso y no se puede volver atrás.");
             }
         }
         
         return orderDAO.updateStatus(orderId, newStatus);
-    }
-
-    private int getStatusIndex(String status) {
-        switch (status) {
-            case "PENDING": return 0;
-            case "PREPARING": return 1;
-            case "READY": return 2;
-            case "DELIVERED": return 3;
-            default: return -1;
-        }
     }
 }

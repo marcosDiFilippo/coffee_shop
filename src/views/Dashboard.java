@@ -1,6 +1,7 @@
 package views;
 
 import constants.Colors;
+import enums.UserRole;
 import models.User;
 
 import javax.swing.JButton;
@@ -157,7 +158,7 @@ public class Dashboard extends JFrame {
         sidebarPanel.add(btnSizes);
         
         
-        if (currentUser.getRol().equals("MANAGER") || currentUser.getRol().equals("ADMIN")) {
+        if (currentUser.getRol() == UserRole.MANAGER || currentUser.getRol() == UserRole.ADMIN) {
             JButton btnUsers = new JButton("Usuarios");
             btnUsers.setBackground(Colors.WARM_CAPP.getColor());
             btnUsers.setForeground(Colors.CREAMY_LATTE.getColor());
@@ -166,6 +167,19 @@ public class Dashboard extends JFrame {
             btnUsers.setFocusPainted(false);
             btnUsers.setBorder(null);
             sidebarPanel.add(btnUsers);
+
+            btnUsers.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    if (mainContentPanel != null) {
+                        mainContentPanel.removeAll();
+                        UsersPanel usersPanel = new UsersPanel();
+                        mainContentPanel.add(usersPanel);
+                        mainContentPanel.revalidate();
+                        mainContentPanel.repaint();
+                    }
+                }
+            });
         }
         
         btnLogout = new JButton("Cerrar Sesión");
@@ -189,7 +203,7 @@ public class Dashboard extends JFrame {
         lblShopName.setBounds(20, 15, 400, 30);
         headerPanel.add(lblShopName);
         
-        String userInfo = currentUser.getFirstName() + " " + currentUser.getLastName() + " | " + currentUser.getRol();
+        String userInfo = currentUser.getFirstName() + " " + currentUser.getLastName() + " | " + currentUser.getRol().getDisplayName();
         JLabel lblUserInfo = new JLabel(userInfo);
         lblUserInfo.setForeground(Colors.WARM_CAPP.getColor());
         lblUserInfo.setFont(new Font("Segoe UI", Font.BOLD, 14));

@@ -4,6 +4,7 @@ import constants.Colors;
 import controllers.OrderHistoryController;
 import models.Order;
 import models.OrderItem;
+import enums.OrderStatus;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -25,7 +26,7 @@ import java.util.List;
 public class OrderManagementDialog extends JDialog {
     private static final long serialVersionUID = 1L;
     private JPanel contentPane;
-    private JComboBox<String> cmbStatus;
+    private JComboBox<OrderStatus> cmbStatus;
 
     public OrderManagementDialog(Frame parent, OrderHistoryController controller, Long orderId) {
         super(parent, true);
@@ -102,13 +103,13 @@ public class OrderManagementDialog extends JDialog {
         }
         scrollPane.setViewportView(tableItems);
 
-        JLabel lblStatus = new JLabel("Estado actual: " + order.getStatus());
+        JLabel lblStatus = new JLabel("Estado actual: " + (order.getStatus() != null ? order.getStatus().getDisplayName() : ""));
         lblStatus.setForeground(Colors.MOCHA_BEAN.getColor());
         lblStatus.setFont(new Font("Segoe UI", Font.BOLD, 14));
         lblStatus.setBounds(30, 320, 300, 20);
         contentPane.add(lblStatus);
 
-        cmbStatus = new JComboBox<>(new String[]{"PENDING", "PREPARING", "READY", "DELIVERED", "CANCELLED"});
+        cmbStatus = new JComboBox<>(OrderStatus.values());
         cmbStatus.setSelectedItem(order.getStatus());
         cmbStatus.setFont(new Font("Segoe UI", Font.PLAIN, 14));
         cmbStatus.setBounds(30, 350, 200, 40);
@@ -124,7 +125,7 @@ public class OrderManagementDialog extends JDialog {
         btnUpdate.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                String newStatus = (String) cmbStatus.getSelectedItem();
+                OrderStatus newStatus = (OrderStatus) cmbStatus.getSelectedItem();
                 try {
                     boolean success = controller.getService().updateOrderStatus(orderId, newStatus);
                     if (success) {

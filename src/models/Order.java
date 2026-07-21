@@ -1,11 +1,12 @@
 package models;
 
+import enums.OrderStatus;
 import java.math.BigDecimal;
 
 public class Order extends BaseModel {
     private Long customerId;
     private Long employeeId;
-    private String status;
+    private OrderStatus status;
     private BigDecimal total;
     private String customerName;
 
@@ -27,11 +28,11 @@ public class Order extends BaseModel {
         this.employeeId = employeeId;
     }
 
-    public String getStatus() {
+    public OrderStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(OrderStatus status) {
         this.status = status;
     }
 

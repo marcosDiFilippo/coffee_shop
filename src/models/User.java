@@ -1,12 +1,14 @@
 package models;
 
+import enums.UserRole;
+
 public class User extends BaseModel {
     private String firstName;
     private String lastName;
     private String email;
     private String phone;
     private boolean active;
-    private String rol;
+    private UserRole rol;
 
     public User() {}
 
@@ -50,11 +52,11 @@ public class User extends BaseModel {
         this.active = active;
     }
 
-    public String getRol() {
+    public UserRole getRol() {
         return rol;
     }
 
-    public void setRol(String rol) {
+    public void setRol(UserRole rol) {
         this.rol = rol;
     }
 }

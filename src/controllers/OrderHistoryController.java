@@ -33,7 +33,7 @@ public class OrderHistoryController {
                 order.getId(),
                 order.getCustomerName(),
                 order.getTotal().toString(),
-                order.getStatus(),
+                order.getStatus() != null ? order.getStatus().getDisplayName() : "",
                 date,
                 ""
             });

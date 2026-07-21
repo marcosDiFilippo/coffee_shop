@@ -9,6 +9,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import config.DatabaseConnection;
+import enums.OrderStatus;
 
 public class OrderDAO {
     public Long insertWithConnection(Connection conn, Order order) throws SQLException {
@@ -20,7 +21,7 @@ public class OrderDAO {
             } else {
                 stmt.setNull(2, java.sql.Types.BIGINT);
             }
-            stmt.setString(3, order.getStatus());
+            stmt.setString(3, order.getStatus().name());
             stmt.setBigDecimal(4, order.getTotal());
             
             stmt.executeUpdate();
@@ -45,7 +46,7 @@ public class OrderDAO {
                  order.setId(rs.getLong("id"));
                  order.setCustomerId(rs.getLong("customer_id"));
                  order.setEmployeeId(rs.getLong("employee_id"));
-                 order.setStatus(rs.getString("status"));
+                 order.setStatus(OrderStatus.fromString(rs.getString("status")));
                  order.setTotal(rs.getBigDecimal("total"));
                  order.setCustomerName(rs.getString("first_name") + " " + rs.getString("last_name"));
                  if (rs.getTimestamp("created_at") != null) {
@@ -59,11 +60,11 @@ public class OrderDAO {
         return orders;
     }
 
-    public boolean updateStatus(Long orderId, String newStatus) {
+    public boolean updateStatus(Long orderId, OrderStatus newStatus) {
         String query = "UPDATE orders SET status = ? WHERE id = ?";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
-             stmt.setString(1, newStatus);
+             stmt.setString(1, newStatus.name());
              stmt.setLong(2, orderId);
              return stmt.executeUpdate() > 0;
         } catch (SQLException e) {
@@ -83,7 +84,7 @@ public class OrderDAO {
                      order.setId(rs.getLong("id"));
                      order.setCustomerId(rs.getLong("customer_id"));
                      order.setEmployeeId(rs.getLong("employee_id"));
-                     order.setStatus(rs.getString("status"));
+                     order.setStatus(OrderStatus.fromString(rs.getString("status")));
                      order.setTotal(rs.getBigDecimal("total"));
                      order.setCustomerName(rs.getString("first_name") + " " + rs.getString("last_name"));
                      if (rs.getTimestamp("created_at") != null) {
