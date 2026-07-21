@@ -7,6 +7,7 @@ public class Order extends BaseModel {
     private Long employeeId;
     private String status;
     private BigDecimal total;
+    private String customerName;
 
     public Order() {}
 
@@ -40,5 +41,13 @@ public class Order extends BaseModel {
 
     public void setTotal(BigDecimal total) {
         this.total = total;
+    }
+
+    public String getCustomerName() {
+        return customerName;
+    }
+
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
     }
 }

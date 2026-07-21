@@ -9,6 +9,8 @@ public class OrderItem extends BaseModel {
     private int quantity;
     private BigDecimal unitPrice;
     private BigDecimal subtotal;
+    private String productName;
+    private String sizeName;
 
     public OrderItem() {}
 
@@ -58,5 +60,21 @@ public class OrderItem extends BaseModel {
 
     public void setSubtotal(BigDecimal subtotal) {
         this.subtotal = subtotal;
+    }
+
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
+
+    public String getSizeName() {
+        return sizeName;
+    }
+
+    public void setSizeName(String sizeName) {
+        this.sizeName = sizeName;
     }
 }

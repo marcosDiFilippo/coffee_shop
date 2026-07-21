@@ -97,4 +97,45 @@ public class OrderService {
             }
         }
     }
+
+    public List<Order> getAllOrders() {
+        return orderDAO.findAll();
+    }
+
+    public List<OrderItem> getOrderItems(Long orderId) {
+        return orderItemDAO.findByOrderId(orderId);
+    }
+
+    public boolean updateOrderStatus(Long orderId, String newStatus) {
+        Order currentOrder = orderDAO.findById(orderId);
+        if (currentOrder == null) {
+            throw new IllegalArgumentException("La orden especificada no existe.");
+        }
+        
+        String currentStatus = currentOrder.getStatus();
+        
+        if (newStatus.equals("CANCELLED")) {
+            if (currentStatus.equals("DELIVERED") || currentStatus.equals("CANCELLED")) {
+                throw new IllegalArgumentException("No se puede cancelar un pedido que ya ha sido entregado o cancelado.");
+            }
+        } else {
+            int currentIndex = getStatusIndex(currentStatus);
+            int newIndex = getStatusIndex(newStatus);
+            if (newIndex <= currentIndex) {
+                throw new IllegalArgumentException("El nuevo estado debe representar un avance en el proceso y no se puede volver atrás.");
+            }
+        }
+        
+        return orderDAO.updateStatus(orderId, newStatus);
+    }
+
+    private int getStatusIndex(String status) {
+        switch (status) {
+            case "PENDING": return 0;
+            case "PREPARING": return 1;
+            case "READY": return 2;
+            case "DELIVERED": return 3;
+            default: return -1;
+        }
+    }
 }
