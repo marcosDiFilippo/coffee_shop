@@ -71,11 +71,12 @@ public class UsersPanel extends JPanel {
         tableUsers.getTableHeader().setForeground(Colors.CREAMY_LATTE.getColor());
         tableUsers.getTableHeader().setReorderingAllowed(false);
         
-        tableUsers.getColumnModel().getColumn(0).setPreferredWidth(50);
-        tableUsers.getColumnModel().getColumn(0).setMaxWidth(50);
-        tableUsers.getColumnModel().getColumn(6).setPreferredWidth(200);
+        tableUsers.removeColumn(tableUsers.getColumnModel().getColumn(0));
 
-        tableUsers.getColumnModel().getColumn(5).setCellRenderer(new DefaultTableCellRenderer() {
+        // Visual columns shift by -1
+        tableUsers.getColumnModel().getColumn(5).setPreferredWidth(200);
+
+        tableUsers.getColumnModel().getColumn(4).setCellRenderer(new DefaultTableCellRenderer() {
             private static final long serialVersionUID = 1L;
             @Override
             public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
@@ -136,7 +137,7 @@ public class UsersPanel extends JPanel {
         actionPanel.add(btnTableEdit);
         actionPanel.add(btnTableToggle);
 
-        tableUsers.getColumnModel().getColumn(6).setCellRenderer(new TableCellRenderer() {
+        tableUsers.getColumnModel().getColumn(5).setCellRenderer(new TableCellRenderer() {
             private JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 0));
             private JButton bEdit = new JButton("Editar");
             private JButton bToggle = new JButton("Deshabilitar");
@@ -166,7 +167,7 @@ public class UsersPanel extends JPanel {
             }
         });
 
-        tableUsers.getColumnModel().getColumn(6).setCellEditor(new DefaultCellEditor(new JCheckBox()) {
+        tableUsers.getColumnModel().getColumn(5).setCellEditor(new DefaultCellEditor(new JCheckBox()) {
             private static final long serialVersionUID = 1L;
             @Override
             public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {

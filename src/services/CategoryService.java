@@ -15,7 +15,7 @@ public class CategoryService {
     }
 
     public List<Category> getAllCategories() {
-        return categoryDAO.getAll();
+        return categoryDAO.findAll();
     }
 
     public CategoryDTO saveCategory(CategoryDTO dto) {

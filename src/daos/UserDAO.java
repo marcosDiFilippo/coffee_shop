@@ -13,8 +13,9 @@ import java.util.ArrayList;
 import java.util.List;
 import dtos.UserDTO;
 import enums.UserRole;
+import contracts.GetterDAO;
 
-public class UserDAO {
+public class UserDAO implements GetterDAO<Long, User> {
     public User authenticate(LoginDTO loginDTO) {
         User user = null;
         String query = "SELECT u.* FROM users u INNER JOIN user_credentials uc ON u.id = uc.user_id WHERE uc.username = ? AND uc.password = ?";
@@ -50,6 +51,37 @@ public class UserDAO {
         return user;
     }
 
+    @Override
+    public User findById(Long key) {
+        User user = null;
+        String query = "SELECT * FROM users WHERE id = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setLong(1, key);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    user = new User();
+                    user.setId(rs.getLong("id"));
+                    user.setFirstName(rs.getString("first_name"));
+                    user.setLastName(rs.getString("last_name"));
+                    user.setEmail(rs.getString("email"));
+                    user.setPhone(rs.getString("phone"));
+                    user.setActive(rs.getBoolean("active"));
+                    user.setRol(UserRole.fromString(rs.getString("rol")));
+                    if (rs.getTimestamp("created_at") != null) {
+                        user.setCreatedAt(rs.getTimestamp("created_at").toLocalDateTime());
+                    }
+                    if (rs.getTimestamp("updated_at") != null) {
+                        user.setUpdatedAt(rs.getTimestamp("updated_at").toLocalDateTime());
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return user;
+    }
+
     public Long insertCustomer(Connection conn, User user) throws SQLException {
         String query = "INSERT INTO users (first_name, last_name, email, phone, active, rol) VALUES (?, ?, ?, ?, ?, ?)";
         try (PreparedStatement stmt = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
@@ -71,7 +103,7 @@ public class UserDAO {
         return null;
     }
 
-    public List<UserDTO> findAll() {
+    public List<UserDTO> findAllDTOs() {
         List<UserDTO> users = new ArrayList<>();
         String query = "SELECT u.*, uc.username FROM users u LEFT JOIN user_credentials uc ON u.id = uc.user_id WHERE u.rol IN ('EMPLOYEE', 'MANAGER', 'ADMIN')";
         try (Connection conn = DatabaseConnection.getConnection();
@@ -88,6 +120,36 @@ public class UserDAO {
                 dto.setRol(UserRole.fromString(rs.getString("rol")));
                 dto.setUsername(rs.getString("username"));
                 users.add(dto);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return users;
+    }
+
+    @Override
+    public List<User> findAll() {
+        List<User> users = new ArrayList<>();
+        String query = "SELECT * FROM users";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query);
+             ResultSet rs = stmt.executeQuery()) {
+            while (rs.next()) {
+                User user = new User();
+                user.setId(rs.getLong("id"));
+                user.setFirstName(rs.getString("first_name"));
+                user.setLastName(rs.getString("last_name"));
+                user.setEmail(rs.getString("email"));
+                user.setPhone(rs.getString("phone"));
+                user.setActive(rs.getBoolean("active"));
+                user.setRol(UserRole.fromString(rs.getString("rol")));
+                if (rs.getTimestamp("created_at") != null) {
+                    user.setCreatedAt(rs.getTimestamp("created_at").toLocalDateTime());
+                }
+                if (rs.getTimestamp("updated_at") != null) {
+                    user.setUpdatedAt(rs.getTimestamp("updated_at").toLocalDateTime());
+                }
+                users.add(user);
             }
         } catch (SQLException e) {
             e.printStackTrace();

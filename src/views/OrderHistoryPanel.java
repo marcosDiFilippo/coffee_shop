@@ -42,7 +42,7 @@ public class OrderHistoryPanel extends JPanel {
         scrollPane.setBounds(30, 90, 970, 530);
         add(scrollPane);
 
-        String[] columnNames = {"ID Orden", "Cliente", "Total", "Estado", "Fecha", "Acciones"};
+        String[] columnNames = {"ID Orden", "Fecha", "Cliente", "Total", "Estado", "Acciones"};
         tableModel = new DefaultTableModel(columnNames, 0) {
             private static final long serialVersionUID = 1L;
             @Override
@@ -59,8 +59,9 @@ public class OrderHistoryPanel extends JPanel {
         tableOrders.getTableHeader().setForeground(Colors.CREAMY_LATTE.getColor());
         tableOrders.getTableHeader().setReorderingAllowed(false);
         
-        tableOrders.getColumnModel().getColumn(0).setPreferredWidth(80);
-        tableOrders.getColumnModel().getColumn(5).setPreferredWidth(120);
+        tableOrders.removeColumn(tableOrders.getColumnModel().getColumn(0));
+        
+        tableOrders.getColumnModel().getColumn(4).setPreferredWidth(120);
 
         JPanel actionPanel = new JPanel();
         actionPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 0));
@@ -85,7 +86,7 @@ public class OrderHistoryPanel extends JPanel {
         });
         actionPanel.add(btnView);
 
-        tableOrders.getColumnModel().getColumn(5).setCellRenderer(new TableCellRenderer() {
+        tableOrders.getColumnModel().getColumn(4).setCellRenderer(new TableCellRenderer() {
             private JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 0));
             private JButton button = new JButton("Ver Pedido");
             {
@@ -103,7 +104,7 @@ public class OrderHistoryPanel extends JPanel {
             }
         });
 
-        tableOrders.getColumnModel().getColumn(5).setCellEditor(new DefaultCellEditor(new JCheckBox()) {
+        tableOrders.getColumnModel().getColumn(4).setCellEditor(new DefaultCellEditor(new JCheckBox()) {
             private static final long serialVersionUID = 1L;
             @Override
             public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {

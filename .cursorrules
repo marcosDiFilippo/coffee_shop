@@ -1,0 +1,8 @@
+# Coding Standards
+
+1. **Imports Over Inline Packages**: Never use fully qualified package names inline when instantiating or referencing classes (e.g., avoid `new controllers.DashboardController()`). Always use proper `import` statements at the top of the file for the respective language.
+2. **No Comments**: Do not write any type of comments in the code. This includes single-line comments, multi-line comments, Javadocs, docstrings, or structural separators. The code must be completely free of comments.
+3. **Models for Listing**: When retrieving or listing data from the database (e.g., fetching a list of records), always use and return the entity `Model` object (e.g., `List<Category>`), NOT the `DTO`. `DTO` objects should ONLY be used for data transfer when creating, editing, or deleting entities.
+4. **No Reusable UI Components**: Do not create reusable UI components (e.g. separate files in a `components` package). All UI elements, including custom renderers, editors, buttons, panels, etc., must be instantiated directly inside the constructor of the respective view class, strictly mimicking Eclipse Window Builder's generated code pattern.
+5. **Event Listeners in Views**: All UI event listeners (e.g., `MouseAdapter.mouseClicked()`) must be defined inline directly on the UI components within the View's constructor, exactly as Eclipse Window Builder generates them. Controllers should not attach listeners to views; instead, the View's inline listeners should extract the necessary data and invoke the corresponding CRUD methods on its Controller.
+5. **No InterfaceDAOs**: Do not create interfaces for DAOs. Each DAO must be a concrete class with its own specific methods.

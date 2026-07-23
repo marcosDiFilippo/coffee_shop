@@ -10,10 +10,12 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import contracts.GetterDAO;
 
-public class CategoryDAO {
+public class CategoryDAO implements GetterDAO<Long, Category> {
 
-    public List<Category> getAll() {
+    @Override
+    public List<Category> findAll() {
         List<Category> categories = new ArrayList<>();
         String query = "SELECT * FROM categories";
 
@@ -41,6 +43,35 @@ public class CategoryDAO {
         }
 
         return categories;
+    }
+
+    @Override
+    public Category findById(Long key) {
+        String query = "SELECT * FROM categories WHERE id = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setLong(1, key);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    Category category = new Category();
+                    category.setId(rs.getLong("id"));
+                    category.setName(rs.getString("name"));
+                    category.setDescription(rs.getString("description"));
+                    category.setActive(rs.getBoolean("active"));
+                    category.setRequiresSize(rs.getBoolean("requires_size"));
+                    if (rs.getTimestamp("created_at") != null) {
+                        category.setCreatedAt(rs.getTimestamp("created_at").toLocalDateTime());
+                    }
+                    if (rs.getTimestamp("updated_at") != null) {
+                        category.setUpdatedAt(rs.getTimestamp("updated_at").toLocalDateTime());
+                    }
+                    return category;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public Category insert(Category category) {

@@ -46,7 +46,7 @@ public class SelectCategoryPanel extends JPanel {
         add(btnGoCart);
 
         CategoryDAO categoryDAO = new CategoryDAO();
-        List<Category> categories = categoryDAO.getAll();
+        List<Category> categories = categoryDAO.findAll();
 
         int x = 50;
         int y = 100;

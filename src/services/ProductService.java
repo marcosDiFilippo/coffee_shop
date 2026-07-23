@@ -14,7 +14,7 @@ public class ProductService {
     }
 
     public List<Product> getAllProducts() {
-        return productDAO.getAll();
+        return productDAO.findAll();
     }
 
     public ProductDTO saveProduct(ProductDTO dto) {

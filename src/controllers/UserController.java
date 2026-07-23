@@ -1,6 +1,7 @@
 package controllers;
 
 import dtos.UserDTO;
+import models.User;
 import services.UserService;
 import views.Dashboard;
 import views.UserFormDialog;
@@ -14,7 +15,7 @@ import java.util.List;
 public class UserController {
     private UsersPanel panel;
     private UserService service;
-    private List<UserDTO> currentUsers;
+    private List<User> currentUsers;
 
     public UserController(UsersPanel panel) {
         this.panel = panel;
@@ -27,7 +28,7 @@ public class UserController {
         model.setRowCount(0);
 
         currentUsers = service.getAllUsers();
-        for (UserDTO user : currentUsers) {
+        for (User user : currentUsers) {
             String fullName = user.getFirstName() + " " + user.getLastName();
             String status = user.isActive() ? "Activo" : "Inactivo";
             model.addRow(new Object[]{
@@ -43,10 +44,10 @@ public class UserController {
     }
 
     public void openEditDialog(Long userId) {
-        UserDTO targetDto = null;
-        for (UserDTO dto : currentUsers) {
-            if (dto.getId().equals(userId)) {
-                targetDto = dto;
+        User targetDto = null;
+        for (User user : currentUsers) {
+            if (user.getId().equals(userId)) {
+                targetDto = user;
                 break;
             }
         }

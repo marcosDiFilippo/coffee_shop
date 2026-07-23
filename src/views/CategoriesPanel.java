@@ -73,13 +73,14 @@ public class CategoriesPanel extends JPanel {
         tableCategories.getTableHeader().setForeground(Colors.CREAMY_LATTE.getColor());
         tableCategories.getTableHeader().setReorderingAllowed(false);
         
-        tableCategories.getColumnModel().getColumn(0).setPreferredWidth(50);
-        tableCategories.getColumnModel().getColumn(0).setMaxWidth(50);
-        tableCategories.getColumnModel().getColumn(3).setPreferredWidth(100);
-        tableCategories.getColumnModel().getColumn(4).setPreferredWidth(100);
-        tableCategories.getColumnModel().getColumn(5).setPreferredWidth(200);
+        tableCategories.removeColumn(tableCategories.getColumnModel().getColumn(0));
 
-        tableCategories.getColumnModel().getColumn(3).setCellRenderer(new DefaultTableCellRenderer() {
+        // Note: Visual indices shift by -1 after removing column 0
+        tableCategories.getColumnModel().getColumn(2).setPreferredWidth(100); // was 3 (Estado)
+        tableCategories.getColumnModel().getColumn(3).setPreferredWidth(100); // was 4 (Usa Tamaño)
+        tableCategories.getColumnModel().getColumn(4).setPreferredWidth(200); // was 5 (Acciones)
+
+        tableCategories.getColumnModel().getColumn(2).setCellRenderer(new DefaultTableCellRenderer() {
             private static final long serialVersionUID = 1L;
             @Override
             public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
@@ -95,7 +96,7 @@ public class CategoriesPanel extends JPanel {
             }
         });
 
-        tableCategories.getColumnModel().getColumn(5).setCellRenderer(new TableCellRenderer() {
+        tableCategories.getColumnModel().getColumn(4).setCellRenderer(new TableCellRenderer() {
             private JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 0));
             private JButton bEdit = new JButton("Editar");
             private JButton bToggle = new JButton("Deshabilitar");
@@ -177,7 +178,7 @@ public class CategoriesPanel extends JPanel {
         actionPanel.add(btnTableEdit);
         actionPanel.add(btnTableToggle);
 
-        tableCategories.getColumnModel().getColumn(5).setCellEditor(new DefaultCellEditor(new JCheckBox()) {
+        tableCategories.getColumnModel().getColumn(4).setCellEditor(new DefaultCellEditor(new JCheckBox()) {
             private static final long serialVersionUID = 1L;
             @Override
             public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {

@@ -69,7 +69,7 @@ public class ProductsByCategoryPanel extends JPanel {
         listContainer.setLayout(null);
         
         ProductDAO productDAO = new ProductDAO();
-        List<Product> products = productDAO.getAll();
+        List<Product> products = productDAO.findAll();
         
         int y = 0;
         for (Product prod : products) {

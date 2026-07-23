@@ -31,10 +31,10 @@ public class OrderHistoryController {
             String date = order.getCreatedAt() != null ? order.getCreatedAt().format(formatter) : "";
             model.addRow(new Object[]{
                 order.getId(),
+                date,
                 order.getCustomerName(),
                 order.getTotal().toString(),
                 order.getStatus() != null ? order.getStatus().getDisplayName() : "",
-                date,
                 ""
             });
         }

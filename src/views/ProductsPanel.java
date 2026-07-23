@@ -74,22 +74,23 @@ public class ProductsPanel extends JPanel {
         tableProducts.getTableHeader().setForeground(Colors.CREAMY_LATTE.getColor());
         tableProducts.getTableHeader().setReorderingAllowed(false);
 
-        tableProducts.getColumnModel().getColumn(0).setPreferredWidth(50);
-        tableProducts.getColumnModel().getColumn(1).setPreferredWidth(150);
-        tableProducts.getColumnModel().getColumn(2).setPreferredWidth(100);
-        tableProducts.getColumnModel().getColumn(3).setPreferredWidth(100);
-        tableProducts.getColumnModel().getColumn(4).setPreferredWidth(150);
-        tableProducts.getColumnModel().getColumn(7).setPreferredWidth(200);
+        tableProducts.removeColumn(tableProducts.getColumnModel().getColumn(0));
 
+        tableProducts.getColumnModel().getColumn(0).setPreferredWidth(150);
+        tableProducts.getColumnModel().getColumn(1).setPreferredWidth(100);
+        tableProducts.getColumnModel().getColumn(2).setPreferredWidth(100);
+        tableProducts.getColumnModel().getColumn(3).setPreferredWidth(150);
+        tableProducts.getColumnModel().getColumn(6).setPreferredWidth(200);
+
+        tableProducts.getColumnModel().getColumn(4).setMinWidth(0);
+        tableProducts.getColumnModel().getColumn(4).setMaxWidth(0);
+        tableProducts.getColumnModel().getColumn(4).setWidth(0);
+        
         tableProducts.getColumnModel().getColumn(5).setMinWidth(0);
         tableProducts.getColumnModel().getColumn(5).setMaxWidth(0);
         tableProducts.getColumnModel().getColumn(5).setWidth(0);
-        
-        tableProducts.getColumnModel().getColumn(6).setMinWidth(0);
-        tableProducts.getColumnModel().getColumn(6).setMaxWidth(0);
-        tableProducts.getColumnModel().getColumn(6).setWidth(0);
 
-        tableProducts.getColumnModel().getColumn(1).setCellRenderer(new DefaultTableCellRenderer() {
+        tableProducts.getColumnModel().getColumn(0).setCellRenderer(new DefaultTableCellRenderer() {
             private static final long serialVersionUID = 1L;
             @Override
             public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
@@ -100,7 +101,7 @@ public class ProductsPanel extends JPanel {
             }
         });
 
-        tableProducts.getColumnModel().getColumn(3).setCellRenderer(new DefaultTableCellRenderer() {
+        tableProducts.getColumnModel().getColumn(2).setCellRenderer(new DefaultTableCellRenderer() {
             private static final long serialVersionUID = 1L;
             @Override
             public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
@@ -116,7 +117,7 @@ public class ProductsPanel extends JPanel {
             }
         });
 
-        tableProducts.getColumnModel().getColumn(7).setCellRenderer(new TableCellRenderer() {
+        tableProducts.getColumnModel().getColumn(6).setCellRenderer(new TableCellRenderer() {
             private JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 10));
             private JButton bEdit = new JButton("Editar");
             private JButton bToggle = new JButton("Deshabilitar");
@@ -200,7 +201,7 @@ public class ProductsPanel extends JPanel {
         actionPanel.add(btnTableEdit);
         actionPanel.add(btnTableToggle);
 
-        tableProducts.getColumnModel().getColumn(7).setCellEditor(new DefaultCellEditor(new JCheckBox()) {
+        tableProducts.getColumnModel().getColumn(6).setCellEditor(new DefaultCellEditor(new JCheckBox()) {
             private static final long serialVersionUID = 1L;
             @Override
             public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {

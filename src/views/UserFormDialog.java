@@ -4,6 +4,7 @@ import constants.Colors;
 import controllers.UserController;
 import dtos.UserDTO;
 import enums.UserRole;
+import models.User;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -32,7 +33,7 @@ public class UserFormDialog extends JDialog {
     private JButton btnSave;
     private JButton btnCancel;
 
-    public UserFormDialog(Frame parent, UserController controller, UserDTO dto) {
+    public UserFormDialog(Frame parent, UserController controller, User dto) {
         super(parent, true);
         setTitle("Formulario de Usuario");
         setBounds(100, 100, 450, 600);
@@ -141,7 +142,6 @@ public class UserFormDialog extends JDialog {
             txtEmail.setText(dto.getEmail());
             txtPhone.setText(dto.getPhone());
             cmbRol.setSelectedItem(dto.getRol());
-            txtUsername.setText(dto.getUsername());
         }
 
         btnSave = new JButton("Guardar");

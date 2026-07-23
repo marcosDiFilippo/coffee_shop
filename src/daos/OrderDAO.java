@@ -10,8 +10,9 @@ import java.util.ArrayList;
 import java.util.List;
 import config.DatabaseConnection;
 import enums.OrderStatus;
+import contracts.GetterDAO;
 
-public class OrderDAO {
+public class OrderDAO implements GetterDAO<Long, Order> {
     public Long insertWithConnection(Connection conn, Order order) throws SQLException {
         String query = "INSERT INTO orders (customer_id, employee_id, status, total) VALUES (?, ?, ?, ?)";
         try (PreparedStatement stmt = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
@@ -35,6 +36,7 @@ public class OrderDAO {
         return null;
     }
 
+    @Override
     public List<Order> findAll() {
         List<Order> orders = new ArrayList<>();
         String query = "SELECT o.*, u.first_name, u.last_name FROM orders o JOIN users u ON o.customer_id = u.id ORDER BY o.created_at DESC";
@@ -73,6 +75,7 @@ public class OrderDAO {
         return false;
     }
 
+    @Override
     public Order findById(Long id) {
         String query = "SELECT o.*, u.first_name, u.last_name FROM orders o JOIN users u ON o.customer_id = u.id WHERE o.id = ?";
         try (Connection conn = DatabaseConnection.getConnection();

@@ -11,10 +11,12 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import contracts.GetterDAO;
 
-public class ProductDAO {
+public class ProductDAO implements GetterDAO<Long, Product> {
 
-    public List<Product> getAll() {
+    @Override
+    public List<Product> findAll() {
         List<Product> products = new ArrayList<>();
         String query = "SELECT p.*, c.name as category_name, c.description as category_desc, c.active as category_active, c.requires_size as category_requires_size " +
                        "FROM products p INNER JOIN categories c ON p.category_id = c.id";
@@ -54,6 +56,48 @@ public class ProductDAO {
         }
 
         return products;
+    }
+
+    @Override
+    public Product findById(Long key) {
+        String query = "SELECT p.*, c.name as category_name, c.description as category_desc, c.active as category_active, c.requires_size as category_requires_size " +
+                       "FROM products p INNER JOIN categories c ON p.category_id = c.id WHERE p.id = ?";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setLong(1, key);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    Product product = new Product();
+                    product.setId(rs.getLong("id"));
+                    product.setCategoryId(rs.getLong("category_id"));
+                    product.setName(rs.getString("name"));
+                    product.setDescription(rs.getString("description"));
+                    product.setBasePrice(rs.getBigDecimal("base_price"));
+                    product.setAvailable(rs.getBoolean("available"));
+                    
+                    if (rs.getTimestamp("created_at") != null) {
+                        product.setCreatedAt(rs.getTimestamp("created_at").toLocalDateTime());
+                    }
+                    if (rs.getTimestamp("updated_at") != null) {
+                        product.setUpdatedAt(rs.getTimestamp("updated_at").toLocalDateTime());
+                    }
+
+                    Category cat = new Category();
+                    cat.setId(rs.getLong("category_id"));
+                    cat.setName(rs.getString("category_name"));
+                    cat.setDescription(rs.getString("category_desc"));
+                    cat.setActive(rs.getBoolean("category_active"));
+                    cat.setRequiresSize(rs.getBoolean("category_requires_size"));
+                    product.setCategory(cat);
+
+                    return product;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public Product insert(Product product) {
