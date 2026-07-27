@@ -28,7 +28,6 @@ public class SizeDAO implements GetterDAO<Long, Size> {
                  sizes.add(size);
              }
         } catch (SQLException e) {
-            e.printStackTrace();
         }
         return sizes;
     }
@@ -49,7 +48,6 @@ public class SizeDAO implements GetterDAO<Long, Size> {
                  }
              }
         } catch (SQLException e) {
-            e.printStackTrace();
         }
         return null;
     }

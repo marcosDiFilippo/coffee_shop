@@ -3,7 +3,10 @@ package services;
 import daos.CategoryDAO;
 import dtos.CategoryDTO;
 import models.Category;
+import config.DatabaseConnection;
 
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
 
 public class CategoryService {
@@ -45,5 +48,40 @@ public class CategoryService {
             return false;
         }
         return categoryDAO.toggleActive(id, !currentStatus);
+    }
+
+    public boolean deleteCategoryHard(Long categoryId) {
+        if (categoryId == null) {
+            return false;
+        }
+        Connection conn = null;
+        try {
+            conn = DatabaseConnection.getConnection();
+            conn.setAutoCommit(false);
+            boolean success = categoryDAO.delete(conn, categoryId);
+            if (success) {
+                conn.commit();
+                return true;
+            } else {
+                conn.rollback();
+                return false;
+            }
+        } catch (SQLException e) {
+            if (conn != null) {
+                try {
+                    conn.rollback();
+                } catch (SQLException ex) {
+                }
+            }
+            return false;
+        } finally {
+            if (conn != null) {
+                try {
+                    conn.setAutoCommit(true);
+                    conn.close();
+                } catch (SQLException e) {
+                }
+            }
+        }
     }
 }

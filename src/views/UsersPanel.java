@@ -28,7 +28,7 @@ public class UsersPanel extends JPanel {
     private DefaultTableModel tableModel;
     private UserController controller;
 
-    public UsersPanel() {
+    public UsersPanel(Dashboard dashboard) {
         setBackground(Colors.CREAMY_LATTE.getColor());
         setLayout(null);
         setBounds(0, 0, 1030, 660);
@@ -73,7 +73,6 @@ public class UsersPanel extends JPanel {
         
         tableUsers.removeColumn(tableUsers.getColumnModel().getColumn(0));
 
-        // Visual columns shift by -1
         tableUsers.getColumnModel().getColumn(5).setPreferredWidth(200);
 
         tableUsers.getColumnModel().getColumn(4).setCellRenderer(new DefaultTableCellRenderer() {
@@ -121,9 +120,15 @@ public class UsersPanel extends JPanel {
         btnTableToggle.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
+                if (!btnTableToggle.isVisible()) return;
                 int row = tableUsers.getEditingRow();
                 if (row != -1) {
                     Long id = (Long) tableModel.getValueAt(row, 0);
+                    if (id.equals(dashboard.getCurrentUser().getId())) {
+                        TableCellEditor editor = tableUsers.getCellEditor();
+                        if (editor != null) editor.stopCellEditing();
+                        return;
+                    }
                     boolean active = tableModel.getValueAt(row, 5).equals("Activo");
                     
                     TableCellEditor editor = tableUsers.getCellEditor();
@@ -163,6 +168,14 @@ public class UsersPanel extends JPanel {
                 } else {
                     bToggle.setText("Deshabilitar");
                 }
+                
+                Object rowId = table.getModel().getValueAt(row, 0);
+                if (rowId != null && rowId.equals(dashboard.getCurrentUser().getId())) {
+                    bToggle.setVisible(false);
+                } else {
+                    bToggle.setVisible(true);
+                }
+                
                 return panel;
             }
         });
@@ -180,6 +193,14 @@ public class UsersPanel extends JPanel {
                 } else {
                     btnTableToggle.setText("Deshabilitar");
                 }
+                
+                Object rowId = table.getModel().getValueAt(row, 0);
+                if (rowId != null && rowId.equals(dashboard.getCurrentUser().getId())) {
+                    btnTableToggle.setVisible(false);
+                } else {
+                    btnTableToggle.setVisible(true);
+                }
+                
                 return actionPanel;
             }
             @Override

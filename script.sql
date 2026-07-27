@@ -60,7 +60,7 @@ CREATE TABLE products (
 
     available BOOLEAN NOT NULL DEFAULT TRUE,
 
-    FOREIGN KEY (category_id) REFERENCES categories(id),
+    FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE CASCADE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
@@ -109,7 +109,7 @@ CREATE TABLE order_items (
 
     FOREIGN KEY(order_id) REFERENCES orders(id),
 
-    FOREIGN KEY(product_id) REFERENCES products(id),
+    FOREIGN KEY(product_id) REFERENCES products(id) ON DELETE CASCADE,
 
     FOREIGN KEY(size_id) REFERENCES sizes(id),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

@@ -59,4 +59,8 @@ public class User extends BaseModel {
     public void setRol(UserRole rol) {
         this.rol = rol;
     }
+
+    public boolean isManager() {
+        return this.rol == UserRole.MANAGER;
+    }
 }

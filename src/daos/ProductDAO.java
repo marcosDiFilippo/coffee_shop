@@ -52,7 +52,6 @@ public class ProductDAO implements GetterDAO<Long, Product> {
                 products.add(product);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
         }
 
         return products;
@@ -95,7 +94,6 @@ public class ProductDAO implements GetterDAO<Long, Product> {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
         }
         return null;
     }
@@ -122,7 +120,6 @@ public class ProductDAO implements GetterDAO<Long, Product> {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
         }
 
         return product;
@@ -144,7 +141,6 @@ public class ProductDAO implements GetterDAO<Long, Product> {
 
             updated = stmt.executeUpdate() > 0;
         } catch (SQLException e) {
-            e.printStackTrace();
         }
 
         return updated;
@@ -162,7 +158,6 @@ public class ProductDAO implements GetterDAO<Long, Product> {
 
             toggled = stmt.executeUpdate() > 0;
         } catch (SQLException e) {
-            e.printStackTrace();
         }
 
         return toggled;

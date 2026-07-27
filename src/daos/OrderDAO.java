@@ -57,7 +57,6 @@ public class OrderDAO implements GetterDAO<Long, Order> {
                  orders.add(order);
              }
         } catch (SQLException e) {
-            e.printStackTrace();
         }
         return orders;
     }
@@ -70,7 +69,6 @@ public class OrderDAO implements GetterDAO<Long, Order> {
              stmt.setLong(2, orderId);
              return stmt.executeUpdate() > 0;
         } catch (SQLException e) {
-            e.printStackTrace();
         }
         return false;
     }
@@ -97,7 +95,6 @@ public class OrderDAO implements GetterDAO<Long, Order> {
                  }
              }
         } catch (SQLException e) {
-            e.printStackTrace();
         }
         return null;
     }

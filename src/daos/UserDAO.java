@@ -45,7 +45,6 @@ public class UserDAO implements GetterDAO<Long, User> {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
         }
         
         return user;
@@ -77,7 +76,6 @@ public class UserDAO implements GetterDAO<Long, User> {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
         }
         return user;
     }
@@ -122,7 +120,6 @@ public class UserDAO implements GetterDAO<Long, User> {
                 users.add(dto);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
         }
         return users;
     }
@@ -152,7 +149,6 @@ public class UserDAO implements GetterDAO<Long, User> {
                 users.add(user);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
         }
         return users;
     }
@@ -211,7 +207,6 @@ public class UserDAO implements GetterDAO<Long, User> {
             stmt.setLong(2, id);
             return stmt.executeUpdate() > 0;
         } catch (SQLException e) {
-            e.printStackTrace();
         }
         return false;
     }

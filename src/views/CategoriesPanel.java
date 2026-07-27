@@ -11,6 +11,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.SwingUtilities;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellEditor;
@@ -30,7 +31,8 @@ public class CategoriesPanel extends JPanel {
     private DefaultTableModel tableModel;
     private CategoryController categoryController;
 
-    public CategoriesPanel() {
+    public CategoriesPanel(Dashboard dashboard) {
+
         setBackground(Colors.CREAMY_LATTE.getColor());
         setLayout(null);
         setBounds(0, 0, 1030, 660);
@@ -75,10 +77,9 @@ public class CategoriesPanel extends JPanel {
         
         tableCategories.removeColumn(tableCategories.getColumnModel().getColumn(0));
 
-        // Note: Visual indices shift by -1 after removing column 0
-        tableCategories.getColumnModel().getColumn(2).setPreferredWidth(100); // was 3 (Estado)
-        tableCategories.getColumnModel().getColumn(3).setPreferredWidth(100); // was 4 (Usa Tamaño)
-        tableCategories.getColumnModel().getColumn(4).setPreferredWidth(200); // was 5 (Acciones)
+        tableCategories.getColumnModel().getColumn(2).setPreferredWidth(100);
+        tableCategories.getColumnModel().getColumn(3).setPreferredWidth(100);
+        tableCategories.getColumnModel().getColumn(4).setPreferredWidth(300);
 
         tableCategories.getColumnModel().getColumn(2).setCellRenderer(new DefaultTableCellRenderer() {
             private static final long serialVersionUID = 1L;
@@ -100,6 +101,7 @@ public class CategoriesPanel extends JPanel {
             private JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 0));
             private JButton bEdit = new JButton("Editar");
             private JButton bToggle = new JButton("Deshabilitar");
+            private JButton bDelete = new JButton("Eliminar");
             {
                 panel.setBackground(Colors.CREAMY_LATTE.getColor());
                 bEdit.setBackground(Colors.CARAMEL_ROAST.getColor());
@@ -108,8 +110,14 @@ public class CategoriesPanel extends JPanel {
                 bToggle.setBackground(Colors.MOCHA_BEAN.getColor());
                 bToggle.setForeground(Colors.CREAMY_LATTE.getColor());
                 bToggle.setFocusPainted(false);
+                bDelete.setBackground(Color.RED);
+                bDelete.setForeground(Color.WHITE);
+                bDelete.setFocusPainted(false);
                 panel.add(bEdit);
                 panel.add(bToggle);
+                if (dashboard.getCurrentUser().isManager()) {
+                    panel.add(bDelete);
+                }
             }
             @Override
             public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
@@ -174,10 +182,41 @@ public class CategoriesPanel extends JPanel {
                 }
             }
         });
+
+        JButton btnTableDelete = new JButton("Eliminar");
         
+        btnTableDelete.setBackground(Color.RED);
+        btnTableDelete.setForeground(Color.WHITE);
+        btnTableDelete.setFocusPainted(false);
+        btnTableDelete.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                int row = tableCategories.getEditingRow();
+                if (row != -1) {
+                    Long id = (Long) tableModel.getValueAt(row, 0);
+                    TableCellEditor editor = tableCategories.getCellEditor();
+                    if (editor != null) editor.stopCellEditing();
+                    
+                    int confirm = JOptionPane.showConfirmDialog(
+                        CategoriesPanel.this,
+                        "ADVERTENCIA: Eliminar esta categoría borrará permanentemente todos sus productos y los registros de ventas asociados. Esta acción no se puede deshacer. Desea continuar?",
+                        "Confirmar Eliminación",
+                        JOptionPane.YES_NO_OPTION,
+                        JOptionPane.WARNING_MESSAGE
+                    );
+                    if (confirm == JOptionPane.YES_OPTION) {
+                        categoryController.deleteCategoryHard(id);
+                    }
+                }
+            }
+        });
+
         actionPanel.add(btnTableEdit);
         actionPanel.add(btnTableToggle);
-
+        if (dashboard.getCurrentUser().isManager()) {
+            actionPanel.add(btnTableDelete);
+        }
+        
         tableCategories.getColumnModel().getColumn(4).setCellEditor(new DefaultCellEditor(new JCheckBox()) {
             private static final long serialVersionUID = 1L;
             @Override

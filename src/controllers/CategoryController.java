@@ -51,4 +51,14 @@ public class CategoryController {
             JOptionPane.showMessageDialog(panel, "Error al actualizar el estado de la categoría.", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
+
+    public void deleteCategoryHard(Long id) {
+        boolean success = service.deleteCategoryHard(id);
+        if (success) {
+            JOptionPane.showMessageDialog(panel, "Categoría eliminada con éxito. Tambien se ha eliminado existosamente todos sus productos y ventas asociadas", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            loadCategories();
+        } else {
+            JOptionPane.showMessageDialog(panel, "Fallo en la transacción.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
 }

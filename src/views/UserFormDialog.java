@@ -12,7 +12,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.JPasswordField;
-import javax.swing.JComboBox;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import java.awt.Font;
@@ -29,7 +28,6 @@ public class UserFormDialog extends JDialog {
     private JTextField txtPhone;
     private JTextField txtUsername;
     private JPasswordField txtPassword;
-    private JComboBox<UserRole> cmbRol;
     private JButton btnSave;
     private JButton btnCancel;
 
@@ -97,26 +95,15 @@ public class UserFormDialog extends JDialog {
         txtPhone.setBounds(30, 290, 374, 30);
         contentPane.add(txtPhone);
 
-        JLabel lblRol = new JLabel("Rol:");
-        lblRol.setForeground(Colors.MOCHA_BEAN.getColor());
-        lblRol.setFont(new Font("Segoe UI", Font.BOLD, 14));
-        lblRol.setBounds(30, 330, 180, 20);
-        contentPane.add(lblRol);
-
-        cmbRol = new JComboBox<>(new UserRole[]{UserRole.EMPLOYEE, UserRole.MANAGER});
-        cmbRol.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-        cmbRol.setBounds(30, 355, 180, 30);
-        contentPane.add(cmbRol);
-
         JLabel lblUsername = new JLabel("Usuario:");
         lblUsername.setForeground(Colors.MOCHA_BEAN.getColor());
         lblUsername.setFont(new Font("Segoe UI", Font.BOLD, 14));
-        lblUsername.setBounds(224, 330, 180, 20);
+        lblUsername.setBounds(30, 330, 384, 20);
         contentPane.add(lblUsername);
 
         txtUsername = new JTextField();
         txtUsername.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-        txtUsername.setBounds(224, 355, 180, 30);
+        txtUsername.setBounds(30, 355, 374, 30);
         contentPane.add(txtUsername);
 
         JLabel lblPassword = new JLabel("Contraseña:");
@@ -141,7 +128,6 @@ public class UserFormDialog extends JDialog {
             txtLastName.setText(dto.getLastName());
             txtEmail.setText(dto.getEmail());
             txtPhone.setText(dto.getPhone());
-            cmbRol.setSelectedItem(dto.getRol());
         }
 
         btnSave = new JButton("Guardar");
@@ -158,7 +144,7 @@ public class UserFormDialog extends JDialog {
                 String lastName = txtLastName.getText();
                 String email = txtEmail.getText();
                 String phone = txtPhone.getText();
-                UserRole rol = (UserRole) cmbRol.getSelectedItem();
+                UserRole rol = (dto != null) ? dto.getRol() : UserRole.EMPLOYEE;
                 String username = txtUsername.getText();
                 String password = new String(txtPassword.getPassword());
                 

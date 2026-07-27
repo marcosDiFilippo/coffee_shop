@@ -79,12 +79,10 @@ public class OrderService {
             conn.commit();
             return true;
         } catch (SQLException e) {
-            e.printStackTrace();
             if (conn != null) {
                 try {
                     conn.rollback();
                 } catch (SQLException ex) {
-                    ex.printStackTrace();
                 }
             }
             return false;
@@ -94,7 +92,6 @@ public class OrderService {
                     conn.setAutoCommit(true);
                     conn.close();
                 } catch (SQLException ex) {
-                    ex.printStackTrace();
                 }
             }
         }

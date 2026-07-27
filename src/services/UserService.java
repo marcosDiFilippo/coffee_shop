@@ -50,12 +50,10 @@ public class UserService {
             conn.commit();
             return true;
         } catch (SQLException e) {
-            e.printStackTrace();
             if (conn != null) {
                 try {
                     conn.rollback();
                 } catch (SQLException ex) {
-                    ex.printStackTrace();
                 }
             }
             return false;
@@ -65,7 +63,6 @@ public class UserService {
                     conn.setAutoCommit(true);
                     conn.close();
                 } catch (SQLException ex) {
-                    ex.printStackTrace();
                 }
             }
         }

@@ -38,7 +38,6 @@ public class OrderItemDAO implements GetterDAO<Long, OrderItem> {
                  items.add(item);
              }
         } catch (SQLException e) {
-            e.printStackTrace();
         }
         return items;
     }
@@ -89,7 +88,6 @@ public class OrderItemDAO implements GetterDAO<Long, OrderItem> {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
         }
         return null;
     }
@@ -123,7 +121,6 @@ public class OrderItemDAO implements GetterDAO<Long, OrderItem> {
                  }
              }
         } catch (SQLException e) {
-            e.printStackTrace();
         }
         return items;
     }

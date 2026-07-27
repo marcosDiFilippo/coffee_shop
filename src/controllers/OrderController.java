@@ -3,11 +3,14 @@ package controllers;
 import dtos.OrderItemDTO;
 import models.Category;
 import models.Product;
+import models.Size;
+import services.OrderService;
 import views.Dashboard;
 import views.OrderPanel;
 import views.ProductsByCategoryPanel;
 import views.SelectCategoryPanel;
 
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import java.util.ArrayList;
 import java.util.List;
@@ -66,18 +69,18 @@ public class OrderController {
                 for (int i = 0; i < sizes.size(); i++) {
                     options[i] = sizes.get(i).getName();
                 }
-                int choice = javax.swing.JOptionPane.showOptionDialog(
+                int choice = JOptionPane.showOptionDialog(
                         dashboard,
                         "Seleccione el tamaño para " + product.getName() + ":",
                         "Selección de Tamaño",
-                        javax.swing.JOptionPane.DEFAULT_OPTION,
-                        javax.swing.JOptionPane.QUESTION_MESSAGE,
+                        JOptionPane.DEFAULT_OPTION,
+                        JOptionPane.QUESTION_MESSAGE,
                         null,
                         options,
                         options[0]
                 );
                 if (choice >= 0) {
-                    models.Size selectedSize = sizes.get(choice);
+                    Size selectedSize = sizes.get(choice);
                     addOrUpdateItem(product, selectedSize);
                 }
             } else {
@@ -88,7 +91,7 @@ public class OrderController {
         }
     }
 
-    private void addOrUpdateItem(Product product, models.Size size) {
+    private void addOrUpdateItem(Product product, Size size) {
         boolean exists = false;
         for (OrderItemDTO item : cartItems) {
             Long itemSizeId = item.getSize() != null ? item.getSize().getId() : null;
@@ -107,7 +110,7 @@ public class OrderController {
             newItem.setSubtotal(calculateSubtotal(newItem));
             cartItems.add(newItem);
         }
-        javax.swing.JOptionPane.showMessageDialog(dashboard, "Producto agregado al carrito.");
+        JOptionPane.showMessageDialog(dashboard, "Producto agregado al carrito.");
     }
 
     public void increaseQuantity(OrderItemDTO item) {
@@ -142,16 +145,16 @@ public class OrderController {
         }
         
         Long employeeId = dashboard.getCurrentUser().getId();
-        services.OrderService orderService = new services.OrderService();
+        OrderService orderService = new OrderService();
         boolean success = orderService.confirmOrder(customerDTO, cartItems, employeeId, total);
         
         if (success) {
-            javax.swing.JOptionPane.showMessageDialog(dialog, "Orden registrada con éxito", "Éxito", javax.swing.JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(dialog, "Orden registrada con éxito", "Éxito", JOptionPane.INFORMATION_MESSAGE);
             dialog.dispose();
             cartItems.clear();
             showCategories();
         } else {
-            javax.swing.JOptionPane.showMessageDialog(dialog, "Error al registrar la orden. Intente nuevamente.", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(dialog, "Error al registrar la orden. Intente nuevamente.", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 }

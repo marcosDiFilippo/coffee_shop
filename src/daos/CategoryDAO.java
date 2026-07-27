@@ -39,7 +39,6 @@ public class CategoryDAO implements GetterDAO<Long, Category> {
                 categories.add(category);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
         }
 
         return categories;
@@ -69,7 +68,6 @@ public class CategoryDAO implements GetterDAO<Long, Category> {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
         }
         return null;
     }
@@ -95,7 +93,6 @@ public class CategoryDAO implements GetterDAO<Long, Category> {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
         }
 
         return category;
@@ -115,7 +112,6 @@ public class CategoryDAO implements GetterDAO<Long, Category> {
 
             updated = stmt.executeUpdate() > 0;
         } catch (SQLException e) {
-            e.printStackTrace();
         }
 
         return updated;
@@ -133,9 +129,37 @@ public class CategoryDAO implements GetterDAO<Long, Category> {
 
             toggled = stmt.executeUpdate() > 0;
         } catch (SQLException e) {
-            e.printStackTrace();
         }
 
         return toggled;
+    }
+
+    public boolean delete(Connection conn, Long id) throws SQLException {
+        List<Long> orderIds = new ArrayList<>();
+        String findOrdersQuery = "SELECT DISTINCT o.id FROM orders o " +
+                                 "JOIN order_items oi ON o.id = oi.order_id " +
+                                 "JOIN products p ON oi.product_id = p.id " +
+                                 "WHERE p.category_id = " + id;
+        
+        try (Statement stmt = conn.createStatement()) {
+            ResultSet rs = stmt.executeQuery(findOrdersQuery);
+            while (rs.next()) {
+                orderIds.add(rs.getLong(1));
+            }
+            rs.close();
+
+            if (!orderIds.isEmpty()) {
+                StringBuilder ids = new StringBuilder();
+                for (int i = 0; i < orderIds.size(); i++) {
+                    ids.append(orderIds.get(i));
+                    if (i < orderIds.size() - 1) ids.append(",");
+                }
+                stmt.executeUpdate("DELETE FROM payments WHERE order_id IN (" + ids + ")");
+                stmt.executeUpdate("DELETE FROM order_items WHERE order_id IN (" + ids + ")");
+                stmt.executeUpdate("DELETE FROM orders WHERE id IN (" + ids + ")");
+            }
+
+            return stmt.executeUpdate("DELETE FROM categories WHERE id = " + id) > 0;
+        }
     }
 }

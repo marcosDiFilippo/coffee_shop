@@ -32,7 +32,6 @@ public class Home extends JFrame {
 					Home frame = new Home();
 					frame.setVisible(true);
 				} catch (Exception e) {
-					e.printStackTrace();
 				}
 			}
 		});

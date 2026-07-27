@@ -30,7 +30,6 @@ public class Dashboard extends JFrame {
                     Dashboard frame = new Dashboard(null);
                     frame.setVisible(true);
                 } catch (Exception e) {
-                    e.printStackTrace();
                 }
             }
         });
@@ -140,7 +139,7 @@ public class Dashboard extends JFrame {
             public void mouseClicked(MouseEvent e) {
                 if (mainContentPanel != null) {
                     mainContentPanel.removeAll();
-                    CategoriesPanel categoriesPanel = new CategoriesPanel();
+                    CategoriesPanel categoriesPanel = new CategoriesPanel(Dashboard.this);
                     mainContentPanel.add(categoriesPanel);
                     mainContentPanel.revalidate();
                     mainContentPanel.repaint();
@@ -173,7 +172,7 @@ public class Dashboard extends JFrame {
                 public void mouseClicked(MouseEvent e) {
                     if (mainContentPanel != null) {
                         mainContentPanel.removeAll();
-                        UsersPanel usersPanel = new UsersPanel();
+                        UsersPanel usersPanel = new UsersPanel(Dashboard.this);
                         mainContentPanel.add(usersPanel);
                         mainContentPanel.revalidate();
                         mainContentPanel.repaint();
@@ -192,16 +191,10 @@ public class Dashboard extends JFrame {
         sidebarPanel.add(btnLogout);
         
         JPanel headerPanel = new JPanel();
-        headerPanel.setBackground(Colors.CARAMEL_ROAST.getColor());
+        headerPanel.setBackground(Colors.CREAMY_LATTE.getColor());
         headerPanel.setBounds(250, 0, 1030, 60);
         headerPanel.setLayout(null);
         contentPane.add(headerPanel);
-        
-        JLabel lblShopName = new JLabel("LOS TOSTADORES DE CAFÉ");
-        lblShopName.setForeground(Colors.WARM_CAPP.getColor());
-        lblShopName.setFont(new Font("Segoe UI", Font.BOLD, 22));
-        lblShopName.setBounds(20, 15, 400, 30);
-        headerPanel.add(lblShopName);
         
         String userInfo = currentUser.getFirstName() + " " + currentUser.getLastName() + " | " + currentUser.getRol().getDisplayName();
         JLabel lblUserInfo = new JLabel(userInfo);
