@@ -179,6 +179,29 @@ public class Dashboard extends JFrame {
                     }
                 }
             });
+
+            JButton btnStats = new JButton("Estadísticas");
+            btnStats.setBackground(Colors.WARM_CAPP.getColor());
+            btnStats.setForeground(Colors.CREAMY_LATTE.getColor());
+            btnStats.setFont(new Font("Segoe UI", Font.BOLD, 14));
+            btnStats.setBounds(0, 350, 250, 45);
+            btnStats.setFocusPainted(false);
+            btnStats.setBorder(null);
+            sidebarPanel.add(btnStats);
+
+            btnStats.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    if (mainContentPanel != null) {
+                        mainContentPanel.removeAll();
+                        StatsPanel statsPanel = new StatsPanel();
+                        new controllers.StatsController(statsPanel);
+                        mainContentPanel.add(statsPanel);
+                        mainContentPanel.revalidate();
+                        mainContentPanel.repaint();
+                    }
+                }
+            });
         }
         
         btnLogout = new JButton("Cerrar Sesión");
