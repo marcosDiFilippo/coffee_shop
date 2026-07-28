@@ -1,6 +1,8 @@
 package controllers;
 
 import dtos.ProductDTO;
+import exceptions.InvalidDataException;
+import exceptions.TransactionFailedException;
 import models.Product;
 import services.ProductService;
 import views.ProductsPanel;
@@ -43,21 +45,25 @@ public class ProductController {
     }
 
     public void saveProduct(ProductDTO dto, ProductFormDialog formDialog) {
-        ProductDTO saved = service.saveProduct(dto);
-        if (saved != null) {
+        try {
+            service.saveProduct(dto);
             formDialog.dispose();
             loadProducts();
-        } else {
-            JOptionPane.showMessageDialog(formDialog, "Error al guardar el producto. Verifique los datos.", "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (InvalidDataException | TransactionFailedException e) {
+            JOptionPane.showMessageDialog(formDialog, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(formDialog, "Ha ocurrido un error en el sistema, por favor vuelva intentarlo.", "Error Grave", JOptionPane.ERROR_MESSAGE);
         }
     }
 
     public void toggleProduct(Long id, boolean currentAvailable) {
-        boolean success = service.toggleProductAvailability(id, currentAvailable);
-        if (success) {
+        try {
+            service.toggleProductAvailability(id, currentAvailable);
             loadProducts();
-        } else {
-            JOptionPane.showMessageDialog(panel, "Error al actualizar el estado del producto.", "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (TransactionFailedException e) {
+            JOptionPane.showMessageDialog(panel, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(panel, "Ha ocurrido un error en el sistema, por favor vuelva intentarlo.", "Error Grave", JOptionPane.ERROR_MESSAGE);
         }
     }
 }

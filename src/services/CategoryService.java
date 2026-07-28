@@ -2,6 +2,8 @@ package services;
 
 import daos.CategoryDAO;
 import dtos.CategoryDTO;
+import exceptions.InvalidDataException;
+import exceptions.TransactionFailedException;
 import models.Category;
 import config.DatabaseConnection;
 
@@ -23,7 +25,7 @@ public class CategoryService {
 
     public CategoryDTO saveCategory(CategoryDTO dto) {
         if (dto.getName() == null || dto.getName().trim().isEmpty()) {
-            return null;
+            throw new InvalidDataException("El nombre de la categoría no puede estar vacío.");
         }
 
         Category category = new Category(dto.getId(), dto.getName(), dto.getDescription(), dto.isActive(), dto.isRequiresSize());
@@ -34,7 +36,7 @@ public class CategoryService {
         } else {
             boolean updated = categoryDAO.update(category);
             if (!updated) {
-                return null;
+                throw new TransactionFailedException("Fallo al actualizar la categoría.");
             }
         }
 
@@ -52,7 +54,7 @@ public class CategoryService {
 
     public boolean deleteCategoryHard(Long categoryId) {
         if (categoryId == null) {
-            return false;
+            throw new InvalidDataException("El ID de la categoría es nulo.");
         }
         Connection conn = null;
         try {
@@ -64,7 +66,7 @@ public class CategoryService {
                 return true;
             } else {
                 conn.rollback();
-                return false;
+                throw new TransactionFailedException("Error al procesar la eliminación de la categoría.");
             }
         } catch (SQLException e) {
             if (conn != null) {
@@ -73,7 +75,7 @@ public class CategoryService {
                 } catch (SQLException ex) {
                 }
             }
-            return false;
+            throw new TransactionFailedException("Excepción SQL al intentar eliminar la categoría.");
         } finally {
             if (conn != null) {
                 try {

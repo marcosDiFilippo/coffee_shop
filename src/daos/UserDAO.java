@@ -22,7 +22,7 @@ public class UserDAO implements GetterDAO<Long, User> {
         
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
-             
+            
             stmt.setString(1, loginDTO.getUsername());
             stmt.setString(2, loginDTO.getPassword());
             
@@ -207,6 +207,21 @@ public class UserDAO implements GetterDAO<Long, User> {
             stmt.setLong(2, id);
             return stmt.executeUpdate() > 0;
         } catch (SQLException e) {
+        }
+        return false;
+    }
+
+    public boolean existsUserByEmail(Connection conn, String email) {
+        String query = "SELECT COUNT(*) FROM users WHERE email = ?";
+        try (PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, email);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1) > 0;
+                }
+            }
+        } catch (SQLException e) {
+            
         }
         return false;
     }

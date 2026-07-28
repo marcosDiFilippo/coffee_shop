@@ -3,6 +3,7 @@ package services;
 import config.DatabaseConnection;
 import daos.UserDAO;
 import dtos.UserDTO;
+import exceptions.TransactionFailedException;
 import models.User;
 
 import java.sql.Connection;
@@ -38,7 +39,7 @@ public class UserService {
                 Long userId = userDAO.insertUserWithConnection(conn, user);
                 if (userId == null) {
                     conn.rollback();
-                    return false;
+                    throw new TransactionFailedException("Fallo al guardar el usuario en la base de datos.");
                 }
                 userDAO.insertCredentials(conn, userId, dto.getUsername(), dto.getPassword());
             } else {
@@ -56,7 +57,7 @@ public class UserService {
                 } catch (SQLException ex) {
                 }
             }
-            return false;
+            throw new TransactionFailedException("Excepción SQL al intentar guardar el usuario.");
         } finally {
             if (conn != null) {
                 try {

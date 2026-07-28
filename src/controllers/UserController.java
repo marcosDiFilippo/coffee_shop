@@ -1,6 +1,7 @@
 package controllers;
 
 import dtos.UserDTO;
+import exceptions.TransactionFailedException;
 import models.User;
 import services.UserService;
 import views.Dashboard;
@@ -70,22 +71,26 @@ public class UserController {
             return;
         }
 
-        boolean success = service.saveUser(dto);
-        if (success) {
+        try {
+            service.saveUser(dto);
             JOptionPane.showMessageDialog(formDialog, "Usuario guardado exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
             formDialog.dispose();
             loadUsers();
-        } else {
-            JOptionPane.showMessageDialog(formDialog, "Error al guardar el usuario. Verifique que el nombre de usuario no exista ya.", "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (TransactionFailedException e) {
+            JOptionPane.showMessageDialog(formDialog, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(formDialog, "Ha ocurrido un error en el sistema, por favor vuelva intentarlo.", "Error Grave", JOptionPane.ERROR_MESSAGE);
         }
     }
 
     public void toggleUser(Long userId, boolean currentActive) {
-        boolean success = service.toggleUserStatus(userId, currentActive);
-        if (success) {
+        try {
+            service.toggleUserStatus(userId, currentActive);
             loadUsers();
-        } else {
-            JOptionPane.showMessageDialog(panel, "Error al actualizar el estado del usuario.", "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (TransactionFailedException e) {
+            JOptionPane.showMessageDialog(panel, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(panel, "Ha ocurrido un error en el sistema, por favor vuelva intentarlo.", "Error Grave", JOptionPane.ERROR_MESSAGE);
         }
     }
 }

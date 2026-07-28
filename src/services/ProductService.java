@@ -2,6 +2,8 @@ package services;
 
 import daos.ProductDAO;
 import dtos.ProductDTO;
+import exceptions.InvalidDataException;
+import exceptions.TransactionFailedException;
 import models.Product;
 
 import java.util.List;
@@ -19,7 +21,7 @@ public class ProductService {
 
     public ProductDTO saveProduct(ProductDTO dto) {
         if (dto.getName() == null || dto.getName().trim().isEmpty() || dto.getCategoryId() == null || dto.getBasePrice() == null) {
-            return null;
+            throw new InvalidDataException("Los campos obligatorios de producto no pueden estar vacíos.");
         }
 
         Product product = new Product();
@@ -35,7 +37,7 @@ public class ProductService {
             dto.setId(inserted.getId());
         } else {
             boolean updated = productDAO.update(product);
-            if (!updated) return null;
+            if (!updated) throw new TransactionFailedException("Error al actualizar el producto.");
         }
 
         return dto;

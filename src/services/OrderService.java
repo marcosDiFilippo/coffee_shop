@@ -11,10 +11,13 @@ import models.OrderItem;
 import models.User;
 import enums.OrderStatus;
 import enums.UserRole;
+import exceptions.InvalidDataException;
+import exceptions.InvalidOrderStateException;
+import exceptions.ProductUnavailableException;
+import exceptions.TransactionFailedException;
 
 import java.math.BigDecimal;
 import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.List;
 
 public class OrderService {
@@ -29,9 +32,9 @@ public class OrderService {
     }
 
     public boolean confirmOrder(UserDTO customerDTO, List<OrderItemDTO> cart, Long employeeId, BigDecimal total) {
-        Connection conn = null;
+        Connection conn = DatabaseConnection.getConnection();
+
         try {
-            conn = DatabaseConnection.getConnection();
             conn.setAutoCommit(false);
 
             User customer = new User();
@@ -42,10 +45,14 @@ public class OrderService {
             customer.setActive(true);
             customer.setRol(UserRole.CUSTOMER);
 
+            if (userDAO.existsUserByEmail(conn, customer.getEmail())) {
+                throw new InvalidDataException("El email ingresado del cliente ya existe. Por favor, ingrese otro email.");
+            }
+
             Long customerId = userDAO.insertCustomer(conn, customer);
+
             if (customerId == null) {
-                conn.rollback();
-                return false;
+                throw new TransactionFailedException("Fallo al insertar el cliente de la orden.");
             }
 
             Order order = new Order();
@@ -55,20 +62,25 @@ public class OrderService {
             order.setTotal(total);
 
             Long orderId = orderDAO.insertWithConnection(conn, order);
+
             if (orderId == null) {
-                conn.rollback();
-                return false;
+                throw new TransactionFailedException("Fallo al insertar la orden en la base de datos.");
             }
 
             for (OrderItemDTO dto : cart) {
+                if (!dto.getProduct().isAvailable()) {
+                    throw new ProductUnavailableException("El producto " + dto.getProduct().getName() + " no está disponible.");
+                }
+
                 OrderItem item = new OrderItem();
                 item.setOrderId(orderId);
                 item.setProductId(dto.getProduct().getId());
+
                 if (dto.getSize() != null) {
                     item.setSizeId(dto.getSize().getId());
                 }
+
                 item.setQuantity(dto.getQuantity());
-                
                 BigDecimal multiplier = (dto.getSize() != null) ? dto.getSize().getPriceMultiplier() : BigDecimal.ONE;
                 item.setUnitPrice(dto.getProduct().getBasePrice().multiply(multiplier));
                 item.setSubtotal(dto.getSubtotal());
@@ -78,21 +90,22 @@ public class OrderService {
 
             conn.commit();
             return true;
-        } catch (SQLException e) {
-            if (conn != null) {
-                try {
-                    conn.rollback();
-                } catch (SQLException ex) {
+        } catch (Exception e) {
+            try {
+                conn.rollback();
+            } catch (Exception ex) {}
+            
+                if (e instanceof RuntimeException) {
+                    throw (RuntimeException) e;
                 }
-            }
-            return false;
+                
+                throw new TransactionFailedException("Fallo al confirmar el pedido.");
         } finally {
-            if (conn != null) {
-                try {
-                    conn.setAutoCommit(true);
-                    conn.close();
-                } catch (SQLException ex) {
-                }
+            try {
+                conn.setAutoCommit(true);
+                if (conn != null) conn.close();
+            } catch (Exception ex) {
+                
             }
         }
     }
@@ -108,18 +121,18 @@ public class OrderService {
     public boolean updateOrderStatus(Long orderId, OrderStatus newStatus) {
         Order currentOrder = orderDAO.findById(orderId);
         if (currentOrder == null) {
-            throw new IllegalArgumentException("La orden especificada no existe.");
+            throw new InvalidOrderStateException("La orden especificada no existe.");
         }
         
         OrderStatus currentStatus = currentOrder.getStatus();
         
         if (newStatus == OrderStatus.CANCELLED) {
             if (currentStatus == OrderStatus.DELIVERED || currentStatus == OrderStatus.CANCELLED) {
-                throw new IllegalArgumentException("No se puede cancelar un pedido que ya ha sido entregado o cancelado.");
+                throw new InvalidOrderStateException("No se puede cancelar un pedido que ya ha sido entregado o cancelado.");
             }
         } else {
             if (newStatus.ordinal() <= currentStatus.ordinal()) {
-                throw new IllegalArgumentException("El nuevo estado debe representar un avance en el proceso y no se puede volver atrás.");
+                throw new InvalidOrderStateException("El nuevo estado debe representar un avance en el proceso y no se puede volver atrás.");
             }
         }
         

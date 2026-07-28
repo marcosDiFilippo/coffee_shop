@@ -1,6 +1,8 @@
 package controllers;
 
 import dtos.CategoryDTO;
+import exceptions.InvalidDataException;
+import exceptions.TransactionFailedException;
 import models.Category;
 import services.CategoryService;
 import views.CategoriesPanel;
@@ -34,31 +36,39 @@ public class CategoryController {
     }
 
     public void saveCategory(CategoryDTO dto, CategoryFormDialog formDialog) {
-        CategoryDTO saved = service.saveCategory(dto);
-        if (saved != null) {
+        try {
+            service.saveCategory(dto);
             formDialog.dispose();
             loadCategories();
-        } else {
-            JOptionPane.showMessageDialog(formDialog, "Error al guardar la categoría. Verifique los datos.", "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (InvalidDataException | TransactionFailedException e) {
+            JOptionPane.showMessageDialog(formDialog, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(formDialog, "Ha ocurrido un error en el sistema, por favor vuelva intentarlo.", "Error Grave", JOptionPane.ERROR_MESSAGE);
         }
     }
 
     public void toggleCategory(Long id, boolean currentActive) {
-        boolean success = service.toggleCategoryStatus(id, currentActive);
-        if (success) {
-            loadCategories();
-        } else {
-            JOptionPane.showMessageDialog(panel, "Error al actualizar el estado de la categoría.", "Error", JOptionPane.ERROR_MESSAGE);
+        try {
+            boolean success = service.toggleCategoryStatus(id, currentActive);
+            if (success) {
+                loadCategories();
+            } else {
+                JOptionPane.showMessageDialog(panel, "Error al actualizar el estado de la categoría.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(panel, "Ha ocurrido un error en el sistema, por favor vuelva intentarlo.", "Error Grave", JOptionPane.ERROR_MESSAGE);
         }
     }
 
     public void deleteCategoryHard(Long id) {
-        boolean success = service.deleteCategoryHard(id);
-        if (success) {
+        try {
+            service.deleteCategoryHard(id);
             JOptionPane.showMessageDialog(panel, "Categoría eliminada con éxito. Tambien se ha eliminado existosamente todos sus productos y ventas asociadas", "Éxito", JOptionPane.INFORMATION_MESSAGE);
             loadCategories();
-        } else {
-            JOptionPane.showMessageDialog(panel, "Fallo en la transacción.", "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (InvalidDataException | TransactionFailedException e) {
+            JOptionPane.showMessageDialog(panel, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(panel, "Ha ocurrido un error en el sistema, por favor vuelva intentarlo.", "Error Grave", JOptionPane.ERROR_MESSAGE);
         }
     }
 }

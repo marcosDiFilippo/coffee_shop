@@ -127,16 +127,14 @@ public class OrderManagementDialog extends JDialog {
             public void mouseClicked(MouseEvent e) {
                 OrderStatus newStatus = (OrderStatus) cmbStatus.getSelectedItem();
                 try {
-                    boolean success = controller.getService().updateOrderStatus(orderId, newStatus);
-                    if (success) {
-                        JOptionPane.showMessageDialog(OrderManagementDialog.this, "Estado actualizado con éxito.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-                        controller.loadOrders();
-                        dispose();
-                    } else {
-                        JOptionPane.showMessageDialog(OrderManagementDialog.this, "Error al actualizar el estado.", "Error", JOptionPane.ERROR_MESSAGE);
-                    }
-                } catch (IllegalArgumentException ex) {
-                    JOptionPane.showMessageDialog(OrderManagementDialog.this, ex.getMessage(), "Transición Inválida", JOptionPane.ERROR_MESSAGE);
+                    controller.getService().updateOrderStatus(orderId, newStatus);
+                    JOptionPane.showMessageDialog(OrderManagementDialog.this, "Estado actualizado con éxito.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                    controller.loadOrders();
+                    dispose();
+                } catch (exceptions.InvalidOrderStateException ex) {
+                    JOptionPane.showMessageDialog(OrderManagementDialog.this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(OrderManagementDialog.this, "Ha ocurrido un error en el sistema, por favor vuelva intentarlo.", "Error Grave", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });

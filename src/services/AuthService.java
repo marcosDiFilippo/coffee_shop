@@ -2,6 +2,8 @@ package services;
 
 import daos.UserDAO;
 import dtos.LoginDTO;
+import exceptions.InvalidDataException;
+import exceptions.UserAuthenticationException;
 import models.User;
 
 public class AuthService {
@@ -13,7 +15,7 @@ public class AuthService {
 
     public User login(LoginDTO loginDTO) {
         if (loginDTO == null || loginDTO.getUsername().isEmpty() || loginDTO.getPassword().isEmpty()) {
-            return null;
+            throw new InvalidDataException("Debe ingresar usuario y contraseña.");
         }
         
         User user = userDAO.authenticate(loginDTO);
@@ -22,6 +24,6 @@ public class AuthService {
             return user;
         }
         
-        return null;
+        throw new UserAuthenticationException("Credenciales incorrectas o usuario inactivo.");
     }
 }

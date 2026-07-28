@@ -1,6 +1,9 @@
 package controllers;
 
 import dtos.OrderItemDTO;
+import exceptions.InvalidDataException;
+import exceptions.ProductUnavailableException;
+import exceptions.TransactionFailedException;
 import models.Category;
 import models.Product;
 import models.Size;
@@ -146,15 +149,16 @@ public class OrderController {
         
         Long employeeId = dashboard.getCurrentUser().getId();
         OrderService orderService = new OrderService();
-        boolean success = orderService.confirmOrder(customerDTO, cartItems, employeeId, total);
-        
-        if (success) {
+        try {
+            orderService.confirmOrder(customerDTO, cartItems, employeeId, total);
             JOptionPane.showMessageDialog(dialog, "Orden registrada con éxito", "Éxito", JOptionPane.INFORMATION_MESSAGE);
             dialog.dispose();
             cartItems.clear();
             showCategories();
-        } else {
-            JOptionPane.showMessageDialog(dialog, "Error al registrar la orden. Intente nuevamente.", "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (ProductUnavailableException | TransactionFailedException | InvalidDataException e) {
+            JOptionPane.showMessageDialog(dialog, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(dialog, "Ha ocurrido un error en el sistema, por favor vuelva intentarlo.", "Error Grave", JOptionPane.ERROR_MESSAGE);
         }
     }
 }
