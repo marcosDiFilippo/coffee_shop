@@ -39,7 +39,7 @@ public class Dashboard extends JFrame {
 
     public Dashboard(User currentUser) {
         this.currentUser = currentUser;
-        setTitle("Sistema de Gestión de Cafetería - Dashboard");
+        setTitle("Sistema de Gestión de Cafetería");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, 1280, 720);
         setLocationRelativeTo(null);

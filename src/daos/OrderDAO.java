@@ -98,4 +98,43 @@ public class OrderDAO implements GetterDAO<Long, Order> {
         }
         return null;
     }
+
+    public boolean deleteOrderHard(Long orderId) {
+        Connection conn = null;
+        try {
+            conn = DatabaseConnection.getConnection();
+            conn.setAutoCommit(false);
+
+            String deleteItemsQuery = "DELETE FROM order_items WHERE order_id = ?";
+            try (PreparedStatement stmtItems = conn.prepareStatement(deleteItemsQuery)) {
+                stmtItems.setLong(1, orderId);
+                stmtItems.executeUpdate();
+            }
+
+            String deleteOrderQuery = "DELETE FROM orders WHERE id = ?";
+            try (PreparedStatement stmtOrder = conn.prepareStatement(deleteOrderQuery)) {
+                stmtOrder.setLong(1, orderId);
+                stmtOrder.executeUpdate();
+            }
+
+            conn.commit();
+            return true;
+        } catch (SQLException e) {
+            if (conn != null) {
+                try {
+                    conn.rollback();
+                } catch (SQLException ex) {
+                }
+            }
+            return false;
+        } finally {
+            if (conn != null) {
+                try {
+                    conn.setAutoCommit(true);
+                    conn.close();
+                } catch (SQLException e) {
+                }
+            }
+        }
+    }
 }

@@ -17,7 +17,7 @@ import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.FlowLayout;
+import java.awt.GridBagLayout;
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -118,7 +118,7 @@ public class ProductsPanel extends JPanel {
         });
 
         tableProducts.getColumnModel().getColumn(6).setCellRenderer(new TableCellRenderer() {
-            private JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 10));
+            private JPanel panel = new JPanel(new GridBagLayout());
             private JButton bEdit = new JButton("Editar");
             private JButton bToggle = new JButton("Deshabilitar");
             {
@@ -148,7 +148,7 @@ public class ProductsPanel extends JPanel {
         });
 
         JPanel actionPanel = new JPanel();
-        actionPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 10));
+        actionPanel.setLayout(new GridBagLayout());
         actionPanel.setBackground(Colors.CREAMY_LATTE.getColor());
         
         JButton btnTableEdit = new JButton("Editar");

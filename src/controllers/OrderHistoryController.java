@@ -7,7 +7,9 @@ import views.OrderManagementDialog;
 import views.Dashboard;
 
 import javax.swing.SwingUtilities;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import exceptions.TransactionFailedException;
 import java.util.List;
 import java.time.format.DateTimeFormatter;
 
@@ -48,5 +50,16 @@ public class OrderHistoryController {
     
     public OrderService getService() {
         return service;
+    }
+
+    public void deleteOrder(Long id) {
+        try {
+            service.deleteOrderHard(id);
+            loadOrders();
+        } catch (TransactionFailedException e) {
+            JOptionPane.showMessageDialog(panel, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(panel, "Ha ocurrido un error en el sistema, por favor vuelva intentarlo.", "Error Grave", JOptionPane.ERROR_MESSAGE);
+        }
     }
 }

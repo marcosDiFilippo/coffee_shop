@@ -138,4 +138,11 @@ public class OrderService {
         
         return orderDAO.updateStatus(orderId, newStatus);
     }
+
+    public void deleteOrderHard(Long orderId) {
+        boolean success = orderDAO.deleteOrderHard(orderId);
+        if (!success) {
+            throw new TransactionFailedException("No se pudo eliminar la orden.");
+        }
+    }
 }

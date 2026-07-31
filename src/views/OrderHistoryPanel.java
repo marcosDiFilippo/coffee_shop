@@ -4,6 +4,7 @@ import constants.Colors;
 import controllers.OrderHistoryController;
 
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -15,8 +16,9 @@ import javax.swing.table.TableCellEditor;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JCheckBox;
 import java.awt.Component;
-import java.awt.FlowLayout;
+import java.awt.GridBagLayout;
 import java.awt.Font;
+import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -64,7 +66,7 @@ public class OrderHistoryPanel extends JPanel {
         tableOrders.getColumnModel().getColumn(4).setPreferredWidth(120);
 
         JPanel actionPanel = new JPanel();
-        actionPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 0));
+        actionPanel.setLayout(new GridBagLayout());
         actionPanel.setBackground(Colors.CREAMY_LATTE.getColor());
         
         JButton btnView = new JButton("Ver Pedido");
@@ -84,17 +86,49 @@ public class OrderHistoryPanel extends JPanel {
                 }
             }
         });
+        JButton btnDelete = new JButton("Eliminar");
+        btnDelete.setBackground(Color.RED);
+        btnDelete.setForeground(Color.WHITE);
+        btnDelete.setFocusPainted(false);
+        btnDelete.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                int row = tableOrders.getEditingRow();
+                if (row != -1) {
+                    Long id = (Long) tableModel.getValueAt(row, 0);
+                    TableCellEditor editor = tableOrders.getCellEditor();
+                    if (editor != null) editor.stopCellEditing();
+                    
+                    int confirm = JOptionPane.showConfirmDialog(
+                        OrderHistoryPanel.this,
+                        "ADVERTENCIA: Se borrará permanentemente la orden. Esta acción no se puede deshacer. Desea continuar?",
+                        "Confirmar Eliminación",
+                        JOptionPane.YES_NO_OPTION,
+                        JOptionPane.WARNING_MESSAGE
+                    );
+                    if (confirm == JOptionPane.YES_OPTION) {
+                        controller.deleteOrder(id);
+                    }
+                }
+            }
+        });
         actionPanel.add(btnView);
+        actionPanel.add(btnDelete);
 
         tableOrders.getColumnModel().getColumn(4).setCellRenderer(new TableCellRenderer() {
-            private JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 0));
+            private JPanel panel = new JPanel(new GridBagLayout());
             private JButton button = new JButton("Ver Pedido");
+            private JButton delButton = new JButton("Eliminar");
             {
                 panel.setBackground(Colors.CREAMY_LATTE.getColor());
                 button.setBackground(Colors.CARAMEL_ROAST.getColor());
                 button.setForeground(Colors.CREAMY_LATTE.getColor());
                 button.setFocusPainted(false);
+                delButton.setBackground(Color.RED);
+                delButton.setForeground(Color.WHITE);
+                delButton.setFocusPainted(false);
                 panel.add(button);
+                panel.add(delButton);
             }
             @Override
             public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
