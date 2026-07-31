@@ -157,6 +157,18 @@ public class Dashboard extends JFrame {
         btnSizes.setFocusPainted(false);
         btnSizes.setBorder(null);
         sidebarPanel.add(btnSizes);
+        btnSizes.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (mainContentPanel != null) {
+                    mainContentPanel.removeAll();
+                    DrinkSizePanel drinkSizePanel = new DrinkSizePanel(Dashboard.this);
+                    mainContentPanel.add(drinkSizePanel);
+                    mainContentPanel.revalidate();
+                    mainContentPanel.repaint();
+                }
+            }
+        });
         
         
         if (currentUser.getRol() == UserRole.MANAGER || currentUser.getRol() == UserRole.ADMIN) {

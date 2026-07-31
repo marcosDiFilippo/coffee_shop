@@ -17,7 +17,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import java.util.ArrayList;
 import java.util.List;
-import daos.SizeDAO;
+import services.SizeService;
 import dtos.UserDTO;
 import java.math.BigDecimal;
 import views.CustomerDialog;
@@ -69,8 +69,8 @@ public class OrderController {
 
     public void addToCart(Product product) {
         if (product.getCategory() != null && product.getCategory().isRequiresSize()) {
-            SizeDAO sizeDAO = new SizeDAO();
-            List<Size> sizes = sizeDAO.findAll();
+            SizeService sizeService = new SizeService();
+            List<Size> sizes = sizeService.getActiveSizes();
             if (!sizes.isEmpty()) {
                 String[] options = new String[sizes.size()];
                 for (int i = 0; i < sizes.size(); i++) {
