@@ -15,12 +15,15 @@ import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.GridBagLayout;
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class UsersPanel extends JPanel {
     private static final long serialVersionUID = 1L;
@@ -28,6 +31,7 @@ public class UsersPanel extends JPanel {
     private JTable tableUsers;
     private DefaultTableModel tableModel;
     private UserController controller;
+    private JComboBox<String> cmbFilter;
 
     public UsersPanel(Dashboard dashboard) {
         setBackground(Colors.CREAMY_LATTE.getColor());
@@ -50,6 +54,21 @@ public class UsersPanel extends JPanel {
             }
         });
         add(btnAddUser);
+
+        String[] filterOptions = {"Todos", "Clientes", "Trabajadores"};
+        cmbFilter = new JComboBox<>(filterOptions);
+        cmbFilter.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        cmbFilter.setBounds(230, 30, 180, 40);
+        cmbFilter.setBackground(Color.WHITE);
+        cmbFilter.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (controller != null) {
+                    controller.loadUsers(cmbFilter.getSelectedItem().toString());
+                }
+            }
+        });
+        add(cmbFilter);
 
         JScrollPane scrollPane = new JScrollPane();
         scrollPane.setBounds(30, 90, 970, 530);

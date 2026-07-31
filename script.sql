@@ -147,7 +147,7 @@ CREATE TABLE payments (
 
 
 INSERT INTO users (first_name, last_name, email, phone, active, rol) VALUES ('Admin', 'User', 'admin@coffeeshop.com', '123456789', TRUE, 'MANAGER');
-INSERT INTO user_credentials (user_id, username, password) VALUES (LAST_INSERT_ID(), 'admin', '1111');
+INSERT INTO user_credentials (user_id, username, password) VALUES (LAST_INSERT_ID(), 'admin', SHA2('1111', 256));
 
 INSERT INTO sizes (name, price_multiplier) VALUES
 ('Chico', 1.00),

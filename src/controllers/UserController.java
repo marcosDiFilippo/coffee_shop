@@ -16,20 +16,20 @@ import java.util.List;
 public class UserController {
     private UsersPanel panel;
     private UserService service;
-    private List<User> currentUsers;
+    private List<UserDTO> currentUsers;
 
     public UserController(UsersPanel panel) {
         this.panel = panel;
         this.service = new UserService();
-        loadUsers();
+        loadUsers("Todos");
     }
 
-    public void loadUsers() {
+    public void loadUsers(String filterType) {
         DefaultTableModel model = panel.getTableModel();
         model.setRowCount(0);
 
-        currentUsers = service.getAllUsers();
-        for (User user : currentUsers) {
+        currentUsers = service.getUsersByFilter(filterType);
+        for (UserDTO user : currentUsers) {
             String fullName = user.getFirstName() + " " + user.getLastName();
             String status = user.isActive() ? "Activo" : "Inactivo";
             model.addRow(new Object[]{
@@ -46,9 +46,16 @@ public class UserController {
 
     public void openEditDialog(Long userId) {
         User targetDto = null;
-        for (User user : currentUsers) {
+        for (UserDTO user : currentUsers) {
             if (user.getId().equals(userId)) {
-                targetDto = user;
+                targetDto = new User();
+                targetDto.setId(user.getId());
+                targetDto.setFirstName(user.getFirstName());
+                targetDto.setLastName(user.getLastName());
+                targetDto.setEmail(user.getEmail());
+                targetDto.setPhone(user.getPhone());
+                targetDto.setActive(user.isActive());
+                targetDto.setRol(user.getRol());
                 break;
             }
         }
@@ -75,7 +82,7 @@ public class UserController {
             service.saveUser(dto);
             JOptionPane.showMessageDialog(formDialog, "Usuario guardado exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
             formDialog.dispose();
-            loadUsers();
+            loadUsers("Todos");
         } catch (TransactionFailedException e) {
             JOptionPane.showMessageDialog(formDialog, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         } catch (Exception e) {
@@ -86,7 +93,7 @@ public class UserController {
     public void toggleUser(Long userId, boolean currentActive) {
         try {
             service.toggleUserStatus(userId, currentActive);
-            loadUsers();
+            loadUsers("Todos");
         } catch (TransactionFailedException e) {
             JOptionPane.showMessageDialog(panel, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         } catch (Exception e) {

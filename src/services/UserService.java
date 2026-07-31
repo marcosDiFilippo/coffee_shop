@@ -21,6 +21,10 @@ public class UserService {
         return userDAO.findAll();
     }
 
+    public List<UserDTO> getUsersByFilter(String filterType) {
+        return userDAO.findUsersByFilter(filterType);
+    }
+
     public boolean saveUser(UserDTO dto) {
         Connection conn = null;
         try {

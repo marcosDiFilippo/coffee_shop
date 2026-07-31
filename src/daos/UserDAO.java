@@ -18,7 +18,7 @@ import contracts.GetterDAO;
 public class UserDAO implements GetterDAO<Long, User> {
     public User authenticate(LoginDTO loginDTO) {
         User user = null;
-        String query = "SELECT u.* FROM users u INNER JOIN user_credentials uc ON u.id = uc.user_id WHERE uc.username = ? AND uc.password = ?";
+        String query = "SELECT u.* FROM users u INNER JOIN user_credentials uc ON u.id = uc.user_id WHERE uc.username = ? AND uc.password = SHA2(?, 256)";
         
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
@@ -127,7 +127,7 @@ public class UserDAO implements GetterDAO<Long, User> {
     @Override
     public List<User> findAll() {
         List<User> users = new ArrayList<>();
-        String query = "SELECT * FROM users";
+        String query = "SELECT * FROM users WHERE rol != 'CUSTOMER'";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(query);
              ResultSet rs = stmt.executeQuery()) {
@@ -158,7 +158,7 @@ public class UserDAO implements GetterDAO<Long, User> {
     }
 
     public void insertCredentials(Connection conn, Long userId, String username, String password) throws SQLException {
-        String query = "INSERT INTO user_credentials (user_id, username, password) VALUES (?, ?, ?)";
+        String query = "INSERT INTO user_credentials (user_id, username, password) VALUES (?, ?, SHA2(?, 256))";
         try (PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setLong(1, userId);
             stmt.setString(2, username);
@@ -182,7 +182,7 @@ public class UserDAO implements GetterDAO<Long, User> {
 
     public void updateCredentials(Connection conn, Long userId, String username, String password) throws SQLException {
         if (password != null && !password.isEmpty()) {
-            String query = "UPDATE user_credentials SET username=?, password=? WHERE user_id=?";
+            String query = "UPDATE user_credentials SET username=?, password=SHA2(?, 256) WHERE user_id=?";
             try (PreparedStatement stmt = conn.prepareStatement(query)) {
                 stmt.setString(1, username);
                 stmt.setString(2, password);
@@ -224,5 +224,35 @@ public class UserDAO implements GetterDAO<Long, User> {
             
         }
         return false;
+    }
+
+    public List<UserDTO> findUsersByFilter(String filterType) {
+        List<UserDTO> users = new ArrayList<>();
+        String query = "SELECT u.*, uc.username FROM users u LEFT JOIN user_credentials uc ON u.id = uc.user_id";
+        
+        if ("Clientes".equals(filterType)) {
+            query += " WHERE u.rol = 'CUSTOMER'";
+        } else if ("Trabajadores".equals(filterType)) {
+            query += " WHERE u.rol IN ('EMPLOYEE', 'MANAGER')";
+        }
+        
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query);
+             ResultSet rs = stmt.executeQuery()) {
+            while (rs.next()) {
+                UserDTO dto = new UserDTO();
+                dto.setId(rs.getLong("id"));
+                dto.setFirstName(rs.getString("first_name"));
+                dto.setLastName(rs.getString("last_name"));
+                dto.setEmail(rs.getString("email"));
+                dto.setPhone(rs.getString("phone"));
+                dto.setActive(rs.getBoolean("active"));
+                dto.setRol(UserRole.fromString(rs.getString("rol")));
+                dto.setUsername(rs.getString("username"));
+                users.add(dto);
+            }
+        } catch (SQLException e) {
+        }
+        return users;
     }
 }
