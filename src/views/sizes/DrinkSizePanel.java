@@ -1,8 +1,9 @@
-package views;
+package views.sizes;
 
 import constants.Colors;
 import controllers.DrinkSizeController;
 import models.Size;
+import views.Dashboard;
 
 import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;

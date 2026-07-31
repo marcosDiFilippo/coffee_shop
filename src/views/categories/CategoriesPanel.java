@@ -1,8 +1,9 @@
-package views;
+package views.categories;
 
 import constants.Colors;
 import controllers.CategoryController;
 import dtos.CategoryDTO;
+import views.Dashboard;
 
 import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;

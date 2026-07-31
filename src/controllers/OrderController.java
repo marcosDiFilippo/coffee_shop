@@ -9,9 +9,9 @@ import models.Product;
 import models.Size;
 import services.OrderService;
 import views.Dashboard;
-import views.OrderPanel;
-import views.ProductsByCategoryPanel;
-import views.SelectCategoryPanel;
+import views.orders.OrderPanel;
+import views.orders.ProductsByCategoryPanel;
+import views.orders.SelectCategoryPanel;
 
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -20,7 +20,7 @@ import java.util.List;
 import services.SizeService;
 import dtos.UserDTO;
 import java.math.BigDecimal;
-import views.CustomerDialog;
+import views.orders.CustomerDialog;
 
 public class OrderController {
     private List<OrderItemDTO> cartItems;

@@ -1,4 +1,4 @@
-package views;
+package views.orders;
 
 import constants.Colors;
 import controllers.OrderController;

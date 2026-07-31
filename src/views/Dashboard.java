@@ -3,6 +3,12 @@ package views;
 import constants.Colors;
 import enums.UserRole;
 import models.User;
+import views.categories.CategoriesPanel;
+import views.orders.OrderHistoryPanel;
+import views.products.ProductsPanel;
+import views.sizes.DrinkSizePanel;
+import views.users.UsersPanel;
+import views.stats.StatsPanel;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;

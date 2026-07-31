@@ -5,8 +5,8 @@ import exceptions.TransactionFailedException;
 import models.Size;
 import services.SizeService;
 import views.Dashboard;
-import views.DrinkSizeForm;
-import views.DrinkSizePanel;
+import views.sizes.DrinkSizeForm;
+import views.sizes.DrinkSizePanel;
 
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;

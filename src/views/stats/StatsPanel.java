@@ -1,4 +1,4 @@
-package views;
+package views.stats;
 
 import constants.Colors;
 

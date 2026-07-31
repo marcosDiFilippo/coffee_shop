@@ -5,8 +5,8 @@ import exceptions.InvalidDataException;
 import exceptions.TransactionFailedException;
 import models.Category;
 import services.CategoryService;
-import views.CategoriesPanel;
-import views.CategoryFormDialog;
+import views.categories.CategoriesPanel;
+import views.categories.CategoryFormDialog;
 
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;

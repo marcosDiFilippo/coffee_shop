@@ -5,8 +5,8 @@ import exceptions.InvalidDataException;
 import exceptions.TransactionFailedException;
 import models.Product;
 import services.ProductService;
-import views.ProductsPanel;
-import views.ProductFormDialog;
+import views.products.ProductsPanel;
+import views.products.ProductFormDialog;
 
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;

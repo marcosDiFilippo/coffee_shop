@@ -1,4 +1,4 @@
-package views;
+package views.categories;
 
 import constants.Colors;
 import controllers.CategoryController;

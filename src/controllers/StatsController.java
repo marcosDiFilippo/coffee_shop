@@ -2,7 +2,7 @@ package controllers;
 
 import dtos.CategoryTopProductDTO;
 import services.StatsService;
-import views.StatsPanel;
+import views.stats.StatsPanel;
 
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;

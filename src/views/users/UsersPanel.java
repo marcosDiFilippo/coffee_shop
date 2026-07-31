@@ -1,7 +1,8 @@
-package views;
+package views.users;
 
 import constants.Colors;
 import controllers.UserController;
+import views.Dashboard;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;

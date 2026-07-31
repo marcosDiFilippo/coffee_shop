@@ -2,8 +2,8 @@ package controllers;
 
 import models.Order;
 import services.OrderService;
-import views.OrderHistoryPanel;
-import views.OrderManagementDialog;
+import views.orders.OrderHistoryPanel;
+import views.orders.OrderManagementDialog;
 import views.Dashboard;
 
 import javax.swing.SwingUtilities;

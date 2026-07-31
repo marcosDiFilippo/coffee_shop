@@ -5,8 +5,8 @@ import exceptions.TransactionFailedException;
 import models.User;
 import services.UserService;
 import views.Dashboard;
-import views.UserFormDialog;
-import views.UsersPanel;
+import views.users.UserFormDialog;
+import views.users.UsersPanel;
 
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;

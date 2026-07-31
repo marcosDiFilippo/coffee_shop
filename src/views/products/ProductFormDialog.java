@@ -1,4 +1,4 @@
-package views;
+package views.products;
 
 import constants.Colors;
 import controllers.ProductController;

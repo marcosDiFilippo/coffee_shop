@@ -1,4 +1,4 @@
-package views;
+package views.sizes;
 
 import constants.Colors;
 import models.Size;
