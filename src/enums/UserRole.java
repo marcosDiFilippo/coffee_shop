@@ -3,8 +3,7 @@ package enums;
 public enum UserRole {
     CUSTOMER("Cliente"),
     EMPLOYEE("Empleado"),
-    MANAGER("Gerente"),
-    ADMIN("Administrador");
+    MANAGER("Gerente");
 
     private String displayName;
 

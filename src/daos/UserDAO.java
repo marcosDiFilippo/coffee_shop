@@ -103,7 +103,7 @@ public class UserDAO implements GetterDAO<Long, User> {
 
     public List<UserDTO> findAllDTOs() {
         List<UserDTO> users = new ArrayList<>();
-        String query = "SELECT u.*, uc.username FROM users u LEFT JOIN user_credentials uc ON u.id = uc.user_id WHERE u.rol IN ('EMPLOYEE', 'MANAGER', 'ADMIN')";
+        String query = "SELECT u.*, uc.username FROM users u LEFT JOIN user_credentials uc ON u.id = uc.user_id WHERE u.rol IN ('EMPLOYEE', 'MANAGER')";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(query);
              ResultSet rs = stmt.executeQuery()) {

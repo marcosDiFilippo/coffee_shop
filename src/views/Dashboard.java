@@ -177,7 +177,7 @@ public class Dashboard extends JFrame {
         });
         
         
-        if (currentUser.getRol() == UserRole.MANAGER || currentUser.getRol() == UserRole.ADMIN) {
+        if (currentUser.getRol() == UserRole.MANAGER) {
             JButton btnUsers = new JButton("Usuarios");
             btnUsers.setBackground(Colors.WARM_CAPP.getColor());
             btnUsers.setForeground(Colors.CREAMY_LATTE.getColor());
