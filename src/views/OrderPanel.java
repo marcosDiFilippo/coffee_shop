@@ -5,16 +5,20 @@ import controllers.OrderController;
 import dtos.OrderItemDTO;
 
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 
 public class OrderPanel extends JPanel {
@@ -74,7 +78,7 @@ public class OrderPanel extends JPanel {
             lblName.setBounds(20, 25, 400, 30);
             itemPanel.add(lblName);
             
-            JLabel lblPrice = new JLabel("$ " + item.getSubtotal().setScale(2, java.math.RoundingMode.HALF_UP).toString());
+            JLabel lblPrice = new JLabel("$ " + item.getSubtotal().setScale(2, RoundingMode.HALF_UP).toString());
             lblPrice.setFont(new Font("Segoe UI", Font.BOLD, 16));
             lblPrice.setForeground(Colors.WARM_CAPP.getColor());
             lblPrice.setBounds(450, 25, 100, 30);
@@ -142,7 +146,7 @@ public class OrderPanel extends JPanel {
         scrollPane.setBorder(null);
         add(scrollPane);
 
-        JLabel lblTotal = new JLabel("TOTAL: $ " + total.setScale(2, java.math.RoundingMode.HALF_UP).toString());
+        JLabel lblTotal = new JLabel("TOTAL: $ " + total.setScale(2, RoundingMode.HALF_UP).toString());
         lblTotal.setForeground(Colors.MOCHA_BEAN.getColor());
         lblTotal.setFont(new Font("Segoe UI", Font.BOLD, 28));
         lblTotal.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -163,7 +167,7 @@ public class OrderPanel extends JPanel {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if (!cartItems.isEmpty()) {
-                    views.CustomerDialog dialog = new views.CustomerDialog((javax.swing.JFrame) javax.swing.SwingUtilities.getWindowAncestor(OrderPanel.this), controller);
+                    CustomerDialog dialog = new CustomerDialog((JFrame) SwingUtilities.getWindowAncestor(OrderPanel.this), controller);
                     dialog.setVisible(true);
                 }
             }

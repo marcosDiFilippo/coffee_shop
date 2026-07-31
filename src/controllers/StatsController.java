@@ -8,6 +8,7 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import java.math.BigDecimal;
 import java.util.List;
+import exceptions.TransactionFailedException;
 
 public class StatsController {
 
@@ -39,7 +40,7 @@ public class StatsController {
                     dto.getTotalSold()
                 });
             }
-        } catch (exceptions.TransactionFailedException e) {
+        } catch (TransactionFailedException e) {
             JOptionPane.showMessageDialog(panel, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(panel, "Ha ocurrido un error en el sistema, por favor vuelva intentarlo.", "Error Grave", JOptionPane.ERROR_MESSAGE);

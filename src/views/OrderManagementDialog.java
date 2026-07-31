@@ -22,6 +22,7 @@ import java.awt.Frame;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.List;
+import exceptions.InvalidOrderStateException;
 
 public class OrderManagementDialog extends JDialog {
     private static final long serialVersionUID = 1L;
@@ -131,7 +132,7 @@ public class OrderManagementDialog extends JDialog {
                     JOptionPane.showMessageDialog(OrderManagementDialog.this, "Estado actualizado con éxito.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
                     controller.loadOrders();
                     dispose();
-                } catch (exceptions.InvalidOrderStateException ex) {
+                } catch (InvalidOrderStateException ex) {
                     JOptionPane.showMessageDialog(OrderManagementDialog.this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(OrderManagementDialog.this, "Ha ocurrido un error en el sistema, por favor vuelva intentarlo.", "Error Grave", JOptionPane.ERROR_MESSAGE);

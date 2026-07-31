@@ -15,6 +15,7 @@ import java.awt.Font;
 import java.awt.Frame;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import javax.swing.JOptionPane;
 
 public class CustomerDialog extends JDialog {
 
@@ -105,19 +106,19 @@ public class CustomerDialog extends JDialog {
                 String phone = txtPhone.getText().trim();
 
                 if (fname.isEmpty()) {
-                    javax.swing.JOptionPane.showMessageDialog(CustomerDialog.this, "El Nombre es obligatorio.", "Error de Validación", javax.swing.JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(CustomerDialog.this, "El Nombre es obligatorio.", "Error de Validación", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
                 if (lname.isEmpty()) {
-                    javax.swing.JOptionPane.showMessageDialog(CustomerDialog.this, "El Apellido es obligatorio.", "Error de Validación", javax.swing.JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(CustomerDialog.this, "El Apellido es obligatorio.", "Error de Validación", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
                 if (email.isEmpty() || !email.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
-                    javax.swing.JOptionPane.showMessageDialog(CustomerDialog.this, "El Email es obligatorio y debe tener un formato válido.", "Error de Validación", javax.swing.JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(CustomerDialog.this, "El Email es obligatorio y debe tener un formato válido.", "Error de Validación", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
                 if (phone.isEmpty()) {
-                    javax.swing.JOptionPane.showMessageDialog(CustomerDialog.this, "El Teléfono es obligatorio.", "Error de Validación", javax.swing.JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(CustomerDialog.this, "El Teléfono es obligatorio.", "Error de Validación", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
 

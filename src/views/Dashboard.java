@@ -14,6 +14,8 @@ import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import controllers.OrderController;
+import controllers.StatsController;
 
 public class Dashboard extends JFrame {
 
@@ -75,7 +77,7 @@ public class Dashboard extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if (mainContentPanel != null) {
-                    controllers.OrderController orderController = new controllers.OrderController(Dashboard.this, mainContentPanel);
+                    OrderController orderController = new OrderController(Dashboard.this, mainContentPanel);
                     orderController.startNewOrder();
                 }
             }
@@ -195,7 +197,7 @@ public class Dashboard extends JFrame {
                     if (mainContentPanel != null) {
                         mainContentPanel.removeAll();
                         StatsPanel statsPanel = new StatsPanel();
-                        new controllers.StatsController(statsPanel);
+                        new StatsController(statsPanel);
                         mainContentPanel.add(statsPanel);
                         mainContentPanel.revalidate();
                         mainContentPanel.repaint();

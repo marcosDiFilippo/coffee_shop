@@ -17,6 +17,10 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import java.util.ArrayList;
 import java.util.List;
+import daos.SizeDAO;
+import dtos.UserDTO;
+import java.math.BigDecimal;
+import views.CustomerDialog;
 
 public class OrderController {
     private List<OrderItemDTO> cartItems;
@@ -58,15 +62,15 @@ public class OrderController {
         mainContentPanel.repaint();
     }
 
-    public java.math.BigDecimal calculateSubtotal(OrderItemDTO item) {
-        java.math.BigDecimal multiplier = (item.getSize() != null) ? item.getSize().getPriceMultiplier() : java.math.BigDecimal.ONE;
-        return item.getProduct().getBasePrice().multiply(multiplier).multiply(new java.math.BigDecimal(item.getQuantity()));
+    public BigDecimal calculateSubtotal(OrderItemDTO item) {
+        BigDecimal multiplier = (item.getSize() != null) ? item.getSize().getPriceMultiplier() : BigDecimal.ONE;
+        return item.getProduct().getBasePrice().multiply(multiplier).multiply(new BigDecimal(item.getQuantity()));
     }
 
     public void addToCart(Product product) {
         if (product.getCategory() != null && product.getCategory().isRequiresSize()) {
-            daos.SizeDAO sizeDAO = new daos.SizeDAO();
-            List<models.Size> sizes = sizeDAO.findAll();
+            SizeDAO sizeDAO = new SizeDAO();
+            List<Size> sizes = sizeDAO.findAll();
             if (!sizes.isEmpty()) {
                 String[] options = new String[sizes.size()];
                 for (int i = 0; i < sizes.size(); i++) {
@@ -141,8 +145,8 @@ public class OrderController {
         return cartItems;
     }
 
-    public void processCheckout(dtos.UserDTO customerDTO, views.CustomerDialog dialog) {
-        java.math.BigDecimal total = java.math.BigDecimal.ZERO;
+    public void processCheckout(UserDTO customerDTO, CustomerDialog dialog) {
+        BigDecimal total = BigDecimal.ZERO;
         for (OrderItemDTO item : cartItems) {
             total = total.add(item.getSubtotal());
         }
