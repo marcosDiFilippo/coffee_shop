@@ -20,7 +20,6 @@ import java.awt.Font;
 import java.awt.Frame;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.math.BigDecimal;
 import java.util.List;
 
 public class ProductFormDialog extends JDialog {
@@ -137,11 +136,11 @@ public class ProductFormDialog extends JDialog {
                 String name = txtName.getText();
                 String description = txtDescription.getText();
                 
-                BigDecimal price;
+                Double price;
                 try {
-                    price = new BigDecimal(txtBasePrice.getText());
+                    price = new Double(txtBasePrice.getText());
                 } catch (NumberFormatException ex) {
-                    price = BigDecimal.ZERO;
+                    price = 0.0;
                 }
                 
                 CategoryItem selectedCat = (CategoryItem) cbCategories.getSelectedItem();

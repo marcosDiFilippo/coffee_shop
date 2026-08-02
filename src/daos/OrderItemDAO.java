@@ -27,8 +27,8 @@ public class OrderItemDAO implements GetterDAO<Long, OrderItem> {
                  item.setOrderId(rs.getLong("order_id"));
                  item.setProductId(rs.getLong("product_id"));
                  item.setQuantity(rs.getInt("quantity"));
-                 item.setUnitPrice(rs.getBigDecimal("unit_price"));
-                 item.setSubtotal(rs.getBigDecimal("subtotal"));
+                 item.setUnitPrice(rs.getDouble("unit_price"));
+                 item.setSubtotal(rs.getDouble("subtotal"));
                  item.setProductName(rs.getString("product_name"));
                  item.setSizeName(rs.getString("size_name"));
                  long sizeId = rs.getLong("size_id");
@@ -52,8 +52,8 @@ public class OrderItemDAO implements GetterDAO<Long, OrderItem> {
                 stmt.setNull(3, java.sql.Types.BIGINT);
             }
             stmt.setInt(4, item.getQuantity());
-            stmt.setBigDecimal(5, item.getUnitPrice());
-            stmt.setBigDecimal(6, item.getSubtotal());
+            stmt.setDouble(5, item.getUnitPrice());
+            stmt.setDouble(6, item.getSubtotal());
             
             stmt.executeUpdate();
         }
@@ -76,8 +76,8 @@ public class OrderItemDAO implements GetterDAO<Long, OrderItem> {
                     item.setOrderId(rs.getLong("order_id"));
                     item.setProductId(rs.getLong("product_id"));
                     item.setQuantity(rs.getInt("quantity"));
-                    item.setUnitPrice(rs.getBigDecimal("unit_price"));
-                    item.setSubtotal(rs.getBigDecimal("subtotal"));
+                    item.setUnitPrice(rs.getDouble("unit_price"));
+                    item.setSubtotal(rs.getDouble("subtotal"));
                     item.setProductName(rs.getString("product_name"));
                     item.setSizeName(rs.getString("size_name"));
                     long sizeId = rs.getLong("size_id");
@@ -109,8 +109,8 @@ public class OrderItemDAO implements GetterDAO<Long, OrderItem> {
                      item.setOrderId(rs.getLong("order_id"));
                      item.setProductId(rs.getLong("product_id"));
                      item.setQuantity(rs.getInt("quantity"));
-                     item.setUnitPrice(rs.getBigDecimal("unit_price"));
-                     item.setSubtotal(rs.getBigDecimal("subtotal"));
+                     item.setUnitPrice(rs.getDouble("unit_price"));
+                     item.setSubtotal(rs.getDouble("subtotal"));
                      item.setProductName(rs.getString("product_name"));
                      item.setSizeName(rs.getString("size_name"));
                      long sizeId = rs.getLong("size_id");

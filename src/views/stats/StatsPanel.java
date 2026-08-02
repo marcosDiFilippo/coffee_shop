@@ -24,10 +24,9 @@ public class StatsPanel extends JPanel {
         setBounds(0, 0, 1030, 660);
 
         JLabel lblTitle = new JLabel("ESTADÍSTICAS DEL SISTEMA");
-        lblTitle.setHorizontalAlignment(SwingConstants.CENTER);
         lblTitle.setForeground(Colors.MOCHA_BEAN.getColor());
         lblTitle.setFont(new Font("Segoe UI", Font.BOLD, 24));
-        lblTitle.setBounds(0, 30, 1030, 40);
+        lblTitle.setBounds(30, 20, 500, 40);
         add(lblTitle);
 
         JPanel pnlTotalProducts = new JPanel();

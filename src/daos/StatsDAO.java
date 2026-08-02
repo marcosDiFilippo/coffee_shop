@@ -3,7 +3,6 @@ package daos;
 import config.DatabaseConnection;
 import dtos.CategoryTopProductDTO;
 
-import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -25,19 +24,19 @@ public class StatsDAO {
         return 0;
     }
 
-    public BigDecimal getTotalRevenue() throws SQLException {
+    public Double getTotalRevenue() throws SQLException {
         String sql = "SELECT SUM(total) FROM orders WHERE status = 'DELIVERED'";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql);
              ResultSet rs = stmt.executeQuery()) {
             if (rs.next()) {
-                BigDecimal sum = rs.getBigDecimal(1);
+                Double sum = rs.getDouble(1);
                 if (sum != null) {
                     return sum;
                 }
             }
         }
-        return BigDecimal.ZERO;
+        return 0.0;
     }
 
     public List<CategoryTopProductDTO> getTopProductsByCategory() throws SQLException {

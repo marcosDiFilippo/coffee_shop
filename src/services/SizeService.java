@@ -5,7 +5,6 @@ import exceptions.InvalidDataException;
 import exceptions.TransactionFailedException;
 import models.Size;
 
-import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -25,7 +24,7 @@ public class SizeService {
         if (size.getName() == null || size.getName().trim().isEmpty()) {
             throw new InvalidDataException("El nombre del tamaño no puede estar vacío.");
         }
-        if (size.getPriceMultiplier() == null || size.getPriceMultiplier().compareTo(BigDecimal.ZERO) <= 0) {
+        if (size.getPriceMultiplier() == null || size.getPriceMultiplier() <= 0.0) {
             throw new InvalidDataException("El multiplicador de precio debe ser mayor a 0.");
         }
 

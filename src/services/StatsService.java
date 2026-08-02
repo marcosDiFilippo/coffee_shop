@@ -4,7 +4,6 @@ import daos.StatsDAO;
 import dtos.CategoryTopProductDTO;
 import exceptions.TransactionFailedException;
 
-import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -27,7 +26,7 @@ public class StatsService {
         }
     }
 
-    public BigDecimal getTotalRevenue() {
+    public Double getTotalRevenue() {
         try {
             return statsDAO.getTotalRevenue();
         } catch (SQLException e) {

@@ -8,6 +8,7 @@ import views.Dashboard;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -22,7 +23,6 @@ import java.awt.GridBagLayout;
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.math.BigDecimal;
 
 public class ProductsPanel extends JPanel {
 
@@ -37,12 +37,18 @@ public class ProductsPanel extends JPanel {
         setLayout(null);
         setBounds(0, 0, 1030, 660);
 
+        JLabel lblTitle = new JLabel("GESTIÓN DE PRODUCTOS");
+        lblTitle.setForeground(Colors.MOCHA_BEAN.getColor());
+        lblTitle.setFont(new Font("Segoe UI", Font.BOLD, 24));
+        lblTitle.setBounds(30, 20, 500, 40);
+        add(lblTitle);
+
         btnAddProduct = new JButton("Agregar Producto");
         btnAddProduct.setBackground(Colors.WARM_CAPP.getColor());
         btnAddProduct.setForeground(Colors.CREAMY_LATTE.getColor());
         btnAddProduct.setFont(new Font("Segoe UI", Font.BOLD, 14));
         btnAddProduct.setFocusPainted(false);
-        btnAddProduct.setBounds(30, 30, 180, 40);
+        btnAddProduct.setBounds(30, 80, 180, 40);
         btnAddProduct.setBorder(null);
         btnAddProduct.addMouseListener(new MouseAdapter() {
             @Override
@@ -55,7 +61,7 @@ public class ProductsPanel extends JPanel {
         add(btnAddProduct);
 
         JScrollPane scrollPane = new JScrollPane();
-        scrollPane.setBounds(30, 90, 970, 530);
+        scrollPane.setBounds(30, 140, 970, 480);
         add(scrollPane);
 
         String[] columnNames = {"ID", "Nombre", "Precio", "Estado", "Categoría", "Descripción", "CatID", "Acciones"};
@@ -163,7 +169,7 @@ public class ProductsPanel extends JPanel {
                 if (row != -1) {
                     Long id = (Long) tableModel.getValueAt(row, 0);
                     String name = (String) tableModel.getValueAt(row, 1);
-                    BigDecimal price = (BigDecimal) tableModel.getValueAt(row, 2);
+                    Double price = (Double) tableModel.getValueAt(row, 2);
                     boolean active = tableModel.getValueAt(row, 3).equals("Disponible");
                     String desc = (String) tableModel.getValueAt(row, 5);
                     Long catId = (Long) tableModel.getValueAt(row, 6);

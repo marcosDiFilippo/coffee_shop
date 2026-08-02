@@ -12,7 +12,6 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.math.BigDecimal;
 import java.util.List;
 
 public class DrinkSizeController {
@@ -82,9 +81,9 @@ public class DrinkSizeController {
         try {
             String name = form.getTxtName().getText();
             String multiplierStr = form.getTxtMultiplier().getText();
-            BigDecimal multiplier;
+            Double multiplier;
             try {
-                multiplier = new BigDecimal(multiplierStr);
+                multiplier = new Double(multiplierStr);
             } catch (NumberFormatException ex) {
                 throw new InvalidDataException("El multiplicador de precio debe ser un número decimal válido.");
             }

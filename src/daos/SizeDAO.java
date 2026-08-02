@@ -24,7 +24,7 @@ public class SizeDAO implements GetterDAO<Long, Size> {
                  Size size = new Size();
                  size.setId(rs.getLong("id"));
                  size.setName(rs.getString("name"));
-                 size.setPriceMultiplier(rs.getBigDecimal("price_multiplier"));
+                 size.setPriceMultiplier(rs.getDouble("price_multiplier"));
                  size.setActive(rs.getBoolean("active"));
                  sizes.add(size);
              }
@@ -44,7 +44,7 @@ public class SizeDAO implements GetterDAO<Long, Size> {
                      Size size = new Size();
                      size.setId(rs.getLong("id"));
                      size.setName(rs.getString("name"));
-                     size.setPriceMultiplier(rs.getBigDecimal("price_multiplier"));
+                     size.setPriceMultiplier(rs.getDouble("price_multiplier"));
                      size.setActive(rs.getBoolean("active"));
                      return size;
                  }
@@ -59,7 +59,7 @@ public class SizeDAO implements GetterDAO<Long, Size> {
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setString(1, size.getName());
-            stmt.setBigDecimal(2, size.getPriceMultiplier());
+            stmt.setDouble(2, size.getPriceMultiplier());
             stmt.executeUpdate();
         }
     }
@@ -69,7 +69,7 @@ public class SizeDAO implements GetterDAO<Long, Size> {
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setString(1, size.getName());
-            stmt.setBigDecimal(2, size.getPriceMultiplier());
+            stmt.setDouble(2, size.getPriceMultiplier());
             stmt.setLong(3, size.getId());
             stmt.executeUpdate();
         }
@@ -97,7 +97,7 @@ public class SizeDAO implements GetterDAO<Long, Size> {
                  Size size = new Size();
                  size.setId(rs.getLong("id"));
                  size.setName(rs.getString("name"));
-                 size.setPriceMultiplier(rs.getBigDecimal("price_multiplier"));
+                 size.setPriceMultiplier(rs.getDouble("price_multiplier"));
                  size.setActive(rs.getBoolean("active"));
                  sizes.add(size);
              }

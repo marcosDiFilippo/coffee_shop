@@ -2,13 +2,12 @@ package dtos;
 
 import models.Product;
 import models.Size;
-import java.math.BigDecimal;
 
 public class OrderItemDTO {
     private Product product;
     private int quantity;
     private Size size;
-    private BigDecimal subtotal;
+    private Double subtotal;
 
     public OrderItemDTO(Product product, int quantity, Size size) {
         this.product = product;
@@ -40,11 +39,11 @@ public class OrderItemDTO {
         this.size = size;
     }
 
-    public BigDecimal getSubtotal() {
+    public Double getSubtotal() {
         return subtotal;
     }
 
-    public void setSubtotal(BigDecimal subtotal) {
+    public void setSubtotal(Double subtotal) {
         this.subtotal = subtotal;
     }
 }

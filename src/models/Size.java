@@ -1,10 +1,9 @@
 package models;
 
-import java.math.BigDecimal;
 
 public class Size extends BaseModel {
     private String name;
-    private BigDecimal priceMultiplier;
+    private Double priceMultiplier;
     private boolean active;
 
     public Size() {}
@@ -17,11 +16,11 @@ public class Size extends BaseModel {
         this.name = name;
     }
 
-    public BigDecimal getPriceMultiplier() {
+    public Double getPriceMultiplier() {
         return priceMultiplier;
     }
 
-    public void setPriceMultiplier(BigDecimal priceMultiplier) {
+    public void setPriceMultiplier(Double priceMultiplier) {
         this.priceMultiplier = priceMultiplier;
     }
 

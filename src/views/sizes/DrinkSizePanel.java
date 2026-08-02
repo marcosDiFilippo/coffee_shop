@@ -23,7 +23,6 @@ import java.awt.GridBagLayout;
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.math.BigDecimal;
 
 public class DrinkSizePanel extends JPanel {
     private static final long serialVersionUID = 1L;
@@ -139,7 +138,7 @@ public class DrinkSizePanel extends JPanel {
                 if (row != -1) {
                     Long id = (Long) tableModel.getValueAt(row, 0);
                     String name = (String) tableModel.getValueAt(row, 1);
-                    BigDecimal multiplier = (BigDecimal) tableModel.getValueAt(row, 2);
+                    Double multiplier = (Double) tableModel.getValueAt(row, 2);
                     
                     TableCellEditor editor = table.getCellEditor();
                     if (editor != null) editor.stopCellEditing();

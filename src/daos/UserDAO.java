@@ -101,29 +101,6 @@ public class UserDAO implements GetterDAO<Long, User> {
         return null;
     }
 
-    public List<UserDTO> findAllDTOs() {
-        List<UserDTO> users = new ArrayList<>();
-        String query = "SELECT u.*, uc.username FROM users u LEFT JOIN user_credentials uc ON u.id = uc.user_id WHERE u.rol IN ('EMPLOYEE', 'MANAGER')";
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(query);
-             ResultSet rs = stmt.executeQuery()) {
-            while (rs.next()) {
-                UserDTO dto = new UserDTO();
-                dto.setId(rs.getLong("id"));
-                dto.setFirstName(rs.getString("first_name"));
-                dto.setLastName(rs.getString("last_name"));
-                dto.setEmail(rs.getString("email"));
-                dto.setPhone(rs.getString("phone"));
-                dto.setActive(rs.getBoolean("active"));
-                dto.setRol(UserRole.fromString(rs.getString("rol")));
-                dto.setUsername(rs.getString("username"));
-                users.add(dto);
-            }
-        } catch (SQLException e) {
-        }
-        return users;
-    }
-
     @Override
     public List<User> findAll() {
         List<User> users = new ArrayList<>();

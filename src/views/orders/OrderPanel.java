@@ -17,8 +17,6 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.List;
 
 public class OrderPanel extends JPanel {
@@ -57,10 +55,10 @@ public class OrderPanel extends JPanel {
         listContainer.setLayout(null);
         
         int y = 0;
-        BigDecimal total = BigDecimal.ZERO;
+        Double total = 0.0;
 
         for (OrderItemDTO item : cartItems) {
-            total = total.add(item.getSubtotal());
+            total += item.getSubtotal();
 
             JPanel itemPanel = new JPanel();
             itemPanel.setBackground(Color.WHITE);
@@ -78,7 +76,7 @@ public class OrderPanel extends JPanel {
             lblName.setBounds(20, 25, 400, 30);
             itemPanel.add(lblName);
             
-            JLabel lblPrice = new JLabel("$ " + item.getSubtotal().setScale(2, RoundingMode.HALF_UP).toString());
+            JLabel lblPrice = new JLabel(String.format("$ %.2f", item.getSubtotal()));
             lblPrice.setFont(new Font("Segoe UI", Font.BOLD, 16));
             lblPrice.setForeground(Colors.WARM_CAPP.getColor());
             lblPrice.setBounds(450, 25, 100, 30);
@@ -146,7 +144,7 @@ public class OrderPanel extends JPanel {
         scrollPane.setBorder(null);
         add(scrollPane);
 
-        JLabel lblTotal = new JLabel("TOTAL: $ " + total.setScale(2, RoundingMode.HALF_UP).toString());
+        JLabel lblTotal = new JLabel(String.format("TOTAL: $ %.2f", total));
         lblTotal.setForeground(Colors.MOCHA_BEAN.getColor());
         lblTotal.setFont(new Font("Segoe UI", Font.BOLD, 28));
         lblTotal.setHorizontalAlignment(SwingConstants.RIGHT);

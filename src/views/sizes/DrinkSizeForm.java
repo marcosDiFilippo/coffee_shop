@@ -33,7 +33,7 @@ public class DrinkSizeForm extends JDialog {
             currentSizeId = null;
         }
 
-        setBounds(100, 100, 400, 340);
+        setBounds(100, 100, 400, 500);
         setLocationRelativeTo(parent);
         setResizable(false);
 
@@ -53,12 +53,12 @@ public class DrinkSizeForm extends JDialog {
         JLabel lblName = new JLabel("Nombre:");
         lblName.setForeground(Colors.MOCHA_BEAN.getColor());
         lblName.setFont(new Font("Segoe UI", Font.BOLD, 14));
-        lblName.setBounds(40, 70, 300, 20);
+        lblName.setBounds(40, 60, 300, 20);
         contentPane.add(lblName);
 
         txtName = new JTextField();
         txtName.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-        txtName.setBounds(40, 95, 304, 35);
+        txtName.setBounds(40, 90, 304, 35);
         if (sizeModel != null && sizeModel.getName() != null) {
             txtName.setText(sizeModel.getName());
         }
@@ -67,28 +67,34 @@ public class DrinkSizeForm extends JDialog {
         JLabel lblMultiplier = new JLabel("Multiplicador de Precio (ej. 1.5):");
         lblMultiplier.setForeground(Colors.MOCHA_BEAN.getColor());
         lblMultiplier.setFont(new Font("Segoe UI", Font.BOLD, 14));
-        lblMultiplier.setBounds(40, 140, 300, 20);
+        lblMultiplier.setBounds(40, 150, 300, 20);
         contentPane.add(lblMultiplier);
 
         txtMultiplier = new JTextField();
         txtMultiplier.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-        txtMultiplier.setBounds(40, 165, 304, 35);
+        txtMultiplier.setBounds(40, 180, 304, 35);
         if (sizeModel != null && sizeModel.getPriceMultiplier() != null) {
             txtMultiplier.setText(sizeModel.getPriceMultiplier().toString());
         }
         contentPane.add(txtMultiplier);
 
-        JLabel lblMultiplierHelp = new JLabel("<html>Ej: Si el producto base cuesta $1000 y el multiplicador es 1.5, el precio final será $1500.</html>");
+        javax.swing.JTextArea lblMultiplierHelp = new javax.swing.JTextArea("Ej: Si el producto base cuesta $1000 y el multiplicador es 1.5, el precio final será $1500.\n\nAviso: Ten en cuenta que si pones menor a 1.0 el precio base del producto va a ser más bajo.");
         lblMultiplierHelp.setForeground(Colors.MOCHA_BEAN.getColor());
-        lblMultiplierHelp.setFont(new Font("Segoe UI", Font.PLAIN, 12));
-        lblMultiplierHelp.setBounds(40, 200, 304, 40);
+        lblMultiplierHelp.setFont(new Font("Segoe UI", Font.PLAIN, 11));
+        lblMultiplierHelp.setBounds(40, 230, 304, 80);
+        lblMultiplierHelp.setWrapStyleWord(true);
+        lblMultiplierHelp.setLineWrap(true);
+        lblMultiplierHelp.setOpaque(false);
+        lblMultiplierHelp.setEditable(false);
+        lblMultiplierHelp.setFocusable(false);
+        lblMultiplierHelp.setBackground(Colors.CREAMY_LATTE.getColor());
         contentPane.add(lblMultiplierHelp);
 
         btnSave = new JButton("Guardar");
         btnSave.setBackground(Colors.WARM_CAPP.getColor());
         btnSave.setForeground(Colors.CREAMY_LATTE.getColor());
         btnSave.setFont(new Font("Segoe UI", Font.BOLD, 14));
-        btnSave.setBounds(40, 250, 145, 40);
+        btnSave.setBounds(40, 350, 145, 40);
         btnSave.setFocusPainted(false);
         btnSave.setBorder(null);
         contentPane.add(btnSave);
@@ -97,7 +103,7 @@ public class DrinkSizeForm extends JDialog {
         btnCancel.setBackground(Colors.MOCHA_BEAN.getColor());
         btnCancel.setForeground(Colors.CREAMY_LATTE.getColor());
         btnCancel.setFont(new Font("Segoe UI", Font.BOLD, 14));
-        btnCancel.setBounds(199, 250, 145, 40);
+        btnCancel.setBounds(199, 350, 145, 40);
         btnCancel.setFocusPainted(false);
         btnCancel.setBorder(null);
         contentPane.add(btnCancel);

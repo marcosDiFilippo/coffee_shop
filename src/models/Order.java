@@ -1,13 +1,12 @@
 package models;
 
 import enums.OrderStatus;
-import java.math.BigDecimal;
 
 public class Order extends BaseModel {
     private Long customerId;
     private Long employeeId;
     private OrderStatus status;
-    private BigDecimal total;
+    private Double total;
     private String customerName;
 
     public Order() {}
@@ -36,11 +35,11 @@ public class Order extends BaseModel {
         this.status = status;
     }
 
-    public BigDecimal getTotal() {
+    public Double getTotal() {
         return total;
     }
 
-    public void setTotal(BigDecimal total) {
+    public void setTotal(Double total) {
         this.total = total;
     }
 

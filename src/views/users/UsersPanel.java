@@ -5,6 +5,7 @@ import controllers.UserController;
 import views.Dashboard;
 
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -38,12 +39,18 @@ public class UsersPanel extends JPanel {
         setLayout(null);
         setBounds(0, 0, 1030, 660);
 
+        JLabel lblTitle = new JLabel("GESTIÓN DE USUARIOS");
+        lblTitle.setForeground(Colors.MOCHA_BEAN.getColor());
+        lblTitle.setFont(new Font("Segoe UI", Font.BOLD, 24));
+        lblTitle.setBounds(30, 20, 500, 40);
+        add(lblTitle);
+
         btnAddUser = new JButton("Agregar Usuario");
         btnAddUser.setBackground(Colors.WARM_CAPP.getColor());
         btnAddUser.setForeground(Colors.CREAMY_LATTE.getColor());
         btnAddUser.setFont(new Font("Segoe UI", Font.BOLD, 14));
         btnAddUser.setFocusPainted(false);
-        btnAddUser.setBounds(30, 30, 180, 40);
+        btnAddUser.setBounds(30, 80, 180, 40);
         btnAddUser.setBorder(null);
         btnAddUser.addMouseListener(new MouseAdapter() {
             @Override
@@ -58,7 +65,7 @@ public class UsersPanel extends JPanel {
         String[] filterOptions = {"Todos", "Clientes", "Trabajadores"};
         cmbFilter = new JComboBox<>(filterOptions);
         cmbFilter.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-        cmbFilter.setBounds(230, 30, 180, 40);
+        cmbFilter.setBounds(230, 80, 180, 40);
         cmbFilter.setBackground(Color.WHITE);
         cmbFilter.addActionListener(new ActionListener() {
             @Override
@@ -71,7 +78,7 @@ public class UsersPanel extends JPanel {
         add(cmbFilter);
 
         JScrollPane scrollPane = new JScrollPane();
-        scrollPane.setBounds(30, 90, 970, 530);
+        scrollPane.setBounds(30, 140, 970, 480);
         add(scrollPane);
 
         String[] columnNames = {"ID", "Nombre Completo", "Email", "Teléfono", "Rol", "Estado", "Acciones"};

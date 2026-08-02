@@ -23,7 +23,7 @@ public class OrderDAO implements GetterDAO<Long, Order> {
                 stmt.setNull(2, java.sql.Types.BIGINT);
             }
             stmt.setString(3, order.getStatus().name());
-            stmt.setBigDecimal(4, order.getTotal());
+            stmt.setDouble(4, order.getTotal());
             
             stmt.executeUpdate();
             
@@ -49,7 +49,7 @@ public class OrderDAO implements GetterDAO<Long, Order> {
                  order.setCustomerId(rs.getLong("customer_id"));
                  order.setEmployeeId(rs.getLong("employee_id"));
                  order.setStatus(OrderStatus.fromString(rs.getString("status")));
-                 order.setTotal(rs.getBigDecimal("total"));
+                 order.setTotal(rs.getDouble("total"));
                  order.setCustomerName(rs.getString("first_name") + " " + rs.getString("last_name"));
                  if (rs.getTimestamp("created_at") != null) {
                      order.setCreatedAt(rs.getTimestamp("created_at").toLocalDateTime());
@@ -86,7 +86,7 @@ public class OrderDAO implements GetterDAO<Long, Order> {
                      order.setCustomerId(rs.getLong("customer_id"));
                      order.setEmployeeId(rs.getLong("employee_id"));
                      order.setStatus(OrderStatus.fromString(rs.getString("status")));
-                     order.setTotal(rs.getBigDecimal("total"));
+                     order.setTotal(rs.getDouble("total"));
                      order.setCustomerName(rs.getString("first_name") + " " + rs.getString("last_name"));
                      if (rs.getTimestamp("created_at") != null) {
                          order.setCreatedAt(rs.getTimestamp("created_at").toLocalDateTime());

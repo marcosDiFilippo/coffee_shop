@@ -9,7 +9,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JLabel;
-import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableCellEditor;
@@ -36,8 +35,7 @@ public class OrderHistoryPanel extends JPanel {
         JLabel lblTitle = new JLabel("HISTORIAL DE PEDIDOS");
         lblTitle.setForeground(Colors.MOCHA_BEAN.getColor());
         lblTitle.setFont(new Font("Segoe UI", Font.BOLD, 24));
-        lblTitle.setHorizontalAlignment(SwingConstants.CENTER);
-        lblTitle.setBounds(0, 30, 1030, 40);
+        lblTitle.setBounds(30, 20, 500, 40);
         add(lblTitle);
 
         JScrollPane scrollPane = new JScrollPane();

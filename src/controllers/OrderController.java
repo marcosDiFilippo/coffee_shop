@@ -19,7 +19,6 @@ import java.util.ArrayList;
 import java.util.List;
 import services.SizeService;
 import dtos.UserDTO;
-import java.math.BigDecimal;
 import views.orders.CustomerDialog;
 
 public class OrderController {
@@ -62,9 +61,9 @@ public class OrderController {
         mainContentPanel.repaint();
     }
 
-    public BigDecimal calculateSubtotal(OrderItemDTO item) {
-        BigDecimal multiplier = (item.getSize() != null) ? item.getSize().getPriceMultiplier() : BigDecimal.ONE;
-        return item.getProduct().getBasePrice().multiply(multiplier).multiply(new BigDecimal(item.getQuantity()));
+    public Double calculateSubtotal(OrderItemDTO item) {
+        Double multiplier = (item.getSize() != null) ? item.getSize().getPriceMultiplier() : 1.0;
+        return item.getProduct().getBasePrice() * multiplier * item.getQuantity();
     }
 
     public void addToCart(Product product) {
@@ -146,9 +145,9 @@ public class OrderController {
     }
 
     public void processCheckout(UserDTO customerDTO, CustomerDialog dialog) {
-        BigDecimal total = BigDecimal.ZERO;
+        Double total = 0.0;
         for (OrderItemDTO item : cartItems) {
-            total = total.add(item.getSubtotal());
+            total += item.getSubtotal();
         }
         
         Long employeeId = dashboard.getCurrentUser().getId();

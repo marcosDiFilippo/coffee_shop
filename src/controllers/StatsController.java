@@ -6,7 +6,6 @@ import views.stats.StatsPanel;
 
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import java.math.BigDecimal;
 import java.util.List;
 import exceptions.TransactionFailedException;
 
@@ -24,11 +23,11 @@ public class StatsController {
     private void loadStats() {
         try {
             int totalProducts = service.getTotalProducts();
-            BigDecimal totalRevenue = service.getTotalRevenue();
+            Double totalRevenue = service.getTotalRevenue();
             List<CategoryTopProductDTO> topProducts = service.getTopProductsByCategory();
 
             panel.getLblTotalProductsValue().setText(String.valueOf(totalProducts));
-            panel.getLblTotalRevenueValue().setText("$ " + totalRevenue.toString());
+            panel.getLblTotalRevenueValue().setText(String.format("$ %.2f", totalRevenue));
 
             DefaultTableModel model = panel.getTableModel();
             model.setRowCount(0);

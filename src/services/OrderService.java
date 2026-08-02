@@ -16,7 +16,6 @@ import exceptions.InvalidOrderStateException;
 import exceptions.ProductUnavailableException;
 import exceptions.TransactionFailedException;
 
-import java.math.BigDecimal;
 import java.sql.Connection;
 import java.util.List;
 
@@ -31,7 +30,7 @@ public class OrderService {
         this.orderItemDAO = new OrderItemDAO();
     }
 
-    public boolean confirmOrder(UserDTO customerDTO, List<OrderItemDTO> cart, Long employeeId, BigDecimal total) {
+    public boolean confirmOrder(UserDTO customerDTO, List<OrderItemDTO> cart, Long employeeId, Double total) {
         Connection conn = DatabaseConnection.getConnection();
 
         try {
@@ -81,8 +80,8 @@ public class OrderService {
                 }
 
                 item.setQuantity(dto.getQuantity());
-                BigDecimal multiplier = (dto.getSize() != null) ? dto.getSize().getPriceMultiplier() : BigDecimal.ONE;
-                item.setUnitPrice(dto.getProduct().getBasePrice().multiply(multiplier));
+                Double multiplier = (dto.getSize() != null) ? dto.getSize().getPriceMultiplier() : 1.0;
+                item.setUnitPrice(dto.getProduct().getBasePrice() * multiplier);
                 item.setSubtotal(dto.getSubtotal());
                 
                 orderItemDAO.insertWithConnection(conn, item);

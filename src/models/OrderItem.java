@@ -1,14 +1,13 @@
 package models;
 
-import java.math.BigDecimal;
 
 public class OrderItem extends BaseModel {
     private Long orderId;
     private Long productId;
     private Long sizeId;
     private int quantity;
-    private BigDecimal unitPrice;
-    private BigDecimal subtotal;
+    private Double unitPrice;
+    private Double subtotal;
     private String productName;
     private String sizeName;
 
@@ -46,19 +45,19 @@ public class OrderItem extends BaseModel {
         this.quantity = quantity;
     }
 
-    public BigDecimal getUnitPrice() {
+    public Double getUnitPrice() {
         return unitPrice;
     }
 
-    public void setUnitPrice(BigDecimal unitPrice) {
+    public void setUnitPrice(Double unitPrice) {
         this.unitPrice = unitPrice;
     }
 
-    public BigDecimal getSubtotal() {
+    public Double getSubtotal() {
         return subtotal;
     }
 
-    public void setSubtotal(BigDecimal subtotal) {
+    public void setSubtotal(Double subtotal) {
         this.subtotal = subtotal;
     }
 

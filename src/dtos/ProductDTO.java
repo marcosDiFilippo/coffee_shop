@@ -1,16 +1,15 @@
 package dtos;
 
-import java.math.BigDecimal;
 
 public class ProductDTO {
     private Long id;
     private Long categoryId;
     private String name;
     private String description;
-    private BigDecimal basePrice;
+    private Double basePrice;
     private boolean available;
 
-    public ProductDTO(Long id, Long categoryId, String name, String description, BigDecimal basePrice, boolean available) {
+    public ProductDTO(Long id, Long categoryId, String name, String description, Double basePrice, boolean available) {
         this.id = id;
         this.categoryId = categoryId;
         this.name = name;
@@ -51,11 +50,11 @@ public class ProductDTO {
         this.description = description;
     }
 
-    public BigDecimal getBasePrice() {
+    public Double getBasePrice() {
         return basePrice;
     }
 
-    public void setBasePrice(BigDecimal basePrice) {
+    public void setBasePrice(Double basePrice) {
         this.basePrice = basePrice;
     }
 

@@ -8,6 +8,7 @@ import views.Dashboard;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -38,12 +39,18 @@ public class CategoriesPanel extends JPanel {
         setLayout(null);
         setBounds(0, 0, 1030, 660);
 
+        JLabel lblTitle = new JLabel("GESTIÓN DE CATEGORÍAS");
+        lblTitle.setForeground(Colors.MOCHA_BEAN.getColor());
+        lblTitle.setFont(new Font("Segoe UI", Font.BOLD, 24));
+        lblTitle.setBounds(30, 20, 500, 40);
+        add(lblTitle);
+
         btnAddCategory = new JButton("Agregar Categoría");
         btnAddCategory.setBackground(Colors.WARM_CAPP.getColor());
         btnAddCategory.setForeground(Colors.CREAMY_LATTE.getColor());
         btnAddCategory.setFont(new Font("Segoe UI", Font.BOLD, 14));
         btnAddCategory.setFocusPainted(false);
-        btnAddCategory.setBounds(30, 30, 180, 40);
+        btnAddCategory.setBounds(30, 80, 180, 40);
         btnAddCategory.setBorder(null);
         btnAddCategory.addMouseListener(new MouseAdapter() {
             @Override
@@ -56,7 +63,7 @@ public class CategoriesPanel extends JPanel {
         add(btnAddCategory);
 
         JScrollPane scrollPane = new JScrollPane();
-        scrollPane.setBounds(30, 90, 970, 530);
+        scrollPane.setBounds(30, 140, 970, 480);
         add(scrollPane);
 
         String[] columnNames = {"ID", "Nombre", "Descripción", "Estado", "Usa Tamaño", "Acciones"};

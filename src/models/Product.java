@@ -1,13 +1,12 @@
 package models;
 
-import java.math.BigDecimal;
 
 public class Product extends BaseModel {
     private Long categoryId;
     private Category category;
     private String name;
     private String description;
-    private BigDecimal basePrice;
+    private Double basePrice;
     private boolean available;
 
     public Product() {}
@@ -44,11 +43,11 @@ public class Product extends BaseModel {
         this.description = description;
     }
 
-    public BigDecimal getBasePrice() {
+    public Double getBasePrice() {
         return basePrice;
     }
 
-    public void setBasePrice(BigDecimal basePrice) {
+    public void setBasePrice(Double basePrice) {
         this.basePrice = basePrice;
     }
 

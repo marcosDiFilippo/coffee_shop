@@ -31,7 +31,7 @@ public class ProductDAO implements GetterDAO<Long, Product> {
                 product.setCategoryId(rs.getLong("category_id"));
                 product.setName(rs.getString("name"));
                 product.setDescription(rs.getString("description"));
-                product.setBasePrice(rs.getBigDecimal("base_price"));
+                product.setBasePrice(rs.getDouble("base_price"));
                 product.setAvailable(rs.getBoolean("available"));
                 
                 if (rs.getTimestamp("created_at") != null) {
@@ -72,7 +72,7 @@ public class ProductDAO implements GetterDAO<Long, Product> {
                     product.setCategoryId(rs.getLong("category_id"));
                     product.setName(rs.getString("name"));
                     product.setDescription(rs.getString("description"));
-                    product.setBasePrice(rs.getBigDecimal("base_price"));
+                    product.setBasePrice(rs.getDouble("base_price"));
                     product.setAvailable(rs.getBoolean("available"));
                     
                     if (rs.getTimestamp("created_at") != null) {
@@ -107,7 +107,7 @@ public class ProductDAO implements GetterDAO<Long, Product> {
             stmt.setLong(1, product.getCategoryId());
             stmt.setString(2, product.getName());
             stmt.setString(3, product.getDescription());
-            stmt.setBigDecimal(4, product.getBasePrice());
+            stmt.setDouble(4, product.getBasePrice());
             stmt.setBoolean(5, product.isAvailable());
 
             int affectedRows = stmt.executeUpdate();
@@ -135,7 +135,7 @@ public class ProductDAO implements GetterDAO<Long, Product> {
             stmt.setLong(1, product.getCategoryId());
             stmt.setString(2, product.getName());
             stmt.setString(3, product.getDescription());
-            stmt.setBigDecimal(4, product.getBasePrice());
+            stmt.setDouble(4, product.getBasePrice());
             stmt.setBoolean(5, product.isAvailable());
             stmt.setLong(6, product.getId());
 
