@@ -47,7 +47,7 @@ public class UserService {
                 Long userId = userDAO.insertUserWithConnection(conn, user);
                 if (userId == null) {
                     conn.rollback();
-                    throw new TransactionFailedException("Fallo al guardar el usuario en la base de datos.");
+                    throw new TransactionFailedException("No se pudo registrar al usuario en este momento. Verifique los datos e intente nuevamente.");
                 }
                 userDAO.insertCredentials(conn, userId, dto.getUsername(), dto.getPassword());
             } else {
@@ -65,7 +65,7 @@ public class UserService {
                 } catch (SQLException ex) {
                 }
             }
-            throw new TransactionFailedException("Excepción SQL al intentar guardar el usuario.");
+            throw new TransactionFailedException("Ocurrió un error interno al intentar guardar el usuario. Si el problema persiste, contacte al soporte técnico.");
         } finally {
             if (conn != null) {
                 try {

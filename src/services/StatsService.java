@@ -22,7 +22,7 @@ public class StatsService {
         try {
             return statsDAO.getTotalProducts();
         } catch (SQLException e) {
-            throw new TransactionFailedException("Error al obtener el total de productos de la base de datos.");
+            throw new TransactionFailedException("Ocurrió un problema al calcular el total de productos. Inténtelo más tarde.");
         }
     }
 
@@ -30,7 +30,7 @@ public class StatsService {
         try {
             return statsDAO.getTotalRevenue();
         } catch (SQLException e) {
-            throw new TransactionFailedException("Error al obtener los ingresos totales de la base de datos.");
+            throw new TransactionFailedException("Ocurrió un problema al calcular los ingresos totales. Inténtelo más tarde.");
         }
     }
 
@@ -51,7 +51,7 @@ public class StatsService {
             
             return topProducts;
         } catch (SQLException e) {
-            throw new TransactionFailedException("Error al obtener los productos más vendidos por categoría.");
+            throw new TransactionFailedException("Ocurrió un problema al cargar las estadísticas de productos. Inténtelo más tarde.");
         }
     }
 }

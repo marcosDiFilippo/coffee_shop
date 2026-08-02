@@ -52,7 +52,7 @@ public class OrderService {
             Long customerId = userDAO.insertCustomer(conn, customer);
 
             if (customerId == null) {
-                throw new TransactionFailedException("Fallo al insertar el cliente de la orden.");
+                throw new TransactionFailedException("No se pudo registrar al nuevo cliente para esta orden. Por favor, intente nuevamente.");
             }
 
             Order order = new Order();
@@ -64,7 +64,7 @@ public class OrderService {
             Long orderId = orderDAO.insertWithConnection(conn, order);
 
             if (orderId == null) {
-                throw new TransactionFailedException("Fallo al insertar la orden en la base de datos.");
+                throw new TransactionFailedException("No se pudo crear la orden. Ocurrió un problema interno, intente nuevamente.");
             }
 
             for (OrderItemDTO dto : cart) {
@@ -99,7 +99,7 @@ public class OrderService {
                     throw (RuntimeException) e;
                 }
                 
-                throw new TransactionFailedException("Fallo al confirmar el pedido.");
+                throw new TransactionFailedException("Ocurrió un error inesperado y no se pudo confirmar el pedido.");
         } finally {
             try {
                 conn.setAutoCommit(true);
@@ -125,7 +125,7 @@ public class OrderService {
             Long orderId = orderDAO.insertWithConnection(conn, order);
 
             if (orderId == null) {
-                throw new TransactionFailedException("Fallo al insertar la orden en la base de datos.");
+                throw new TransactionFailedException("No se pudo crear la orden. Ocurrió un problema interno, intente nuevamente.");
             }
 
             for (OrderItemDTO dto : cart) {
@@ -159,7 +159,7 @@ public class OrderService {
             if (conn != null) {
                 try { conn.rollback(); } catch (SQLException ex) { }
             }
-            throw new TransactionFailedException("Fallo al confirmar el pedido.");
+            throw new TransactionFailedException("Ocurrió un error inesperado y no se pudo confirmar el pedido.");
         } finally {
             try {
                 conn.setAutoCommit(true);

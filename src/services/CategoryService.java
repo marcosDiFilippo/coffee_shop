@@ -36,7 +36,7 @@ public class CategoryService {
         } else {
             boolean updated = categoryDAO.update(category);
             if (!updated) {
-                throw new TransactionFailedException("Fallo al actualizar la categoría.");
+                throw new TransactionFailedException("No se pudieron guardar los cambios en la categoría. Intente nuevamente.");
             }
         }
 
@@ -54,7 +54,7 @@ public class CategoryService {
 
     public boolean deleteCategoryHard(Long categoryId) {
         if (categoryId == null) {
-            throw new InvalidDataException("El ID de la categoría es nulo.");
+            throw new InvalidDataException("No se pudo identificar la categoría a eliminar. Seleccione una categoría válida.");
         }
         Connection conn = null;
         try {
@@ -66,7 +66,7 @@ public class CategoryService {
                 return true;
             } else {
                 conn.rollback();
-                throw new TransactionFailedException("Error al procesar la eliminación de la categoría.");
+                throw new TransactionFailedException("No se pudo eliminar la categoría debido a un error inesperado.");
             }
         } catch (SQLException e) {
             if (conn != null) {
@@ -75,7 +75,7 @@ public class CategoryService {
                 } catch (SQLException ex) {
                 }
             }
-            throw new TransactionFailedException("Excepción SQL al intentar eliminar la categoría.");
+            throw new TransactionFailedException("Ocurrió un problema crítico al intentar eliminar la categoría. Si el error persiste, contacte al soporte.");
         } finally {
             if (conn != null) {
                 try {

@@ -35,7 +35,7 @@ public class SizeService {
                 dao.update(size);
             }
         } catch (SQLException e) {
-            throw new TransactionFailedException("Error al guardar el tamaño en la base de datos: " + e.getMessage());
+            throw new TransactionFailedException("No se pudo guardar el nuevo tamaño. Ocurrió un error inesperado.");
         }
     }
 
@@ -46,7 +46,7 @@ public class SizeService {
                 throw new TransactionFailedException("No se pudo actualizar el estado del tamaño.");
             }
         } catch (SQLException e) {
-            throw new TransactionFailedException("Error al actualizar el estado: " + e.getMessage());
+            throw new TransactionFailedException("Ocurrió un error inesperado al intentar cambiar el estado del tamaño.");
         }
     }
 
