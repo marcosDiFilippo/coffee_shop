@@ -19,6 +19,8 @@ import java.util.ArrayList;
 import java.util.List;
 import services.SizeService;
 import dtos.UserDTO;
+import models.User;
+import services.UserService;
 import views.orders.CustomerDialog;
 
 public class OrderController {
@@ -154,7 +156,42 @@ public class OrderController {
         OrderService orderService = new OrderService();
         try {
             orderService.confirmOrder(customerDTO, cartItems, employeeId, total);
-            JOptionPane.showMessageDialog(dialog, "Orden registrada con éxito", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(dialog, "Orden registrada con exito", "Exito", JOptionPane.INFORMATION_MESSAGE);
+            dialog.dispose();
+            cartItems.clear();
+            showCategories();
+        } catch (ProductUnavailableException | TransactionFailedException | InvalidDataException e) {
+            JOptionPane.showMessageDialog(dialog, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(dialog, "Ha ocurrido un error en el sistema, por favor vuelva intentarlo.", "Error Grave", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    public void handleSearchExistingCustomer(CustomerDialog dialog) {
+        String phone = JOptionPane.showInputDialog(dialog, "Ingrese el numero de telefono del cliente registrado (solo numeros):", "Buscar Cliente", JOptionPane.QUESTION_MESSAGE);
+        if (phone == null) return;
+        phone = phone.trim();
+        if (!phone.matches("^[0-9]+$")) {
+            JOptionPane.showMessageDialog(dialog, "Formato de telefono invalido. Solo se permiten numeros.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        UserService userService = new UserService();
+        User user = userService.getUserByPhone(phone);
+        if (user == null) {
+            JOptionPane.showMessageDialog(dialog, "El cliente no se encuentra registrado en el sistema.", "Cliente no encontrado", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        
+        Double total = 0.0;
+        for (OrderItemDTO item : cartItems) {
+            total += item.getSubtotal();
+        }
+        
+        Long employeeId = dashboard.getCurrentUser().getId();
+        OrderService orderService = new OrderService();
+        try {
+            orderService.confirmOrderForExistingCustomer(user.getId(), cartItems, employeeId, total);
+            JOptionPane.showMessageDialog(dialog, "Orden registrada con exito", "Exito", JOptionPane.INFORMATION_MESSAGE);
             dialog.dispose();
             cartItems.clear();
             showCategories();

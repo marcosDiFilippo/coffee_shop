@@ -2,7 +2,7 @@ package views.orders;
 
 import constants.Colors;
 import controllers.OrderController;
-import daos.ProductDAO;
+import controllers.ProductController;
 import models.Category;
 import models.Product;
 
@@ -21,8 +21,12 @@ import java.util.List;
 public class ProductsByCategoryPanel extends JPanel {
 
     private static final long serialVersionUID = 1L;
+    private ProductController productController;
 
     public ProductsByCategoryPanel(OrderController controller, Category category) {
+
+        this.productController = new ProductController();
+
         setBackground(Colors.CREAMY_LATTE.getColor());
         setLayout(null);
         setBounds(0, 0, 1030, 660);
@@ -68,9 +72,8 @@ public class ProductsByCategoryPanel extends JPanel {
         listContainer.setBackground(Colors.CREAMY_LATTE.getColor());
         listContainer.setLayout(null);
         
-        ProductDAO productDAO = new ProductDAO();
-        List<Product> products = productDAO.findAll();
-        
+        List<Product> products = this.productController.getAllProducts();
+
         int y = 0;
         for (Product prod : products) {
             if (prod.isAvailable() && prod.getCategoryId().equals(category.getId())) {

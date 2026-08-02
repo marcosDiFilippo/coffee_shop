@@ -17,6 +17,10 @@ public class ProductController {
     private ProductsPanel panel;
     private ProductService service;
 
+    public ProductController() {
+        this.service = new ProductService();
+    }
+
     public ProductController(ProductsPanel panel) {
         this.panel = panel;
         this.service = new ProductService();
@@ -27,7 +31,7 @@ public class ProductController {
         DefaultTableModel model = panel.getTableModel();
         model.setRowCount(0);
 
-        List<Product> products = service.getAllProducts();
+        List<Product> products = this.getAllProducts();
         for (Product prod : products) {
             String status = prod.isAvailable() ? "Disponible" : "No Disponible";
             String catName = prod.getCategory() != null ? prod.getCategory().getName() : "";
@@ -42,6 +46,10 @@ public class ProductController {
                 ""
             });
         }
+    }
+
+    public List<Product> getAllProducts() {
+        return service.getAllProducts();
     }
 
     public void saveProduct(ProductDTO dto, ProductFormDialog formDialog) {

@@ -80,6 +80,29 @@ public class UserDAO implements GetterDAO<Long, User> {
         return user;
     }
 
+    public User findByPhone(String phone) {
+        User user = null;
+        String query = "SELECT * FROM users WHERE phone = ? AND rol = 'CUSTOMER' AND active = TRUE";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, phone);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    user = new User();
+                    user.setId(rs.getLong("id"));
+                    user.setFirstName(rs.getString("first_name"));
+                    user.setLastName(rs.getString("last_name"));
+                    user.setEmail(rs.getString("email"));
+                    user.setPhone(rs.getString("phone"));
+                    user.setActive(rs.getBoolean("active"));
+                    user.setRol(UserRole.fromString(rs.getString("rol")));
+                }
+            }
+        } catch (SQLException e) {
+        }
+        return user;
+    }
+
     public Long insertCustomer(Connection conn, User user) throws SQLException {
         String query = "INSERT INTO users (first_name, last_name, email, phone, active, rol) VALUES (?, ?, ?, ?, ?, ?)";
         try (PreparedStatement stmt = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {

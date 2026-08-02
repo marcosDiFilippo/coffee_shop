@@ -17,6 +17,7 @@ import exceptions.ProductUnavailableException;
 import exceptions.TransactionFailedException;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
 
 public class OrderService {
@@ -99,6 +100,66 @@ public class OrderService {
                 }
                 
                 throw new TransactionFailedException("Fallo al confirmar el pedido.");
+        } finally {
+            try {
+                conn.setAutoCommit(true);
+                if (conn != null) conn.close();
+            } catch (Exception ex) {
+                
+            }
+        }
+    }
+
+    public boolean confirmOrderForExistingCustomer(Long customerId, List<OrderItemDTO> cart, Long employeeId, Double total) {
+        Connection conn = DatabaseConnection.getConnection();
+
+        try {
+            conn.setAutoCommit(false);
+
+            Order order = new Order();
+            order.setCustomerId(customerId);
+            order.setEmployeeId(employeeId);
+            order.setStatus(OrderStatus.PENDING);
+            order.setTotal(total);
+
+            Long orderId = orderDAO.insertWithConnection(conn, order);
+
+            if (orderId == null) {
+                throw new TransactionFailedException("Fallo al insertar la orden en la base de datos.");
+            }
+
+            for (OrderItemDTO dto : cart) {
+                if (!dto.getProduct().isAvailable()) {
+                    throw new ProductUnavailableException("El producto " + dto.getProduct().getName() + " no esta disponible.");
+                }
+
+                OrderItem item = new OrderItem();
+                item.setOrderId(orderId);
+                item.setProductId(dto.getProduct().getId());
+                if (dto.getSize() != null) {
+                    item.setSizeId(dto.getSize().getId());
+                }
+                item.setQuantity(dto.getQuantity());
+                Double multiplier = (dto.getSize() != null) ? dto.getSize().getPriceMultiplier() : 1.0;
+                item.setUnitPrice(dto.getProduct().getBasePrice() * multiplier);
+                item.setSubtotal(dto.getSubtotal());
+                
+                orderItemDAO.insertWithConnection(conn, item);
+            }
+
+            conn.commit();
+            return true;
+
+        } catch (InvalidDataException | InvalidOrderStateException | ProductUnavailableException | TransactionFailedException e) {
+            if (conn != null) {
+                try { conn.rollback(); } catch (SQLException ex) { }
+            }
+            throw e;
+        } catch (Exception e) {
+            if (conn != null) {
+                try { conn.rollback(); } catch (SQLException ex) { }
+            }
+            throw new TransactionFailedException("Fallo al confirmar el pedido.");
         } finally {
             try {
                 conn.setAutoCommit(true);
