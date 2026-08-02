@@ -17,6 +17,10 @@ public class CategoryController {
     private CategoriesPanel panel;
     private CategoryService service;
 
+    public CategoryController() {
+        this.service = new CategoryService();
+    }
+
     public CategoryController(CategoriesPanel panel) {
         this.panel = panel;
         this.service = new CategoryService();
@@ -27,12 +31,16 @@ public class CategoryController {
         DefaultTableModel model = panel.getTableModel();
         model.setRowCount(0);
 
-        List<Category> categories = service.getAllCategories();
+        List<Category> categories = this.getAllCategories();
         for (Category cat : categories) {
             String status = cat.isActive() ? "Activa" : "Inactiva";
             String reqSize = cat.isRequiresSize() ? "Sí" : "No";
             model.addRow(new Object[]{cat.getId(), cat.getName(), cat.getDescription(), status, reqSize, ""});
         }
+    }
+
+    public List<Category> getAllCategories () {
+        return service.getAllCategories();
     }
 
     public void saveCategory(CategoryDTO dto, CategoryFormDialog formDialog) {

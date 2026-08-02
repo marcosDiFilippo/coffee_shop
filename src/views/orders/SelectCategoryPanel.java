@@ -1,8 +1,8 @@
 package views.orders;
 
 import constants.Colors;
+import controllers.CategoryController;
 import controllers.OrderController;
-import daos.CategoryDAO;
 import models.Category;
 
 import javax.swing.JButton;
@@ -17,8 +17,11 @@ import java.util.List;
 public class SelectCategoryPanel extends JPanel {
 
     private static final long serialVersionUID = 1L;
+    private CategoryController categoryController;
 
     public SelectCategoryPanel(OrderController controller) {
+        this.categoryController = new CategoryController();
+
         setBackground(Colors.CREAMY_LATTE.getColor());
         setLayout(null);
         setBounds(0, 0, 1030, 660);
@@ -45,8 +48,7 @@ public class SelectCategoryPanel extends JPanel {
         });
         add(btnGoCart);
 
-        CategoryDAO categoryDAO = new CategoryDAO();
-        List<Category> categories = categoryDAO.findAll();
+        List<Category> categories = categoryController.getAllCategories();
 
         int x = 50;
         int y = 100;
