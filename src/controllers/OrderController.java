@@ -27,11 +27,13 @@ public class OrderController {
     private List<OrderItemDTO> cartItems;
     private Dashboard dashboard;
     private JPanel mainContentPanel;
+    private OrderService orderService;
 
     public OrderController(Dashboard dashboard, JPanel mainContentPanel) {
         this.dashboard = dashboard;
         this.mainContentPanel = mainContentPanel;
         this.cartItems = new ArrayList<>();
+        this.orderService = new OrderService();
     }
 
     public void startNewOrder() {
@@ -153,9 +155,8 @@ public class OrderController {
         }
         
         Long employeeId = dashboard.getCurrentUser().getId();
-        OrderService orderService = new OrderService();
         try {
-            orderService.confirmOrder(customerDTO, cartItems, employeeId, total);
+            this.orderService.confirmOrder(customerDTO, cartItems, employeeId, total);
             JOptionPane.showMessageDialog(dialog, "Orden registrada con exito", "Exito", JOptionPane.INFORMATION_MESSAGE);
             dialog.dispose();
             cartItems.clear();
@@ -188,9 +189,8 @@ public class OrderController {
         }
         
         Long employeeId = dashboard.getCurrentUser().getId();
-        OrderService orderService = new OrderService();
         try {
-            orderService.confirmOrderForExistingCustomer(user.getId(), cartItems, employeeId, total);
+            this.orderService.confirmOrderForExistingCustomer(user.getId(), cartItems, employeeId, total);
             JOptionPane.showMessageDialog(dialog, "Orden registrada con exito", "Exito", JOptionPane.INFORMATION_MESSAGE);
             dialog.dispose();
             cartItems.clear();
