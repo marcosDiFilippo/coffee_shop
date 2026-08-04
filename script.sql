@@ -117,35 +117,6 @@ CREATE TABLE order_items (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
--- Metodos de pago
-CREATE TABLE payment_methods (
-    id BIGINT AUTO_INCREMENT PRIMARY KEY,
-
-    payment_method_name VARCHAR(50) NOT NULL UNIQUE,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-);
-
--- Pagos
-CREATE TABLE payments (
-    id BIGINT AUTO_INCREMENT PRIMARY KEY,
-
-    order_id BIGINT NOT NULL UNIQUE,
-
-    payment_method_id BIGINT NOT NULL,
-
-    amount DECIMAL(10,2) NOT NULL,
-
-    payment_date DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-
-    FOREIGN KEY(order_id) REFERENCES orders(id),
-
-    FOREIGN KEY(payment_method_id) REFERENCES payment_methods(id),
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-);
-
-
 INSERT INTO users (first_name, last_name, email, phone, active, rol) VALUES ('Admin', 'User', 'admin@coffeeshop.com', '123456789', TRUE, 'MANAGER');
 INSERT INTO user_credentials (user_id, username, password) VALUES (LAST_INSERT_ID(), 'admin', SHA2('1111', 256));
 
@@ -171,9 +142,7 @@ INSERT INTO products (category_id, name, description, base_price, available) VAL
 (4, 'Tostado de Jamón y Queso', 'Sándwich tostado clásico.', 3000.00, TRUE),
 (4, 'Avocado Toast', 'Tostada de masa madre con palta y huevo.', 4500.00, TRUE);
 
--- ----------------------------------------------------
--- SEED DE DATOS: CLIENTES, ORDENES Y DETALLES (MEDIANO)
--- ----------------------------------------------------
+-- seed de datos: clientes, ordenes y detalles
 
 INSERT INTO users (first_name, last_name, email, phone, active, rol) VALUES 
 ('Juan', 'Perez', 'juan.perez@cliente.com', '11111111', TRUE, 'CUSTOMER'),

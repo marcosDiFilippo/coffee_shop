@@ -106,32 +106,3 @@ Este documento detalla la estructura relacional de la base de datos utilizada po
 | `subtotal` | DECIMAL(10,2)| NOT NULL | unit_price * quantity. |
 | `created_at` | TIMESTAMP | DEFAULT CURRENT_TIMESTAMP | Fecha de registro del ítem. |
 | `updated_at` | TIMESTAMP | DEFAULT CURRENT_TIMESTAMP ON UPDATE | Fecha de última modificación. |
-
----
-
-## 8. Tabla: `payment_methods` (Preparado para el futuro)
-**Descripción:** Catálogo de métodos de pago aceptados (Efectivo, Tarjeta, MercadoPago, etc.).
-*Nota: Actualmente contemplado a nivel base de datos pero no integrado completamente en el MVC Java.*
-
-| Columna | Tipo de Dato | Restricciones | Descripción |
-| :--- | :--- | :--- | :--- |
-| `id` | BIGINT | PRIMARY KEY, AUTO_INCREMENT | Identificador del método de pago. |
-| `payment_method_name`| VARCHAR(50) | NOT NULL, UNIQUE | Nombre del método (ej. 'Efectivo'). |
-| `created_at` | TIMESTAMP | DEFAULT CURRENT_TIMESTAMP | Fecha de creación. |
-| `updated_at` | TIMESTAMP | DEFAULT CURRENT_TIMESTAMP ON UPDATE | Fecha de última modificación. |
-
----
-
-## 9. Tabla: `payments` (Preparado para el futuro)
-**Descripción:** Registra las transacciones de pago aplicadas a una orden específica.
-*Nota: Actualmente contemplado a nivel base de datos pero no integrado completamente en el MVC Java.*
-
-| Columna | Tipo de Dato | Restricciones | Descripción |
-| :--- | :--- | :--- | :--- |
-| `id` | BIGINT | PRIMARY KEY, AUTO_INCREMENT | Identificador único del pago. |
-| `order_id` | BIGINT | NOT NULL, UNIQUE, FK (orders.id)| Orden que se está pagando. |
-| `payment_method_id`| BIGINT | NOT NULL, FK | Método de pago utilizado. |
-| `amount` | DECIMAL(10,2)| NOT NULL | Monto abonado. |
-| `payment_date` | DATETIME | NOT NULL, DEFAULT | Fecha y hora exacta del pago. |
-| `created_at` | TIMESTAMP | DEFAULT CURRENT_TIMESTAMP | Fecha de registro. |
-| `updated_at` | TIMESTAMP | DEFAULT CURRENT_TIMESTAMP ON UPDATE | Fecha de última modificación. |
