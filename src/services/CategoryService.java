@@ -25,7 +25,13 @@ public class CategoryService {
 
     public CategoryDTO saveCategory(CategoryDTO dto) {
         if (dto.getName() == null || dto.getName().trim().isEmpty()) {
-            throw new InvalidDataException("El nombre de la categoría no puede estar vacío.");
+            throw new InvalidDataException("El nombre de la categoria no puede estar vacio.");
+        }
+        if (dto.getName().trim().length() > 50) {
+            throw new InvalidDataException("El nombre de la categoria no puede exceder los 50 caracteres.");
+        }
+        if (dto.getDescription() != null && dto.getDescription().trim().length() > 255) {
+            throw new InvalidDataException("La descripcion no puede exceder los 255 caracteres.");
         }
 
         Category category = new Category(dto.getId(), dto.getName(), dto.getDescription(), dto.isActive(), dto.isRequiresSize());

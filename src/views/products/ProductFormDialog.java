@@ -10,6 +10,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -133,18 +134,42 @@ public class ProductFormDialog extends JDialog {
         btnSave.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                String name = txtName.getText();
-                String description = txtDescription.getText();
+                String name = txtName.getText().trim();
+                String description = txtDescription.getText().trim();
+                
+                if (name.isEmpty()) {
+                    JOptionPane.showMessageDialog(ProductFormDialog.this, "El nombre del producto es obligatorio.", "Error de Validacion", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                
+                if (name.length() > 100) {
+                    JOptionPane.showMessageDialog(ProductFormDialog.this, "El nombre del producto no puede exceder los 100 caracteres.", "Error de Validacion", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                
+                if (description.length() > 255) {
+                    JOptionPane.showMessageDialog(ProductFormDialog.this, "La descripcion no puede exceder los 255 caracteres.", "Error de Validacion", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
                 
                 Double price;
                 try {
-                    price = new Double(txtBasePrice.getText());
+                    price = new Double(txtBasePrice.getText().trim());
+                    if (price <= 0) {
+                        JOptionPane.showMessageDialog(ProductFormDialog.this, "El precio base debe ser mayor a 0.", "Error de Validacion", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
                 } catch (NumberFormatException ex) {
-                    price = 0.0;
+                    JOptionPane.showMessageDialog(ProductFormDialog.this, "El precio base debe ser un numero valido.", "Error de Validacion", JOptionPane.ERROR_MESSAGE);
+                    return;
                 }
                 
                 CategoryItem selectedCat = (CategoryItem) cbCategories.getSelectedItem();
-                Long catId = selectedCat != null ? selectedCat.getId() : null;
+                if (selectedCat == null) {
+                    JOptionPane.showMessageDialog(ProductFormDialog.this, "Debe seleccionar una categoria.", "Error de Validacion", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                Long catId = selectedCat.getId();
                 
                 ProductDTO newDto = new ProductDTO(dto != null ? dto.getId() : null, catId, name, description, price, dto != null ? dto.isAvailable() : true);
                 controller.saveProduct(newDto, ProductFormDialog.this);

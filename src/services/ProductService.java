@@ -20,8 +20,20 @@ public class ProductService {
     }
 
     public ProductDTO saveProduct(ProductDTO dto) {
-        if (dto.getName() == null || dto.getName().trim().isEmpty() || dto.getCategoryId() == null || dto.getBasePrice() == null) {
-            throw new InvalidDataException("Los campos obligatorios de producto no pueden estar vacíos.");
+        if (dto.getName() == null || dto.getName().trim().isEmpty()) {
+            throw new InvalidDataException("El nombre del producto no puede estar vacio.");
+        }
+        if (dto.getName().trim().length() > 100) {
+            throw new InvalidDataException("El nombre del producto no puede exceder los 100 caracteres.");
+        }
+        if (dto.getDescription() != null && dto.getDescription().trim().length() > 255) {
+            throw new InvalidDataException("La descripcion no puede exceder los 255 caracteres.");
+        }
+        if (dto.getCategoryId() == null) {
+            throw new InvalidDataException("La categoria es obligatoria.");
+        }
+        if (dto.getBasePrice() == null || dto.getBasePrice() <= 0) {
+            throw new InvalidDataException("El precio base debe ser un numero mayor a 0.");
         }
 
         Product product = new Product();

@@ -79,13 +79,23 @@ public class DrinkSizeController {
 
     private void saveSize(DrinkSizeForm form) {
         try {
-            String name = form.getTxtName().getText();
-            String multiplierStr = form.getTxtMultiplier().getText();
+            String name = form.getTxtName().getText().trim();
+            if (name.isEmpty()) {
+                throw new InvalidDataException("El nombre del tamaño es obligatorio.");
+            }
+            if (name.length() > 50) {
+                throw new InvalidDataException("El nombre del tamaño no puede exceder los 50 caracteres.");
+            }
+            
+            String multiplierStr = form.getTxtMultiplier().getText().trim();
             Double multiplier;
             try {
                 multiplier = new Double(multiplierStr);
+                if (multiplier <= 0) {
+                    throw new InvalidDataException("El multiplicador de precio debe ser mayor a 0.");
+                }
             } catch (NumberFormatException ex) {
-                throw new InvalidDataException("El multiplicador de precio debe ser un número decimal válido.");
+                throw new InvalidDataException("El multiplicador de precio debe ser un numero decimal valido.");
             }
 
             Size size = new Size();

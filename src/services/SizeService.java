@@ -22,7 +22,10 @@ public class SizeService {
 
     public void saveSize(Size size) {
         if (size.getName() == null || size.getName().trim().isEmpty()) {
-            throw new InvalidDataException("El nombre del tamaño no puede estar vacío.");
+            throw new InvalidDataException("El nombre del tamaño no puede estar vacio.");
+        }
+        if (size.getName().trim().length() > 50) {
+            throw new InvalidDataException("El nombre del tamaño no puede exceder los 50 caracteres.");
         }
         if (size.getPriceMultiplier() == null || size.getPriceMultiplier() <= 0.0) {
             throw new InvalidDataException("El multiplicador de precio debe ser mayor a 0.");

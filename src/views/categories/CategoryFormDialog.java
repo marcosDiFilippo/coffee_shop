@@ -8,6 +8,7 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -106,8 +107,22 @@ public class CategoryFormDialog extends JDialog {
         btnSave.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                String name = txtName.getText();
-                String description = txtDescription.getText();
+                String name = txtName.getText().trim();
+                String description = txtDescription.getText().trim();
+                
+                if (name.isEmpty()) {
+                    JOptionPane.showMessageDialog(CategoryFormDialog.this, "El nombre de la categoria es obligatorio.", "Error de Validacion", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                if (name.length() > 50) {
+                    JOptionPane.showMessageDialog(CategoryFormDialog.this, "El nombre de la categoria no puede exceder los 50 caracteres.", "Error de Validacion", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                if (description.length() > 255) {
+                    JOptionPane.showMessageDialog(CategoryFormDialog.this, "La descripcion no puede exceder los 255 caracteres.", "Error de Validacion", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                
                 boolean requiresSize = chkRequiresSize.isSelected();
                 CategoryDTO newDto = new CategoryDTO(dto != null ? dto.getId() : null, name, description, true, requiresSize);
                 controller.saveCategory(newDto, CategoryFormDialog.this);
