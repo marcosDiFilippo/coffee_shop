@@ -154,7 +154,6 @@ public class CategoryDAO implements GetterDAO<Long, Category> {
                     ids.append(orderIds.get(i));
                     if (i < orderIds.size() - 1) ids.append(",");
                 }
-                stmt.executeUpdate("DELETE FROM payments WHERE order_id IN (" + ids + ")");
                 stmt.executeUpdate("DELETE FROM order_items WHERE order_id IN (" + ids + ")");
                 stmt.executeUpdate("DELETE FROM orders WHERE id IN (" + ids + ")");
             }
