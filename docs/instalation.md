@@ -38,11 +38,11 @@ Antes de compilar, es necesario indicar al programa cómo conectarse a tu MySQL 
 1. Navega hasta el directorio raíz del proyecto: `cd C:/ruta/al/proyecto/coffee_shop`
 2. Compila los archivos (asegurándote de enlazar el conector JDBC):
    ```bash
-   javac -cp ".;lib/mysql-connector.jar" src/**/*.java -d bin/
+   javac -cp ".;lib/mysql-connector-j-9.7.0.jar" src/**/*.java -d bin/
    ```
 3. Ejecuta la clase principal:
    ```bash
-   java -cp "bin;lib/mysql-connector.jar" views.Main
+   java -cp "bin;lib/mysql-connector-j-9.7.0.jar" views.Main
    ```
 
 ## 4. Uso del Sistema
